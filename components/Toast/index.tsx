@@ -71,7 +71,7 @@ export const ToastRoot = ({
           </StyledToastCloseButton>
         </StyledToastContainer>
       </StyledToastRoot>
-      <StyledToastViewport className={'fixed bottom-0 right-0 z-50'} />
+      <StyledToastViewport />
     </Provider>
   )
 }
