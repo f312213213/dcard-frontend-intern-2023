@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 
-const HomePage = () => {
+const NewTaskPage = () => {
   return (
     <Layout>
 
@@ -8,4 +8,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default NewTaskPage
