@@ -12,14 +12,13 @@ export const StyledToastRoot = styled(Root)`
 
 export const StyledToastContainer = styled.div<BackgroundProps>`
   margin-right: 20px;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 60px;
   border-radius: 10px;
-  width: 250px;
+  width: 300px;
 
   ${background}
 `

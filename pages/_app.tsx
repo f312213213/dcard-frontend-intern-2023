@@ -15,8 +15,8 @@ import theme from '@/styles/theme'
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <ErrorBoundary FallbackComponent={ErrorBoundaryToast}>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <ErrorBoundary FallbackComponent={ErrorBoundaryToast}>
         <Provider store={store}>
           <NextNProgress options={{ showSpinner: false }} />
           <Backdrop />
@@ -25,8 +25,8 @@ const App = ({ Component, pageProps }: AppProps) => {
           <Toast />
           <Footer />
         </Provider>
-      </ThemeProvider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </ThemeProvider>
   )
 }
 
