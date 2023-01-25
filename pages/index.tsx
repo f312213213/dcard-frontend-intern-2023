@@ -1,17 +1,17 @@
+import { EDialogType } from '@/features/app/interface'
 import { ParsedUrlQuery } from 'querystring'
 import { fetch } from 'next/dist/compiled/@edge-runtime/primitives/fetch'
-import { isLoginSelector, userDataSelector } from '@/features/user/selector'
-import { useAppSelector, wrapper } from '@/features/store'
+import { openDialog } from '@/features/app/slice'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { userLogin } from '@/features/user/slice'
+import { wrapper } from '@/features/store'
+import HomePageContainer from '@/containers/HomePageContainer'
 import Layout from '@/components/Layout'
 import githubApi from '@/constants/githubApi'
 
 const HomePage = () => {
   const router = useRouter()
-  const isLogin = useAppSelector(isLoginSelector)
-  const userData = useAppSelector(userDataSelector)
 
   useEffect(() => {
     router.replace('/', undefined, { shallow: true })
@@ -19,19 +19,7 @@ const HomePage = () => {
 
   return (
     <Layout>
-      {
-        isLogin
-          ? <p>登入啦！ hi! {userData.login}</p>
-          : <a
-            className={'login-link'}
-            href={`${githubApi.loginRequest}?scope=repo&client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}
-
-          >
-            <span>Login with GitHub</span>
-          </a>
-
-      }
-
+      <HomePageContainer />
     </Layout>
   )
 }
@@ -56,6 +44,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     } catch (e) {
       // 失敗的話代表 token 過期，清掉 cookie 裡的紀錄
       res.setHeader('Set-Cookie', 'accessToken=123; max-age=0')
+      store.dispatch(openDialog({ type: EDialogType.LOGIN }))
       return {
         props: {},
       }
@@ -99,12 +88,14 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
       }
     } catch (e) {
       // 如過這邊有錯誤，代表與 github 的驗證錯誤
+      store.dispatch(openDialog({ type: EDialogType.LOGIN }))
       return {
         props: {},
       }
     }
   }
 
+  store.dispatch(openDialog({ type: EDialogType.LOGIN }))
   return {
     props: {},
   }

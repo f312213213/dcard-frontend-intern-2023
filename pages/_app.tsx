@@ -9,6 +9,7 @@ import type { AppProps } from 'next/app'
 import { setupApiCallerAuth } from '@/apis/apiClient'
 import { wrapper } from '@/features/store'
 import BackdropContainer from '@/containers/BackdropContainer'
+import DialogsContainer from '@/containers/DialogsContainer'
 import ErrorBoundaryToast from '@/components/Toast/ErrorBoundaryToast'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
@@ -29,6 +30,7 @@ const App = ({ Component, ...rest }: AppProps) => {
          <Provider store={store}>
           <NextNProgress options={{ showSpinner: false }} />
           <BackdropContainer />
+          <DialogsContainer />
           <Header />
           <Component {...props.pageProps} />
           <ToastContainer />

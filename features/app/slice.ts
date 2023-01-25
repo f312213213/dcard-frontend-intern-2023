@@ -20,6 +20,7 @@ const initialState: IState = {
     [EDialogType.ALERT]: basicDialog,
     [EDialogType.INFO]: basicDialog,
     [EDialogType.INPUT]: basicDialog,
+    [EDialogType.LOGIN]: basicDialog,
   },
   toast: {
     type: EToastType.INITIAL,

@@ -18,7 +18,8 @@ export interface IBasicDialog {
 export enum EDialogType {
   ALERT = 'ALERT',
   INFO = 'INFO',
-  INPUT = 'INPUT'
+  INPUT = 'INPUT',
+  LOGIN = 'LOGIN'
 }
 
 export interface IAlertDialog extends IBasicDialog {
@@ -47,6 +48,7 @@ export interface IDialog {
   [EDialogType.ALERT]: IAlertDialog
   [EDialogType.INFO]: IInfoDialog
   [EDialogType.INPUT]: IInputDialog
+  [EDialogType.LOGIN]: IBasicDialog
 }
 
 export interface IState {
@@ -59,7 +61,7 @@ export interface IState {
 }
 
 export interface IOpenDialogAction {
-  title: string
+  title?: string
   content?: string | ReactNode,
   type: EDialogType
   onDialogLoad?: () => void

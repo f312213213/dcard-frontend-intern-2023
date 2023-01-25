@@ -1,4 +1,4 @@
-import { FaTimes } from 'react-icons/fa/'
+import { FaTimes } from 'react-icons/fa'
 import { Provider } from '@radix-ui/react-toast'
 
 import { EToastType } from '@/features/app/interface'
