@@ -1,13 +1,10 @@
-import { HYDRATE } from 'next-redux-wrapper'
+import { APP_HYDRATE } from '@/features/reducer'
 import { IState } from '@/features/user/interface'
-import { RootState } from '@/features/store'
-import { createAction, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: IState = {
   userData: null,
 }
-
-export const APP_HYDRATE = createAction<RootState>(HYDRATE)
 
 const userSlice = createSlice({
   name: 'user',
@@ -16,6 +13,9 @@ const userSlice = createSlice({
     userLogin: (state, action) => {
       const { userData } = action.payload
       state.userData = userData
+    },
+    userLogout: (state, action) => {
+      state.userData = initialState.userData
     },
   },
   extraReducers: (builder) => {
@@ -28,6 +28,7 @@ const userSlice = createSlice({
 
 export const {
   userLogin,
+  userLogout,
 } = userSlice.actions
 
 export default userSlice

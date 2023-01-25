@@ -1,6 +1,5 @@
 import { ParsedUrlQuery } from 'querystring'
 import { fetch } from 'next/dist/compiled/@edge-runtime/primitives/fetch'
-import { initApp } from '@/features/app/slice'
 import { isLoginSelector, userDataSelector } from '@/features/user/selector'
 import { useAppSelector, wrapper } from '@/features/store'
 import { useEffect } from 'react'
@@ -51,7 +50,6 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     try {
       const userData = await getUserData(accessToken)
       store.dispatch(userLogin({ userData }))
-      store.dispatch(initApp())
       return {
         props: {},
       }
@@ -64,7 +62,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     }
   }
 
-  const { code = '' } = context.query as ICallBackCode
+  const { code } = context.query as ICallBackCode
 
   // 有 callback code 代表是第一次註冊或是之前的 token 過期，跟 github 要 token
   if (code) {
@@ -86,10 +84,6 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
       }
       const jsonForToken = await responseForToken.json()
 
-      if (jsonForToken.error) {
-        throw new Error()
-      }
-
       const {
         access_token: accessToken,
       } = jsonForToken
@@ -97,9 +91,8 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
       // 成功拿到 token
       const userData = await getUserData(accessToken)
       store.dispatch(userLogin({ userData }))
-      store.dispatch(initApp())
 
-      res.setHeader('Set-Cookie', `accessToken=${accessToken}`)
+      res.setHeader('Set-Cookie', `accessToken=${accessToken}; max-age=3600`)
 
       return {
         props: {},

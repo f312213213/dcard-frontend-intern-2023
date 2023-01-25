@@ -1,3 +1,4 @@
+import { APP_HYDRATE } from '@/features/reducer'
 import {
   EAppStatus,
   EDialogType,
@@ -70,7 +71,7 @@ const appSlice = createSlice({
     closeToast: (state) => {
       state.toast = initialState.toast
     },
-    showBackdrop: (state) => {
+    openBackdrop: (state) => {
       state.backdrop.show = true
     },
     closeBackdrop: (state) => {
@@ -78,7 +79,14 @@ const appSlice = createSlice({
     },
     initApp: state => {
       state.status = EAppStatus.SUCCESS
+      state.backdrop = initialState.backdrop
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(APP_HYDRATE, (state, action) => ({
+      ...state,
+      ...action.payload.app,
+    }))
   },
 })
 
@@ -87,7 +95,7 @@ export const {
   closeDialog,
   openToast,
   closeToast,
-  showBackdrop,
+  openBackdrop,
   closeBackdrop,
   initApp,
 } = appSlice.actions

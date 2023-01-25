@@ -8,28 +8,6 @@ import {
   StyledToastTitle,
   StyledToastViewport
 } from '@/components/Toast/styles'
-import { closeToast } from '@/features/app/slice'
-import { useAppDispatch, useAppSelector } from '@/features/store'
-
-const Toast = () => {
-  const toast = useAppSelector(state => state.app.toast)
-  const dispatch = useAppDispatch()
-
-  const parseCloseToast = (open: boolean) => {
-    if (!open) {
-      dispatch(closeToast())
-    }
-  }
-
-  return (
-    <ToastRoot
-      title={toast.title}
-      open={!!toast.title}
-      type={toast.type}
-      onOpenChange={parseCloseToast}
-    />
-  )
-}
 
 interface IToastRootProps {
   title: string
@@ -38,7 +16,7 @@ interface IToastRootProps {
   onOpenChange: (open: boolean) => void
 }
 
-export const ToastRoot = ({
+const Toast = ({
   title,
   type,
   open,
@@ -55,6 +33,7 @@ export const ToastRoot = ({
       }
     }
   }
+
   return (
     <Provider swipeDirection={'right'}>
       <StyledToastRoot
