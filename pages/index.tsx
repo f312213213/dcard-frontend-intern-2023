@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { EDialogType } from '@/features/app/interface'
 import { ParsedUrlQuery } from 'querystring'
 import { fetch } from 'next/dist/compiled/@edge-runtime/primitives/fetch'
@@ -108,5 +110,21 @@ const getUserData = async (accessToken: string) => {
     },
   })
   if (responseForUserData.status !== 200) throw new Error()
-  return await responseForUserData.json()
+  const jsonForUserData = await responseForUserData.json()
+
+  const {
+    repos_url: reposUrl,
+    organizations_url: organizationsUrl,
+    login: username,
+    avatar_url: avatarUrl,
+    node_id: userId,
+  } = jsonForUserData
+
+  return {
+    username,
+    reposUrl,
+    organizationsUrl,
+    avatarUrl,
+    userId,
+  }
 }

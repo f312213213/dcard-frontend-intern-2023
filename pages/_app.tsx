@@ -12,7 +12,7 @@ import BackdropContainer from '@/containers/BackdropContainer'
 import DialogsContainer from '@/containers/DialogsContainer'
 import ErrorBoundaryToast from '@/components/Toast/ErrorBoundaryToast'
 import Footer from '@/components/Footer'
-import Header from '@/components/Header'
+import HeaderContainer from '@/containers/HeaderContainer'
 import ToastContainer from '@/containers/ToastContainer'
 import parseCookie from '@/utilis/auth/parseCookie'
 import theme from '@/styles/theme'
@@ -31,7 +31,7 @@ const App = ({ Component, ...rest }: AppProps) => {
           <NextNProgress options={{ showSpinner: false }} />
           <BackdropContainer />
           <DialogsContainer />
-          <Header />
+          <HeaderContainer />
           <Component {...props.pageProps} />
           <ToastContainer />
           <Footer />
