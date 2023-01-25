@@ -1,3 +1,14 @@
+export interface IRepo {
+  repoId: string
+  repoName: string
+  link: string
+}
+
 export interface IState {
-  userData: any
+  userData: {
+    username: string
+    repos: IRepo[]
+    avatarUrl: string
+    userId: string
+  } | null
 }

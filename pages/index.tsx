@@ -114,16 +114,30 @@ const getUserData = async (accessToken: string) => {
 
   const {
     repos_url: reposUrl,
-    organizations_url: organizationsUrl,
     login: username,
     avatar_url: avatarUrl,
     node_id: userId,
   } = jsonForUserData
 
+  const responseForReposData = await fetch(reposUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+  if (responseForReposData.status !== 200) throw new Error()
+  const jsonForReposData = await responseForReposData.json()
+
+  const reposData = jsonForReposData.map((repo: any) => {
+    return {
+      repoId: repo.node_id,
+      repoName: repo.name,
+      link: repo.html_url,
+    }
+  })
+
   return {
     username,
-    reposUrl,
-    organizationsUrl,
+    repos: reposData,
     avatarUrl,
     userId,
   }

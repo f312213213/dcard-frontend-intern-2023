@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.2",
+    "@radix-ui/react-select": "^1.2.0",
+    "@radix-ui/react-separator": "^1.0.1",
     "@radix-ui/react-toast": "^1.1.2",
     "@reduxjs/toolkit": "^1.9.1",
     "axios": "^1.2.3",

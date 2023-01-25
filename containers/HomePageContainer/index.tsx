@@ -1,9 +1,9 @@
-import { isLoginSelector, userDataSelector } from '@/features/user/selector'
+import { isLoginSelector } from '@/features/user/selector'
 import { useAppSelector } from '@/features/store'
+import SidebarContainer from '@/containers/SidebarContainer'
 
 const HomePageContainer = () => {
   const isLogin = useAppSelector(isLoginSelector)
-  const userData = useAppSelector(userDataSelector)
 
   if (!isLogin) {
     return (
@@ -14,7 +14,9 @@ const HomePageContainer = () => {
   }
 
   return (
-    <p>登入啦！ hi! {userData.username}</p>
+    <>
+      <SidebarContainer />
+    </>
   )
 }
 
