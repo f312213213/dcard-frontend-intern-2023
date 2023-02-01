@@ -15,7 +15,7 @@ const Index = () => {
         <StyledDialogOverlay />
         <StyledDialogContent >
           <StyledDialogTitle>
-            Continue to use this app
+            To use this app
           </StyledDialogTitle>
           <StyledDialogDescription>
             <GitHubLogin />

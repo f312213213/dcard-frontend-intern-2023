@@ -4,4 +4,4 @@ export const isLoginSelector = (state: RootState) => !!state?.user?.userData?.us
 
 export const userDataSelector = (state: RootState) => state.user.userData
 
-export const reposDataSelector = (state: RootState) => state.user.userData.repos
+export const reposDataSelector = (state: RootState) => state.user.userData?.repos

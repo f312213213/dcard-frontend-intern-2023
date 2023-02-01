@@ -34,7 +34,7 @@ const App = ({ Component, ...rest }: AppProps) => {
           <HeaderContainer />
           <Component {...props.pageProps} />
           <ToastContainer />
-          <Footer />
+          {/* <Footer /> */}
          </Provider>
       </ErrorBoundary>
     </ThemeProvider>

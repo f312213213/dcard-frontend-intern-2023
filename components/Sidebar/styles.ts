@@ -7,7 +7,7 @@ export const StyledSidebarWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  background:${props => props.theme.color.white};
+  background:${props => props.theme.color.gray};
 `
 
 export const StyledSelectTrigger = styled(Trigger)`
@@ -39,7 +39,6 @@ export const StyledSelectContent = styled(Content)`
   background-color: white;
   border-radius: 6px;
   box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
-
 `
 
 export const StyledSelectViewport = styled(Viewport)`

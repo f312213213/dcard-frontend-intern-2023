@@ -4,11 +4,13 @@ export interface IRepo {
   link: string
 }
 
+export interface IUserData {
+  username: string
+  repos: IRepo[]
+  avatarUrl: string
+  userId: string
+}
+
 export interface IState {
-  userData: {
-    username: string
-    repos: IRepo[]
-    avatarUrl: string
-    userId: string
-  } | null
+  userData: IUserData | null
 }
