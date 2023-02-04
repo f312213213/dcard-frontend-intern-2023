@@ -1,4 +1,10 @@
+export interface ITask {
+  title: string | undefined
+  body: string | undefined
+  id: number
+}
+
 export interface IState {
-  task: []
+  tasks: ITask[]
   selectedProject: string
 }

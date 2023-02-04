@@ -21,7 +21,7 @@ const Layout = ({ children, customMeta }: IPageProps) => {
   const router = useRouter()
 
   const meta = {
-    title: 'Github Task Tracker - Homepage',
+    title: 'Homepage - Github Task Tracker',
     description: 'Github Task Tracker - 2023 Dcard frontend intern homework.',
     image: '',
     type: 'website',

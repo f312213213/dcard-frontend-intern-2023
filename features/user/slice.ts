@@ -1,6 +1,7 @@
-import { APP_HYDRATE } from '@/features/reducer'
+import { HYDRATE } from 'next-redux-wrapper'
 import { IState } from '@/features/user/interface'
-import { createSlice } from '@reduxjs/toolkit'
+import { RootState } from '@/features/store'
+import { createAction, createSlice } from '@reduxjs/toolkit'
 
 const initialState: IState = {
   userData: null,
@@ -19,7 +20,7 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(APP_HYDRATE, (state, action) => ({
+    builder.addCase(createAction<RootState>(HYDRATE), (state, action) => ({
       ...state,
       ...action.payload.user,
     }))

@@ -15,7 +15,7 @@ const HomePageContainer = () => {
 
   return (
     <>
-      <SidebarContainer />
+
     </>
   )
 }

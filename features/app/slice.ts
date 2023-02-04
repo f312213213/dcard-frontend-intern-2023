@@ -1,4 +1,3 @@
-import { APP_HYDRATE } from '@/features/reducer'
 import {
   EAppStatus,
   EDialogType,
@@ -7,7 +6,9 @@ import {
   IOpenDialogAction,
   IState
 } from '@/features/app/interface'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { HYDRATE } from 'next-redux-wrapper'
+import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
+import { RootState } from '@/features/store'
 
 const basicDialog = {
   open: false,
@@ -84,7 +85,7 @@ const appSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(APP_HYDRATE, (state, action) => ({
+    builder.addCase(createAction<RootState>(HYDRATE), (state, action) => ({
       ...state,
       ...action.payload.app,
     }))

@@ -1,10 +1,10 @@
-import { closeBackdrop, initApp, showBackdrop } from '@/features/app/slice'
+import { closeBackdrop, initApp, openBackdrop } from '@/features/app/slice'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getNumber = createAsyncThunk(
   'app/getNumber',
   async (input, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    dispatch(showBackdrop())
+    dispatch(openBackdrop())
     try {
       const response = await fetch('https://counter-tmqvi7b1k-f312213213.vercel.app/')
       dispatch(closeBackdrop())

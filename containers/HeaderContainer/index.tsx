@@ -1,6 +1,8 @@
 import { isLoginSelector, userDataSelector } from '@/features/user/selector'
 import { useAppSelector } from '@/features/store'
-import Header from '@/components/Header'
+import dynamic from 'next/dynamic'
+
+const Header = dynamic(() => import('@/components/Header'), { ssr: false })
 
 const HeaderContainer = () => {
   const isLogin = useAppSelector(isLoginSelector)

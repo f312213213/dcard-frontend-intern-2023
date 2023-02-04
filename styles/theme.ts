@@ -5,6 +5,7 @@ const theme = {
     white: '#FFFFFF',
     gray: '#a6a6a6',
     semiDark: 'rgba(0, 0, 0, 0.5)',
+    semiWhite: 'rgba(255, 255, 255, 0.75)',
   },
   zIndex: {
     backdrop: 50,

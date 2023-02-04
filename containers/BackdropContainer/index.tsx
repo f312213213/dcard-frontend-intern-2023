@@ -1,6 +1,8 @@
 import { useAppSelector } from '@/features/store'
 import { useEffect } from 'react'
-import Backdrop from '@/components/Backdrop'
+import dynamic from 'next/dynamic'
+
+const Backdrop = dynamic(() => import('@/components/Backdrop'), { ssr: false })
 
 const BackdropContainer = () => {
   const show = useAppSelector(state => state.app.backdrop.show)

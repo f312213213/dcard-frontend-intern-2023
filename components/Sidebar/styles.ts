@@ -1,13 +1,18 @@
 import { Content, Icon, Item, ScrollDownButton, ScrollUpButton, Trigger, Viewport } from '@radix-ui/react-select'
+import Link from 'next/link'
 import styled from 'styled-components'
 
 export const StyledSidebarWrapper = styled.div`
   width: 240px;
-  height: 100%;
+  height: calc(100vh - 48px);
+  position: fixed;
   display: flex;
+  //position: absolute;
+  left: 0;
   flex-direction: column;
+  z-index: 1;
+  padding: 20px 0;
 
-  background:${props => props.theme.color.gray};
 `
 
 export const StyledSelectTrigger = styled(Trigger)`
@@ -15,18 +20,21 @@ export const StyledSelectTrigger = styled(Trigger)`
   align-items: center;
   justify-content: center;
   padding: 30px 30px;
-  font-size: 13px;
   line-height: 1;
   height: 35px;
   gap: 5px;
-  background-color: white;
-  color: black;
-  border: none;
+  background-color: transparent;
   transition: 0.3s;
   cursor: pointer;
+  border: none;
+  margin-bottom: 10px;
+
+  font-size: 16px;
+  color: ${props => props.theme.color.semiWhite};
+  border-bottom: ${props => props.theme.color.white} 1px solid;
 
   &:focus {
-    border: none;
+    outline: none;
   }
 `
 
@@ -39,10 +47,12 @@ export const StyledSelectContent = styled(Content)`
   background-color: white;
   border-radius: 6px;
   box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+  z-index: 1;
 `
 
 export const StyledSelectViewport = styled(Viewport)`
   padding: 5px;
+  z-index: 1;
 `
 
 export const StyledSelectItem = styled(Item)`
@@ -88,4 +98,16 @@ export const StyledSelectScrollUpButton = styled(ScrollUpButton)`
   background-color: white;
   color: black;
   cursor: default;
+`
+
+export const StyledSidebarFilterLink = styled(Link)`
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  color: ${props => props.theme.color.semiWhite};
+  
+  &:hover {
+    background:${props => props.theme.color.semiDark};
+  }
 `

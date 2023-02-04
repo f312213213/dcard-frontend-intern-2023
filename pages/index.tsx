@@ -1,19 +1,10 @@
 /* eslint-disable camelcase */
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-
+import { wrapper } from '@/features/store'
 import HomePageContainer from '@/containers/HomePageContainer'
 import Layout from '@/components/Layout'
-import getServerSideProps from '@/libs/authedServerProps'
 
 const HomePage = () => {
-  const router = useRouter()
-
-  useEffect(() => {
-    router.replace('/', undefined, { shallow: true })
-  }, [])
-
   return (
     <Layout>
       <HomePageContainer />
@@ -23,4 +14,8 @@ const HomePage = () => {
 
 export default HomePage
 
-export { getServerSideProps }
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  return {
+    props: {},
+  }
+})

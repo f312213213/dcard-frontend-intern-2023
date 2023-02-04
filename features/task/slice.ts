@@ -1,9 +1,10 @@
-import { APP_HYDRATE } from '@/features/reducer'
+import { HYDRATE } from 'next-redux-wrapper'
 import { IState } from './interface'
-import { createSlice } from '@reduxjs/toolkit'
+import { RootState } from '@/features/store'
+import { createAction, createSlice } from '@reduxjs/toolkit'
 
 const initialState: IState = {
-  task: [],
+  tasks: [],
   selectedProject: '',
 }
 
@@ -16,12 +17,12 @@ const taskSlice = createSlice({
       state.selectedProject = selectedProject
     },
     appendTask: (state, action) => {
-      const { userData } = action.payload
-      state.task = userData
+      const { tasks } = action.payload
+      state.tasks = tasks
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(APP_HYDRATE, (state, action) => ({
+    builder.addCase(createAction<RootState>(HYDRATE), (state, action) => ({
       ...state,
       ...action.payload.task,
     }))

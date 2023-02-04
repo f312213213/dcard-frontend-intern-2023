@@ -1,6 +1,8 @@
 import { closeToast } from '@/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
-import Toast from '@/components/Toast'
+import dynamic from 'next/dynamic'
+
+const Toast = dynamic(() => import('@/components/Toast'), { ssr: false })
 
 const ToastContainer = () => {
   const toast = useAppSelector(state => state.app.toast)

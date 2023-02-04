@@ -9,7 +9,7 @@ import {
 } from '@/components/Sidebar/styles'
 import { updateSelectedProject } from '@/features/task/slice'
 import { useAppDispatch } from '@/features/store'
-import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import * as Select from '@radix-ui/react-select'
 
 interface IProps {
@@ -18,18 +18,16 @@ interface IProps {
 
 const RepoSelect = ({ reposData }: IProps) => {
   const dispatch = useAppDispatch()
-  const defaultValue = reposData[0].repoName
+  const router = useRouter()
+  const defaultValue = router.query.projectName as string || reposData[0].repoName
 
   const onValueChange = (value: string) => {
     dispatch(updateSelectedProject({ selectedProject: value }))
+    router.push(`/browse/${value}`, undefined, { shallow: true })
   }
 
-  useEffect(() => {
-    dispatch(updateSelectedProject({ selectedProject: defaultValue }))
-  }, [])
-
   return (
-    <Select.Root defaultValue={reposData[0].repoName} onValueChange={onValueChange}>
+    <Select.Root value={router.query.projectName as string} defaultValue={defaultValue} onValueChange={onValueChange}>
       <StyledSelectTrigger>
         <Select.Value placeholder={'Select a project'} />
         <StyledSelectIcon>

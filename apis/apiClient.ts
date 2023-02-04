@@ -6,7 +6,7 @@ export enum EApiMethod {
 }
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE,
+  baseURL: '',
   headers: {
     Accept: 'application/json',
   },
@@ -53,14 +53,25 @@ interface IApiRequest {
 
 const apiRequest = async ({ endpoint, params, data, onError, method = EApiMethod.GET }: IApiRequest) => {
   try {
-    return await apiClient[method](endpoint, {
+    const responseData = await apiClient[method](endpoint, {
       params, data,
     })
+    return {
+      data: responseData.data,
+      success: true,
+    }
   } catch (e: any) {
     if (onError) {
       onError(e)
+      return {
+        data: null,
+        success: false,
+      }
     }
-    return null
+    return {
+      data: null,
+      success: false,
+    }
   }
 }
 
