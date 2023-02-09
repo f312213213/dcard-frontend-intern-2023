@@ -10,6 +10,7 @@ export const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  z-index: 1;
 
   background: ${props => props.theme.color.mainDefault};
 `

@@ -1,15 +1,29 @@
 import { ITask } from '@/features/task/interface'
-import { StyledIssueTableRow } from '@/components/IssueTable/styles'
+import { StyledIssueTableRow, StyledRowLink } from '@/components/IssueTable/styles'
 import { memo } from 'react'
+import { useRouter } from 'next/router'
 
 interface IProps {
   task: ITask
 }
 const TableRow = ({ task }: IProps) => {
+  const router = useRouter()
   return (
     <StyledIssueTableRow>
-      <td>{task.title}</td>
-      <td>{task.body}</td>
+      <td className={'number'}>
+        {task.number}
+      </td>
+      <td className={'title'}>
+        <StyledRowLink
+          href={`/${task.number}`}
+        >
+          {task.title}
+        </StyledRowLink>
+      </td>
+      <td className={'row-body'}>{task.body}</td>
+      <td className={'status'}>
+        {task.status}
+      </td>
     </StyledIssueTableRow>
   )
 }

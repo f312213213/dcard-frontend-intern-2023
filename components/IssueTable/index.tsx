@@ -1,14 +1,19 @@
 import { ITask } from '@/features/task/interface'
-import { StyledIssueTableContainer, StyledIssueTableEmpty, StyledIssueTableRow } from './styles'
+import {
+  StyledIssueTableContainer,
+  StyledIssueTableEmpty,
+  StyledIssueTableHeader
+} from './styles'
 import { TableVirtuoso } from 'react-virtuoso'
 import TableRow from '@/components/IssueTable/TableRow'
 import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {
   selectedProjectTasks: ITask[]
+  loadMore: any
 }
 
-const IssueTable = ({ selectedProjectTasks }: IProps) => {
+const IssueTable = ({ selectedProjectTasks, loadMore }: IProps) => {
   const isMounted = useIsMounted()
 
   if (!isMounted) return null
@@ -26,13 +31,17 @@ const IssueTable = ({ selectedProjectTasks }: IProps) => {
   return (
     <StyledIssueTableContainer>
       <TableVirtuoso
-        // useWindowScroll
         data={selectedProjectTasks}
+        endReached={loadMore}
         fixedHeaderContent={() => (
-          <StyledIssueTableRow>
-            <th>Name</th>
-            <th >Description</th>
-          </StyledIssueTableRow>
+          <StyledIssueTableHeader>
+            <th className={'number'}>ID</th>
+            <th className={'title'}>Title</th>
+            <th className={'row-body'}>Description</th>
+            <th className={'state'}>
+              State
+            </th>
+          </StyledIssueTableHeader>
         )}
         itemContent={(index, task) => {
           return (

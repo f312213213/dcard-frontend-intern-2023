@@ -6,9 +6,9 @@ import NextNProgress from 'nextjs-progressbar'
 import '../styles/globals.css'
 import type { AppContext, AppProps } from 'next/app'
 
-import { EDialogType } from '@/features/app/interface'
+import { EDialogType, EToastType } from '@/features/app/interface'
 import { ParsedUrlQuery } from 'querystring'
-import { openDialog } from '@/features/app/slice'
+import { openDialog, openToast } from '@/features/app/slice'
 import { setupApiCallerAuth } from '@/apis/apiClient'
 import { updateSelectedProject } from '@/features/task/slice'
 import { useRouter } from 'next/router'
@@ -29,16 +29,6 @@ const App = ({ Component, ...rest }: AppProps) => {
   useEffect(() => {
     const { accessToken } = parseCookie(document.cookie)
     if (accessToken) setupApiCallerAuth({ accessToken })
-    const { code } = router.query
-    if (code) {
-      router.replace({
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          code: undefined,
-        },
-      }, undefined, { shallow: true })
-    }
   }, [])
 
   const { store, props } = wrapper.useWrappedStore(rest)
@@ -78,9 +68,6 @@ App.getInitialProps = wrapper.getInitialAppProps((store) => async ({ Component, 
       try {
         const userData = await getUserData(accessToken)
         store.dispatch(userLogin({ userData }))
-        if (ctx.query.projectName) {
-          store.dispatch(updateSelectedProject({ selectedProject: ctx.query.projectName }))
-        }
         return {
           pageProps: {
             pageProps,
@@ -91,6 +78,7 @@ App.getInitialProps = wrapper.getInitialAppProps((store) => async ({ Component, 
         // @ts-ignore
         res.setHeader('Set-Cookie', 'accessToken=123; max-age=0;path=/')
         store.dispatch(openDialog({ type: EDialogType.LOGIN }))
+        store.dispatch(openToast({ type: EToastType.ERROR, title: 'Login session expired!' }))
 
         return {
           pageProps: {

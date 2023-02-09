@@ -20,6 +20,8 @@ export const StyledSpinner = styled(AiOutlineLoading3Quarters)`
   width: 25px;
   height: 25px;
 
+  color: ${props => props.theme.color.white};
+
   @keyframes spin {
     from {
       transform: rotate(0deg);

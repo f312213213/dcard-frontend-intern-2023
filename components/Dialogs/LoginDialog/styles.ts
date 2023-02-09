@@ -7,6 +7,7 @@ export const StyledDialogOverlay = styled(Overlay)`
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   
   background: ${props => props.theme.color.semiDark};
+  z-index: 1;
   
   @keyframes overlayShow {
     from {
@@ -30,6 +31,7 @@ export const StyledDialogContent = styled(Content)`
   max-height: 85vh;
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
 
 
   background: ${props => props.theme.color.white};
@@ -45,7 +47,7 @@ export const StyledDialogContent = styled(Content)`
     }
   }
   
-  & :focus {
+  &:focus {
     outline: none;
   }
 `

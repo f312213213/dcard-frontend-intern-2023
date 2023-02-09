@@ -1,10 +1,10 @@
-import { HYDRATE } from 'next-redux-wrapper'
 import { IState } from './interface'
-import { RootState } from '@/features/store'
-import { createAction, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: IState = {
+  page: 1,
   tasks: [],
+  hasMore: true,
   selectedProject: '',
 }
 
@@ -16,21 +16,26 @@ const taskSlice = createSlice({
       const { selectedProject } = action.payload
       state.selectedProject = selectedProject
     },
-    appendTask: (state, action) => {
+    restoreTask: () => initialState,
+    initTask: (state, action) => {
       const { tasks } = action.payload
       state.tasks = tasks
+      state.page = 2
+      state.hasMore = tasks.length === 10
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(createAction<RootState>(HYDRATE), (state, action) => ({
-      ...state,
-      ...action.payload.task,
-    }))
+    appendTask: (state, action) => {
+      const { tasks } = action.payload
+      state.tasks = [...state.tasks, ...tasks]
+      state.page = state.page + 1
+      state.hasMore = tasks.length === 10
+    },
   },
 })
 
 export const {
   updateSelectedProject,
+  restoreTask,
+  initTask,
   appendTask,
 } = taskSlice.actions
 

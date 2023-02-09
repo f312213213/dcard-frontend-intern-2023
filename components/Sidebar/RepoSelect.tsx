@@ -7,9 +7,12 @@ import {
   StyledSelectTrigger,
   StyledSelectViewport
 } from '@/components/Sidebar/styles'
-import { updateSelectedProject } from '@/features/task/slice'
+import { getIssueData } from '@/features/task/services'
+import { restoreTask, updateSelectedProject } from '@/features/task/slice'
 import { useAppDispatch } from '@/features/store'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import useIsMounted from '@/hooks/useIsMounted'
 import * as Select from '@radix-ui/react-select'
 
 interface IProps {
@@ -19,12 +22,25 @@ interface IProps {
 const RepoSelect = ({ reposData }: IProps) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const defaultValue = router.query.projectName as string || reposData[0].repoName
+  const isMounted = useIsMounted()
+  const defaultValue = router.pathname === '/' ? undefined : router.query.projectName as string || reposData[0].repoName
+  const [selectedValue, setSelectedValue] = useState(defaultValue)
 
   const onValueChange = (value: string) => {
-    dispatch(updateSelectedProject({ selectedProject: value }))
-    router.push(`/browse/${value}`, undefined, { shallow: true })
+    setSelectedValue(value)
   }
+
+  useEffect(() => {
+    if (!isMounted || !selectedValue) return
+    dispatch(restoreTask())
+    dispatch(updateSelectedProject({ selectedProject: selectedValue }))
+    router.push(`/browse/${selectedValue}`, undefined, { shallow: true })
+    dispatch(getIssueData())
+  }, [selectedValue, isMounted])
+
+  useEffect(() => {
+    dispatch(updateSelectedProject({ selectedProject: defaultValue }))
+  }, [])
 
   return (
     <Select.Root value={router.query.projectName as string} defaultValue={defaultValue} onValueChange={onValueChange}>

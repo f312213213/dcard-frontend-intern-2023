@@ -2,21 +2,12 @@ import { StyledBrowseProjectPageTitle, StyledBrowseProjectPageView } from '@/con
 import { getIssueData } from '@/features/task/services'
 import { selectedProjectSelector, selectedProjectTasksSelector } from '@/features/task/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
-import { useEffect } from 'react'
 import IssueTable from '@/components/IssueTable'
-import useIsMounted from '@/hooks/useIsMounted'
 
 const BrowseProjectPageContainer = () => {
   const selectedProject = useAppSelector(selectedProjectSelector)
   const selectedProjectTasks = useAppSelector(selectedProjectTasksSelector)
   const dispatch = useAppDispatch()
-  const isMounted = useIsMounted()
-
-  useEffect(() => {
-    if (isMounted) {
-      dispatch(getIssueData())
-    }
-  }, [selectedProject, isMounted, dispatch])
 
   return (
     <StyledBrowseProjectPageView>
@@ -24,7 +15,10 @@ const BrowseProjectPageContainer = () => {
         {selectedProject}
       </StyledBrowseProjectPageTitle>
 
-      <IssueTable selectedProjectTasks={selectedProjectTasks} />
+      <IssueTable
+        loadMore={() => dispatch(getIssueData())}
+        selectedProjectTasks={selectedProjectTasks}
+      />
     </StyledBrowseProjectPageView>
   )
 }

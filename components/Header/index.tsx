@@ -9,7 +9,10 @@ interface IProps {
 const Header = ({ isLogin, userData }: IProps) => {
   return (
     <StyledHeader>
-      GITHUB
+      <StyledHeaderText>
+        GITHUB
+      </StyledHeaderText>
+
       {
         isLogin &&
           <StyledHeaderText>
