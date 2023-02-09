@@ -9,8 +9,6 @@ import type { AppContext, AppProps } from 'next/app'
 import { EDialogType, EToastType } from '@/features/app/interface'
 import { ParsedUrlQuery } from 'querystring'
 import { openDialog, openToast } from '@/features/app/slice'
-import { setupApiCallerAuth } from '@/apis/apiClient'
-import { updateSelectedProject } from '@/features/task/slice'
 import { useRouter } from 'next/router'
 import { userLogin } from '@/features/user/slice'
 import { wrapper } from '@/features/store'
@@ -20,6 +18,7 @@ import ErrorBoundaryToast from '@/components/Toast/ErrorBoundaryToast'
 import HeaderContainer from '@/containers/HeaderContainer'
 import SidebarContainer from '@/containers/SidebarContainer'
 import ToastContainer from '@/containers/ToastContainer'
+import apiRequest, { EApiMethod, setupApiCallerAuth } from '@/apis/apiClient'
 import githubApi from '@/constants/githubApi'
 import parseCookie from '@/utilis/auth/parseCookie'
 import theme from '@/styles/theme'
@@ -76,7 +75,7 @@ App.getInitialProps = wrapper.getInitialAppProps((store) => async ({ Component, 
       } catch (e) {
         // 失敗的話代表 token 過期，清掉 cookie 裡的紀錄
         // @ts-ignore
-        res.setHeader('Set-Cookie', 'accessToken=123; max-age=0;path=/')
+        res.setHeader('Set-Cookie', 'accessToken=123; max-age=0; path=/')
         store.dispatch(openDialog({ type: EDialogType.LOGIN }))
         store.dispatch(openToast({ type: EToastType.ERROR, title: 'Login session expired!' }))
 
@@ -97,16 +96,13 @@ App.getInitialProps = wrapper.getInitialAppProps((store) => async ({ Component, 
       targetUrl.searchParams.set('redirect_uri', githubApi.callbackUrl)
 
       try {
-        const responseForToken = await fetch(targetUrl.toString(), {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-          },
+        const { data: jsonForToken, success: tokenSuccess } = await apiRequest({
+          endpoint: targetUrl.toString(),
+          method: EApiMethod.POST,
         })
-        if (responseForToken.status !== 200) {
+        if (!tokenSuccess) {
           throw new Error()
         }
-        const jsonForToken = await responseForToken.json()
 
         const {
           access_token: accessToken,
@@ -117,7 +113,7 @@ App.getInitialProps = wrapper.getInitialAppProps((store) => async ({ Component, 
         store.dispatch(userLogin({ userData }))
 
         // @ts-ignore
-        res.setHeader('Set-Cookie', `accessToken=${accessToken}; max-age=3600 ;path=/`)
+        res.setHeader('Set-Cookie', `accessToken=${accessToken}; max-age=3600; path=/`)
 
         return {
           pageProps: {
@@ -144,13 +140,11 @@ App.getInitialProps = wrapper.getInitialAppProps((store) => async ({ Component, 
 })
 
 const getUserData = async (accessToken: string) => {
-  const responseForUserData = await fetch(`${githubApi.baseUrl}/user`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  setupApiCallerAuth({ accessToken })
+  const { data: jsonForUserData, success: userInfoSuccess } = await apiRequest({
+    endpoint: `${githubApi.baseUrl}/user`,
   })
-  if (responseForUserData.status !== 200) throw new Error()
-  const jsonForUserData = await responseForUserData.json()
+  if (!userInfoSuccess) throw new Error()
 
   const {
     repos_url: reposUrl,
@@ -159,13 +153,11 @@ const getUserData = async (accessToken: string) => {
     node_id: userId,
   } = jsonForUserData
 
-  const responseForReposData = await fetch(reposUrl, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const { data: jsonForReposData, success: reposDataSuccess } = await apiRequest({
+    endpoint: reposUrl,
   })
-  if (responseForReposData.status !== 200) throw new Error()
-  const jsonForReposData = await responseForReposData.json()
+
+  if (!reposDataSuccess) throw new Error()
 
   const reposData = jsonForReposData.map((repo: any) => {
     return {

@@ -6,8 +6,8 @@ import apiRequest from '@/apis/apiClient'
 
 export const getIssueData = (filter = 'all') => async (dispatch: AppDispatch, getState: () => RootState) => {
   const username = getState().user.userData?.username
-  const { page, hasMore, selectedProject } = getState().task
-  if (!username || !selectedProject) return
+  const { page, hasMore, selectedProject, repoNotFound } = getState().task
+  if (!username || !selectedProject || repoNotFound) return
   if (!hasMore) {
     dispatch(openToast({ type: EToastType.ERROR, title: 'There is no task anymore!' }))
     return

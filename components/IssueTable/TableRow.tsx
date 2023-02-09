@@ -15,7 +15,8 @@ const TableRow = ({ task }: IProps) => {
       </td>
       <td className={'title'}>
         <StyledRowLink
-          href={`/${task.number}`}
+          href={`/browse/${task.repoName}/${task.number}`}
+          shallow
         >
           {task.title}
         </StyledRowLink>

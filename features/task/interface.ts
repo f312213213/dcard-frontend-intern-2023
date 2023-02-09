@@ -4,6 +4,8 @@ export interface ITask {
   id: number
   number: number
   status: string
+  repoName: string
+  url: string
 }
 
 export interface IState {

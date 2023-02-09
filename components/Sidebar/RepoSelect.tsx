@@ -24,19 +24,20 @@ const RepoSelect = ({ reposData }: IProps) => {
   const router = useRouter()
   const isMounted = useIsMounted()
   const defaultValue = router.pathname === '/' ? undefined : router.query.projectName as string || reposData[0].repoName
+  const issueNumber = router.query.issueNumber
   const [selectedValue, setSelectedValue] = useState(defaultValue)
 
   const onValueChange = (value: string) => {
     setSelectedValue(value)
+    router.push(`/browse/${value}`, undefined, { shallow: true })
   }
 
   useEffect(() => {
-    if (!isMounted || !selectedValue) return
+    if (!isMounted || !selectedValue || !!issueNumber) return
     dispatch(restoreTask())
     dispatch(updateSelectedProject({ selectedProject: selectedValue }))
-    router.push(`/browse/${selectedValue}`, undefined, { shallow: true })
     dispatch(getIssueData())
-  }, [selectedValue, isMounted])
+  }, [selectedValue, isMounted, issueNumber])
 
   useEffect(() => {
     dispatch(updateSelectedProject({ selectedProject: defaultValue }))
