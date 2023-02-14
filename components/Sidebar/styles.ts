@@ -7,12 +7,18 @@ export const StyledSidebarWrapper = styled.div`
   height: calc(100vh - 48px);
   position: fixed;
   display: flex;
-  //position: absolute;
   left: 0;
   flex-direction: column;
   z-index: 1;
   padding: 20px 0;
+`
 
+export const StyledSidebarLoader = styled.div`
+  width: 90%;
+  height: 100%;
+  border-radius: 10px;
+  
+  background: ${props => props.theme.color.white};
 `
 
 export const StyledSelectTrigger = styled(Trigger)`

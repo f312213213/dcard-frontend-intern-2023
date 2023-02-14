@@ -76,10 +76,6 @@ export const StyledIssueTableRow = styled.tr`
   }
 `
 
-export const StyledRowLink = styled(Link)`
-
-`
-
 export const StyledIssueTable = styled.table`
   width: 100%;
   height: 100%;

@@ -1,4 +1,4 @@
-import { StyledSidebarWrapper } from '@/components/Sidebar/styles'
+import { StyledSidebarLoader, StyledSidebarWrapper } from '@/components/Sidebar/styles'
 import { isLoginSelector, reposDataSelector } from '@/features/user/selector'
 import { useAppSelector } from '@/features/store'
 import Sidebar from '@/components/Sidebar'
@@ -9,8 +9,11 @@ const SidebarContainer = () => {
   if (!isLogin) {
     return (
       <StyledSidebarWrapper style={{
-        backgroundColor: 'white',
-      }} />
+        alignItems: 'center',
+        left: '0.5%',
+      }}>
+        <StyledSidebarLoader />
+      </StyledSidebarWrapper>
     )
   }
 

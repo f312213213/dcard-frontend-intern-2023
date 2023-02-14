@@ -9,7 +9,6 @@ import type { AppContext, AppProps } from 'next/app'
 import { EDialogType, EToastType } from '@/features/app/interface'
 import { ParsedUrlQuery } from 'querystring'
 import { openDialog, openToast } from '@/features/app/slice'
-import { useRouter } from 'next/router'
 import { userLogin } from '@/features/user/slice'
 import { wrapper } from '@/features/store'
 import BackdropContainer from '@/containers/BackdropContainer'
@@ -24,7 +23,6 @@ import parseCookie from '@/utilis/auth/parseCookie'
 import theme from '@/styles/theme'
 
 const App = ({ Component, ...rest }: AppProps) => {
-  const router = useRouter()
   useEffect(() => {
     const { accessToken } = parseCookie(document.cookie)
     if (accessToken) setupApiCallerAuth({ accessToken })
@@ -113,7 +111,7 @@ App.getInitialProps = wrapper.getInitialAppProps((store) => async ({ Component, 
         store.dispatch(userLogin({ userData }))
 
         // @ts-ignore
-        res.setHeader('Set-Cookie', `accessToken=${accessToken}; max-age=3600; path=/`)
+        res.setHeader('Set-Cookie', `accessToken=${accessToken}; max-age=28800; path=/`)
 
         return {
           pageProps: {

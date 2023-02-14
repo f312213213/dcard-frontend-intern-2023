@@ -1,7 +1,8 @@
 import { ITask } from '@/features/task/interface'
-import { StyledIssueTableRow, StyledRowLink } from '@/components/IssueTable/styles'
+import { StyledIssueTableRow } from '@/components/IssueTable/styles'
 import { memo } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 interface IProps {
   task: ITask
@@ -14,12 +15,22 @@ const TableRow = ({ task }: IProps) => {
         {task.number}
       </td>
       <td className={'title'}>
-        <StyledRowLink
-          href={`/browse/${task.repoName}/${task.number}`}
+        <Link
+          as={`/browse/${task.repoName}/${task.number}`}
+          href={{
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              projectModalId: task.repoName,
+              issueModalNumber: task.number,
+            },
+          }}
           shallow
         >
-          {task.title}
-        </StyledRowLink>
+          <p>
+            {task.title}
+          </p>
+        </Link>
       </td>
       <td className={'row-body'}>{task.body}</td>
       <td className={'status'}>

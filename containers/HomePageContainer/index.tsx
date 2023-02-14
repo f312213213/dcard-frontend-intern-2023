@@ -20,7 +20,7 @@ const HomePageContainer = () => {
   return (
     <StyledBrowseProjectPageView>
       <StyledBrowseProjectPageTitle>
-        All Task
+        {isLogin && 'All Task'}
       </StyledBrowseProjectPageTitle>
 
       <IssueTable

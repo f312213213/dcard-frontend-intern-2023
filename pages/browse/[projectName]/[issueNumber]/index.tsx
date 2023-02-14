@@ -1,11 +1,10 @@
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { wrapper } from '@/features/store'
 import Layout from '@/components/Layout'
 import apiRequest from '@/apis/apiClient'
+import useCleanupCode from '@/hooks/useCleanupCode'
 
 const BrowseIssuePage = ({ issue }: {issue: any}) => {
-  const router = useRouter()
+  useCleanupCode()
   const meta = {
     title: `${(issue?.issueTitle && issue?.repoName)
       ? (issue?.issueTitle + ' - ' + issue?.repoName)
@@ -15,11 +14,6 @@ const BrowseIssuePage = ({ issue }: {issue: any}) => {
     image: '',
     type: 'website',
   }
-  const { projectName, issueNumber, code } = router.query
-  useEffect(() => {
-    if (!code) return
-    router.push(`/browse/${projectName}/${issueNumber}`, undefined, { shallow: true })
-  }, [])
   return (
     <Layout customMeta={meta}>
 
@@ -37,17 +31,18 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
       props: {},
     }
   }
+  const username = rootStore.user.userData?.username
   const { projectName: repo, issueNumber } = context.query
   const { data, success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/f312213213/${repo}/issues/${issueNumber}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${username}/${repo}/issues/${issueNumber}`,
   })
   if (!success) {
     return {
       notFound: true,
+      props: {},
     }
   }
 
-  console.log(data)
   return {
     props: {
       issue: {

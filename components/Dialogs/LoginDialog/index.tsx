@@ -8,7 +8,7 @@ import {
 } from '@/components/Dialogs/LoginDialog/styles'
 import GitHubLogin from '@/components/GitHubLogin'
 
-const Index = () => {
+const LoginDialog = () => {
   return (
     <Root open>
       <Portal>
@@ -26,4 +26,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export default LoginDialog
