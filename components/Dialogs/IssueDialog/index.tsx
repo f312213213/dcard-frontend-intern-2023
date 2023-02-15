@@ -52,7 +52,7 @@ const IssueDialog = () => {
                   </title>
                 </Head>
                 <StyledDialogTitle>
-                  {issueData.title}
+                  # {issueData.title}
                 </StyledDialogTitle>
                 <StyledDialogDescription>
                   <a href={issueData.html_url} target={'_blank'} rel={'noreferrer'}>

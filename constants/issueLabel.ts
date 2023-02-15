@@ -1,7 +1,7 @@
 export enum EIssueStatus {
-  DONE,
-  IN_PROGRESS,
-  OPEN
+  DONE= 'DONE',
+  IN_PROGRESS = 'IN PROGRESS',
+  OPEN = 'OPEN'
 }
 
 const issueLabels = {

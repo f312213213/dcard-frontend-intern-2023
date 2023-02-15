@@ -11,12 +11,12 @@ import { ParsedUrlQuery } from 'querystring'
 import { openDialog, openToast } from '@/features/app/slice'
 import { userLogin } from '@/features/user/slice'
 import { wrapper } from '@/features/store'
-import BackdropContainer from '@/containers/BackdropContainer'
-import DialogsContainer from '@/containers/DialogsContainer'
+import Backdrop from '@/containers/BackdropContainer'
+import Dialogs from '@/containers/DialogsContainer'
 import ErrorBoundaryToast from '@/components/Toast/ErrorBoundaryToast'
-import HeaderContainer from '@/containers/HeaderContainer'
-import SidebarContainer from '@/containers/SidebarContainer'
-import ToastContainer from '@/containers/ToastContainer'
+import Header from '@/containers/HeaderContainer'
+import Sidebar from '@/containers/SidebarContainer'
+import Toast from '@/containers/ToastContainer'
 import apiRequest, { EApiMethod, setupApiCallerAuth } from '@/apis/apiClient'
 import githubApi from '@/constants/githubApi'
 import parseCookie from '@/utilis/auth/parseCookie'
@@ -35,12 +35,12 @@ const App = ({ Component, ...rest }: AppProps) => {
       <ThemeProvider theme={theme}>
         <ErrorBoundary FallbackComponent={ErrorBoundaryToast}>
             <NextNProgress options={{ showSpinner: false }} />
-            <BackdropContainer />
-            <DialogsContainer />
-            <HeaderContainer />
-            <SidebarContainer />
+            <Backdrop />
+            <Dialogs />
+            <Header />
+            <Sidebar />
             <Component {...props.pageProps} />
-            <ToastContainer />
+            <Toast />
             {/* <Footer /> */}
         </ErrorBoundary>
       </ThemeProvider>

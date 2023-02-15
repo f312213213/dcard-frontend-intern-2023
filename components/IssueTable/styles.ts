@@ -1,4 +1,4 @@
-import { background } from 'styled-system'
+import { BackgroundProps, ColorProps, background, color } from 'styled-system'
 import Select from '@/components/Select'
 import styled from 'styled-components'
 
@@ -82,7 +82,7 @@ export const StyledIssueTable = styled.table`
   height: 100%;
 `
 
-export const StyledIssueStatusSelect = styled(Select)`
+export const StyledIssueStatusSelect = styled(Select)<BackgroundProps & ColorProps>`
   width: 100%;
   display: inline-flex;
   align-items: center;
@@ -95,4 +95,5 @@ export const StyledIssueStatusSelect = styled(Select)`
   border-radius: 4px;
   
   ${background}
+  ${color}
 `

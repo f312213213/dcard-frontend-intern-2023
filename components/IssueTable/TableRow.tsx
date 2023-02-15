@@ -1,11 +1,11 @@
 import { ITask } from '@/features/task/interface'
 import { StyledIssueStatusSelect, StyledIssueTableRow } from '@/components/IssueTable/styles'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { updateIssueStatus } from '@/features/task/services'
 import { useAppDispatch } from '@/features/store'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import issueLabels from '@/constants/issueLabel'
+import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
 import values from 'lodash/values'
 
 interface IProps {
@@ -14,8 +14,10 @@ interface IProps {
 const TableRow = ({ task }: IProps) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const onValueChange = async (value: string) => {
+  const [taskStatus, setTaskStatus] = useState<EIssueStatus>(task.status)
+  const onValueChange = async (value: EIssueStatus) => {
     dispatch(updateIssueStatus(task.repoName, task.number, value))
+    setTaskStatus(value)
   }
   const options = values(issueLabels).map(label => {
     return {
@@ -24,6 +26,15 @@ const TableRow = ({ task }: IProps) => {
       value: label.name,
     }
   })
+
+  const renderBackground = (taskStatus: EIssueStatus) => {
+    return `#${issueLabels[taskStatus]?.color || issueLabels[EIssueStatus.OPEN].color}`
+  }
+
+  const renderColor = (taskStatus: EIssueStatus) => {
+    if (taskStatus === EIssueStatus.OPEN) return '#000000'
+    return '#FFFFFF'
+  }
   return (
     <StyledIssueTableRow>
       <td className={'number'}>
@@ -53,6 +64,8 @@ const TableRow = ({ task }: IProps) => {
           defaultValue={task.status}
           options={options}
           onValueChange={onValueChange}
+          background={renderBackground(taskStatus)}
+          color={renderColor(taskStatus)}
         />
       </td>
     </StyledIssueTableRow>
