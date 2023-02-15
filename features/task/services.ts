@@ -6,6 +6,22 @@ import apiRequest, { EApiMethod } from '@/apis/apiClient'
 import forOwn from 'lodash/forown'
 import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
 
+export const updateIssueStatus = (issueNumber: number, status: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const username = getState().user.userData?.username
+  const { selectedProject } = getState().task
+
+  dispatch(openBackdrop())
+  const { success } = await apiRequest({
+    endpoint: `/repos/${username}/${selectedProject}/issues/${issueNumber}/labels`,
+    method: EApiMethod.PUT,
+    data: { labels: [status] },
+  })
+  if (success) {
+    dispatch(openToast({ type: EToastType.SUCCESS, title: 'Update success!' }))
+  }
+  dispatch(closeBackdrop())
+}
+
 export const makeProjectLabels = (selectedProject: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
   const { userData } = getState().user
   const { data, success } = await apiRequest({

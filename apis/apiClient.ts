@@ -2,7 +2,8 @@ import axios from 'axios'
 
 export enum EApiMethod {
   GET= 'GET',
-  POST='POST'
+  POST='POST',
+  PUT = 'PUT',
 }
 
 const instance = axios.create({
@@ -14,7 +15,7 @@ const instance = axios.create({
 
 const apiClient = (() => {
   const _apiClient: {[key: string]: any} = {}
-  const methods = [EApiMethod.GET, EApiMethod.POST]
+  const methods = [EApiMethod.GET, EApiMethod.POST, EApiMethod.PUT]
 
   methods.forEach((method) => {
     _apiClient[method] = (endPoint: string, {

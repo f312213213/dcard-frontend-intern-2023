@@ -1,6 +1,8 @@
 import { ITask } from '@/features/task/interface'
 import { StyledIssueStatusSelect, StyledIssueTableRow } from '@/components/IssueTable/styles'
 import { memo } from 'react'
+import { updateIssueStatus } from '@/features/task/services'
+import { useAppDispatch } from '@/features/store'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import issueLabels from '@/constants/issueLabel'
@@ -11,8 +13,9 @@ interface IProps {
 }
 const TableRow = ({ task }: IProps) => {
   const router = useRouter()
-  const onValueChange = async () => {
-
+  const dispatch = useAppDispatch()
+  const onValueChange = async (value: string) => {
+    dispatch(updateIssueStatus(task.number, value))
   }
   const options = values(issueLabels).map(label => {
     return {
