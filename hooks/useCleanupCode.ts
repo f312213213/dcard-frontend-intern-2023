@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import omit from 'lodash.omit'
+import omit from 'lodash/omit'
 
 const useCleanupCode = () => {
   const router = useRouter()

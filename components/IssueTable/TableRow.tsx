@@ -1,14 +1,26 @@
 import { ITask } from '@/features/task/interface'
-import { StyledIssueTableRow } from '@/components/IssueTable/styles'
+import { StyledIssueStatusSelect, StyledIssueTableRow } from '@/components/IssueTable/styles'
 import { memo } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import issueLabels from '@/constants/issueLabel'
+import values from 'lodash/values'
 
 interface IProps {
   task: ITask
 }
 const TableRow = ({ task }: IProps) => {
   const router = useRouter()
+  const onValueChange = async () => {
+
+  }
+  const options = values(issueLabels).map(label => {
+    return {
+      id: label.name,
+      text: label.name,
+      value: label.name,
+    }
+  })
   return (
     <StyledIssueTableRow>
       <td className={'number'}>
@@ -34,7 +46,11 @@ const TableRow = ({ task }: IProps) => {
       </td>
       <td className={'row-body'}>{task.body}</td>
       <td className={'status'}>
-        {task.status}
+        <StyledIssueStatusSelect
+          defaultValue={task.status}
+          options={options}
+          onValueChange={onValueChange}
+        />
       </td>
     </StyledIssueTableRow>
   )

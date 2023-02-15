@@ -1,4 +1,5 @@
-import Link from 'next/link'
+import { BackgroundProps, background } from 'styled-system'
+import Select from '@/components/Select'
 import styled from 'styled-components'
 
 export const StyledIssueTableContainer = styled.div`
@@ -79,4 +80,19 @@ export const StyledIssueTableRow = styled.tr`
 export const StyledIssueTable = styled.table`
   width: 100%;
   height: 100%;
+`
+
+export const StyledIssueStatusSelect = styled<BackgroundProps>(Select)`
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  gap: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  
+  ${background}
 `

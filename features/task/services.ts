@@ -3,7 +3,7 @@ import { EToastType } from '@/features/app/interface'
 import { appendTask, initTask } from '@/features/task/slice'
 import { closeBackdrop, openBackdrop, openToast } from '@/features/app/slice'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
-import forOwn from 'lodash.forown'
+import forOwn from 'lodash/forown'
 import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
 
 export const makeProjectLabels = (selectedProject: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
