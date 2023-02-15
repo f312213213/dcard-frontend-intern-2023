@@ -7,7 +7,7 @@ import {
   StyledSelectTrigger,
   StyledSelectViewport
 } from '@/components/Sidebar/styles'
-import { getIssueData } from '@/features/task/services'
+import { getIssueData, makeProjectLabels } from '@/features/task/services'
 import { restoreTask, updateSelectedProject } from '@/features/task/slice'
 import { useAppDispatch } from '@/features/store'
 import { useEffect, useState } from 'react'
@@ -37,6 +37,7 @@ const RepoSelect = ({ reposData }: IProps) => {
     dispatch(restoreTask())
     dispatch(updateSelectedProject({ selectedProject: selectedValue }))
     dispatch(getIssueData())
+    dispatch(makeProjectLabels(selectedValue))
   }, [selectedValue, isMounted, issueNumber])
 
   useEffect(() => {

@@ -8,6 +8,7 @@ export const StyledSidebarWrapper = styled.div`
   position: fixed;
   display: flex;
   left: 0;
+  bottom: 0;
   flex-direction: column;
   z-index: 1;
   padding: 20px 0;

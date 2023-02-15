@@ -6,7 +6,7 @@ export enum EApiMethod {
 }
 
 const instance = axios.create({
-  baseURL: '',
+  baseURL: process.env.NEXT_PUBLIC_GITHUB_API_BASE,
   headers: {
     Accept: 'application/json',
   },
