@@ -1,18 +1,18 @@
 import { AppDispatch, RootState } from '@/features/store'
 import { EToastType } from '@/features/app/interface'
-import { appendTask, initTask } from '@/features/task/slice'
+import { appendTask, initTask, updateProjectHasLabelMap } from '@/features/task/slice'
 import { closeBackdrop, openBackdrop, openToast } from '@/features/app/slice'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
 import forOwn from 'lodash/forown'
 import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
 
-export const updateIssueStatus = (issueNumber: number, status: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+export const updateIssueStatus = (repoName: string, issueNumber: number, status: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
   const username = getState().user.userData?.username
-  const { selectedProject } = getState().task
 
   dispatch(openBackdrop())
+  dispatch(makeProjectLabels(repoName))
   const { success } = await apiRequest({
-    endpoint: `/repos/${username}/${selectedProject}/issues/${issueNumber}/labels`,
+    endpoint: `/repos/${username}/${repoName}/issues/${issueNumber}/labels`,
     method: EApiMethod.PUT,
     data: { labels: [status] },
   })
@@ -24,6 +24,10 @@ export const updateIssueStatus = (issueNumber: number, status: string) => async 
 
 export const makeProjectLabels = (selectedProject: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
   const { userData } = getState().user
+  const { projectHasLabelMap } = getState().task
+
+  if (projectHasLabelMap[selectedProject]) return
+
   const { data, success } = await apiRequest({
     endpoint: `/repos/${userData?.username}/${selectedProject}/labels`,
   })
@@ -41,7 +45,10 @@ export const makeProjectLabels = (selectedProject: string) => async (dispatch: A
         method: EApiMethod.POST,
         data: label,
       })
+      if (success) dispatch(updateProjectHasLabelMap({ selectedProject, hasStatusLabel: true }))
     })
+  } else {
+    dispatch(updateProjectHasLabelMap({ selectedProject, hasStatusLabel }))
   }
 }
 
@@ -94,7 +101,7 @@ export const getAllIssueData = (filter = 'all') => async (dispatch: AppDispatch,
       body: issue.body,
       id: issue.node_id,
       number: issue.number,
-      status: issue.state,
+      status: issue.labels[0]?.name || issueLabels[EIssueStatus.OPEN].name,
       repoName: issue.repository.name,
       url: issue.html_url,
     }

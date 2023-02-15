@@ -15,7 +15,7 @@ const TableRow = ({ task }: IProps) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const onValueChange = async (value: string) => {
-    dispatch(updateIssueStatus(task.number, value))
+    dispatch(updateIssueStatus(task.repoName, task.number, value))
   }
   const options = values(issueLabels).map(label => {
     return {

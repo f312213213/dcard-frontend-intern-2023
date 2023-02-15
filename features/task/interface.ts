@@ -13,4 +13,7 @@ export interface IState {
   hasMore: boolean
   tasks: ITask[]
   selectedProject: string
+  projectHasLabelMap: {
+    [key: string]: boolean
+  }
 }
