@@ -1,5 +1,5 @@
 import { StyledBrowseProjectPageView } from '@/containers/BrowseProjectPageContainer/styles'
-import { StyledIssueTableEmpty } from '@/components/IssueTable/styles'
+import { StyledIssueTableEmpty } from '@/containers/IssueTable/styles'
 import Layout from '@/components/Layout'
 
 const notFoundPage = () => {

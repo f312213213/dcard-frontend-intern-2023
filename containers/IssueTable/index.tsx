@@ -38,8 +38,8 @@ const IssueTable = ({ selectedProjectTasks, loadMore }: IProps) => {
             <th className={'number'}>ID</th>
             <th className={'title'}>Title</th>
             <th className={'row-body'}>Description</th>
-            <th className={'state'}>
-              State
+            <th className={'status'}>
+              Status
             </th>
           </StyledIssueTableHeader>
         )}

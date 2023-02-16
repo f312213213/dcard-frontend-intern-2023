@@ -2,9 +2,11 @@
 
 import { isLoginSelector } from '@/features/user/selector'
 import { useAppSelector, wrapper } from '@/features/store'
-import HomePageContainer from '@/containers/HomePage'
 import Layout from '@/components/Layout'
+import dynamic from 'next/dynamic'
 import useCleanupCode from '@/hooks/useCleanupCode'
+
+const HomePageContainer = dynamic(() => import('@/containers/HomePage'))
 
 const HomePage = () => {
   useCleanupCode()

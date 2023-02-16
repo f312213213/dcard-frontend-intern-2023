@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@atlaskit/inline-edit": "^12.2.9",
+    "@atlaskit/textarea": "^4.5.5",
+    "@atlaskit/textfield": "^5.3.5",
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-select": "^1.2.0",
     "@radix-ui/react-separator": "^1.0.1",

@@ -1,3 +1,5 @@
+import values from 'lodash/values'
+
 export enum EIssueStatus {
   DONE= 'DONE',
   IN_PROGRESS = 'IN PROGRESS',
@@ -18,5 +20,13 @@ const issueLabels = {
     name: 'OPEN',
   },
 }
+
+export const statusOptions = values(issueLabels).map(label => {
+  return {
+    id: label.name,
+    text: label.name,
+    value: label.name,
+  }
+})
 
 export default issueLabels

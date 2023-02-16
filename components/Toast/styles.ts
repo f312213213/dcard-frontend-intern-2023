@@ -48,4 +48,5 @@ export const StyledToastViewport = styled(Viewport)`
   position: fixed;
   bottom: 0;
   right: 0;
+  z-index: 5;
 `

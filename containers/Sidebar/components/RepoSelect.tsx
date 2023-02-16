@@ -36,6 +36,13 @@ const RepoSelect = ({ reposData }: IProps) => {
     dispatch(updateSelectedProject({ selectedProject: defaultValue }))
   }, [])
 
+  useEffect(() => {
+    if (router.query?.projectName && router.pathname !== '/') {
+      dispatch(updateSelectedProject({ selectedProject: router.query?.projectName }))
+      setSelectedValue(router.query?.projectName as string)
+    }
+  }, [router.query?.projectName])
+
   return (
     <StyledSelect
       value={router.query.projectName as string}

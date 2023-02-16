@@ -4,7 +4,7 @@ import { isLoginSelector } from '@/features/user/selector'
 import { selectedProjectTasksSelector } from '@/features/task/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useEffect } from 'react'
-import IssueTable from '@/components/IssueTable'
+import IssueTable from '@/containers/IssueTable'
 import useIsMounted from '@/hooks/useIsMounted'
 
 const HomePageContainer = () => {

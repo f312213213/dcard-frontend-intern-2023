@@ -6,7 +6,14 @@ export const StyledIssueTableContainer = styled.div`
   width: 100%;
   height: 100%;
   &  table {
+    max-width: 100%;
     width: 100%;
+    height: 100%;
+    display: block
+  }
+  
+  &  * {
+    display: block;
   }
 `
 
@@ -30,20 +37,23 @@ export const StyledIssueTableHeader = styled.tr`
   padding: 4px 8px;
   
   border-bottom: ${props => props.theme.color.gray} 2px solid;
-  
+
   & > .number {
-    flex: 0.3;
+    flex-grow: 0.3;
   }
 
-  & > .state {
-    flex: 0.3;
+  & > .status {
+    width: 135px;
+    text-align: right;
   }
-
+  
   & > .title {
-    flex: 1;
+    padding-left: 10px;
+    flex-grow: 1;
   }
   & > .row-body {
-    flex: 2;
+    padding-left: 10px;
+    flex-grow: 3;
   }
 `
 
@@ -62,18 +72,32 @@ export const StyledIssueTableRow = styled.tr`
   }
   
   & > .number {
-    flex: 0.3;
+    flex-grow: 0.3;
   }
 
-  & > .state {
-    flex: 0.3;
+  & > .status > div {
+    width: 135px;
   }
 
   & > .title {
-    flex: 1;
+    flex-grow: 1;
+    width: 0;
+    padding-right: 10px;
+    & > p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
+  
   & > .row-body {
-    flex: 2;
+    flex-grow: 3;
+    width: 0;
+    & > p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 `
 
@@ -83,10 +107,8 @@ export const StyledIssueTable = styled.table`
 `
 
 export const StyledIssueStatusSelect = styled(Select)<BackgroundProps & ColorProps>`
-  width: 100%;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  float: right;
   padding: 10px;
   gap: 5px;
   transition: 0.3s;
