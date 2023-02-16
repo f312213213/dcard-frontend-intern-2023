@@ -1,4 +1,4 @@
-import { StyledGitHubLoginIcon, StyledGitHubLoginLink } from '@/components/GitHubLogin/styles'
+import { StyledGitHubLoginIcon, StyledGitHubLoginLink } from './styles'
 import { openBackdrop } from '@/features/app/slice'
 import { useAppDispatch } from '@/features/store'
 import { useRouter } from 'next/router'

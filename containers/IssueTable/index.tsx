@@ -5,7 +5,7 @@ import {
   StyledIssueTableHeader
 } from './styles'
 import { TableVirtuoso } from 'react-virtuoso'
-import TableRow from '@/components/IssueTable/TableRow'
+import TableRow from './TableRow'
 import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {

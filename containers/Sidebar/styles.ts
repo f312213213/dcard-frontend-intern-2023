@@ -1,4 +1,3 @@
-import { Content, Icon, Item, ScrollDownButton, ScrollUpButton, Trigger, Viewport } from '@radix-ui/react-select'
 import Link from 'next/link'
 import Select from '@/components/Select'
 import styled from 'styled-components'

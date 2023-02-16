@@ -1,5 +1,5 @@
 import { ITask } from '@/features/task/interface'
-import { StyledIssueStatusSelect, StyledIssueTableRow } from '@/components/IssueTable/styles'
+import { StyledIssueStatusSelect, StyledIssueTableRow } from './styles'
 import { memo, useState } from 'react'
 import { updateIssueStatus } from '@/features/task/services'
 import { useAppDispatch } from '@/features/store'
@@ -33,30 +33,30 @@ const TableRow = ({ task }: IProps) => {
 
   const renderColor = (taskStatus: EIssueStatus) => {
     if (taskStatus === EIssueStatus.OPEN) return '#000000'
-    return '#FFFFFF'
+    if (taskStatus === EIssueStatus.IN_PROGRESS) return 'rgb(224, 235, 253)'
+    if (taskStatus === EIssueStatus.DONE) return 'rgb(232, 251, 240)'
   }
   return (
+    <Link
+      as={`/browse/${task.repoName}/${task.number}`}
+      href={{
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          projectModalId: task.repoName,
+          issueModalNumber: task.number,
+        },
+      }}
+      shallow
+    >
     <StyledIssueTableRow>
       <td className={'number'}>
         {task.number}
       </td>
       <td className={'title'}>
-        <Link
-          as={`/browse/${task.repoName}/${task.number}`}
-          href={{
-            pathname: router.pathname,
-            query: {
-              ...router.query,
-              projectModalId: task.repoName,
-              issueModalNumber: task.number,
-            },
-          }}
-          shallow
-        >
           <p>
             {task.title}
           </p>
-        </Link>
       </td>
       <td className={'row-body'}>{task.body}</td>
       <td className={'status'}>
@@ -69,6 +69,7 @@ const TableRow = ({ task }: IProps) => {
         />
       </td>
     </StyledIssueTableRow>
+    </Link>
   )
 }
 

@@ -1,12 +1,8 @@
-import { IRepo } from '@/features/user/interface'
-import { StyledSidebarFilterLink, StyledSidebarWrapper } from '@/components/Sidebar/styles'
-import { useEffect } from 'react'
+import { StyledSidebarFilterLink, StyledSidebarLoader, StyledSidebarWrapper } from './styles'
+import { isLoginSelector, reposDataSelector } from '@/features/user/selector'
+import { useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
-import RepoSelect from '@/components/Sidebar/RepoSelect'
-
-interface IProps {
-  reposData: IRepo[]
-}
+import RepoSelect from './components/RepoSelect'
 
 const issueFilters = [
   {
@@ -23,12 +19,23 @@ const issueFilters = [
   },
 ]
 
-const Sidebar = ({ reposData }: IProps) => {
+const SidebarContainer = () => {
+  const reposData = useAppSelector(reposDataSelector)
+  const isLogin = useAppSelector(isLoginSelector)
   const router = useRouter()
   const { filter } = router.query
-  useEffect(() => {
-    console.log(filter)
-  }, [filter])
+  if (!isLogin) {
+    return (
+      <StyledSidebarWrapper style={{
+        alignItems: 'center',
+        left: '0.5%',
+      }}>
+        <StyledSidebarLoader />
+      </StyledSidebarWrapper>
+    )
+  }
+
+  if (!reposData) return null
   return (
     <StyledSidebarWrapper>
       <RepoSelect reposData={reposData} />
@@ -55,4 +62,4 @@ const Sidebar = ({ reposData }: IProps) => {
   )
 }
 
-export default Sidebar
+export default SidebarContainer

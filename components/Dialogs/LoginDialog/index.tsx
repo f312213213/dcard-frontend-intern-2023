@@ -6,7 +6,7 @@ import {
   StyledDialogOverlay,
   StyledDialogTitle
 } from '@/components/Dialogs/LoginDialog/styles'
-import GitHubLogin from '@/components/GitHubLogin'
+import GitHubLogin from '@/containers/GitHubLogin'
 
 const LoginDialog = () => {
   return (

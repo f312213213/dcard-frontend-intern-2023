@@ -1,5 +1,5 @@
 import { IRepo } from '@/features/user/interface'
-import { StyledSelect } from '@/components/Sidebar/styles'
+import { StyledSelect } from '../styles'
 import { getIssueData, makeProjectLabels } from '@/features/task/services'
 import { restoreTask, updateSelectedProject } from '@/features/task/slice'
 import { useAppDispatch } from '@/features/store'

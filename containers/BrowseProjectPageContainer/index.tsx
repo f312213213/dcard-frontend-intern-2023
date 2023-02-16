@@ -3,7 +3,7 @@ import { getIssueData } from '@/features/task/services'
 import { isLoginSelector } from '@/features/user/selector'
 import { selectedProjectSelector, selectedProjectTasksSelector } from '@/features/task/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
-import IssueTable from '@/components/IssueTable'
+import IssueTable from '../IssueTable'
 
 const BrowseProjectPageContainer = () => {
   const isLogin = useAppSelector(isLoginSelector)
