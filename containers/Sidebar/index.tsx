@@ -1,5 +1,6 @@
 import { StyledSidebarFilterLink, StyledSidebarLoader, StyledSidebarWrapper } from './styles'
-import { isLoginSelector, reposDataSelector } from '@/features/user/selector'
+import { isLoginSelector } from '@/features/user/selector'
+import { repoDataSelector } from '@/features/repo/selector'
 import { useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
 import RepoSelect from './components/RepoSelect'
@@ -20,7 +21,7 @@ const issueFilters = [
 ]
 
 const SidebarContainer = () => {
-  const reposData = useAppSelector(reposDataSelector)
+  const reposData = useAppSelector(repoDataSelector)
   const isLogin = useAppSelector(isLoginSelector)
   const router = useRouter()
   const { filter } = router.query

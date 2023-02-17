@@ -19,13 +19,9 @@ import Sidebar from '@/containers/Sidebar'
 import Toast from '@/containers/Toast'
 import apiRequest, { EApiMethod, setupApiCallerAuth } from '@/apis/apiClient'
 import githubApi from '@/constants/githubApi'
-import parseCookie from '@/utilis/auth/parseCookie'
 import theme from '@/styles/theme'
 
 const App = ({ Component, ...rest }: AppProps) => {
-  const { accessToken } = parseCookie(typeof window === 'undefined' ? '' : document.cookie)
-  if (accessToken) setupApiCallerAuth({ accessToken })
-
   const { store, props } = wrapper.useWrappedStore(rest)
 
   return (

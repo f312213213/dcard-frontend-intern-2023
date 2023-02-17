@@ -8,7 +8,10 @@ import { useRouter } from 'next/router'
 import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {
-  reposData: IRepo[]
+  reposData: {
+    repoName: string
+    repoId: string
+  }[]
 }
 
 const RepoSelect = ({ reposData }: IProps) => {

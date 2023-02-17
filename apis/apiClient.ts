@@ -1,4 +1,5 @@
 import axios from 'axios'
+import parseCookie from '@/utilis/auth/parseCookie'
 
 export enum EApiMethod {
   GET= 'GET',
@@ -14,7 +15,20 @@ const instance = axios.create({
   },
 })
 
+interface ISetupApiCallerAuth {
+  accessTokenType?: string
+  accessToken: string
+}
+
+export const setupApiCallerAuth = ({ accessTokenType = 'Bearer', accessToken }: ISetupApiCallerAuth) => {
+  instance.defaults.headers.common = {
+    Authorization: `${accessTokenType} ${accessToken}`,
+  }
+}
+
 const apiClient = (() => {
+  const { accessToken } = parseCookie(typeof window === 'undefined' ? '' : document.cookie)
+  if (accessToken) setupApiCallerAuth({ accessToken })
   const _apiClient: {[key: string]: any} = {}
   const methods = [EApiMethod.GET, EApiMethod.POST, EApiMethod.PUT, EApiMethod.PATCH]
 
@@ -33,17 +47,6 @@ const apiClient = (() => {
   })
   return _apiClient
 })()
-
-interface ISetupApiCallerAuth {
-  accessTokenType?: string
-  accessToken: string
-}
-
-export const setupApiCallerAuth = ({ accessTokenType = 'Bearer', accessToken }: ISetupApiCallerAuth) => {
-  instance.defaults.headers.common = {
-    Authorization: `${accessTokenType} ${accessToken}`,
-  }
-}
 
 interface IApiRequest {
   endpoint: string
