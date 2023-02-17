@@ -6,7 +6,13 @@ export const parseCookie = (str: string) => str
     return acc
   }, {})
 
-export const setCookie = (name, value, days) => {
+export const getCookie = (name: string) => {
+  if (typeof window === 'undefined') return undefined
+  const cookies = parseCookie(document.cookie)
+  return cookies[name]
+}
+
+export const setCookie = (name: string, value: string | number, days: number) => {
   let expires = ''
   if (days) {
     const date = new Date()
@@ -14,4 +20,8 @@ export const setCookie = (name, value, days) => {
     expires = '; expires=' + date.toUTCString()
   }
   document.cookie = name + '=' + (value || '') + expires + '; path=/'
+}
+
+export const deleteCookie = (name: string) => {
+  document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
 }

@@ -1,14 +1,18 @@
 import { AppDispatch, RootState } from '@/features/store'
 import { EDialogType, EToastType } from '@/features/app/interface'
 import { closeBackdrop, openBackdrop, openDialog, openToast } from '@/features/app/slice'
+import { deleteCookie, getCookie, setCookie } from '@/utilis/auth'
 import { fetchUserInfo } from '@/features/user/services'
 import { initProjectsData } from '@/features/repo/slice'
-import { parseCookie, setCookie } from '@/utilis/auth'
 import apiClient, { EApiMethod, setupApiCallerAuth } from '@/apis/apiClient'
 
 export const initApp = ({ code }: {code: string | undefined}) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  if (process.env.NODE_ENV === 'production') {
+    console.log = () => {}
+  }
   dispatch(openBackdrop())
 
+  const accessToken = getCookie('accessToken')
   let isLogin = false
   // 登入
   if (code) { // 跳轉回來的
@@ -29,7 +33,6 @@ export const initApp = ({ code }: {code: string | undefined}) => async (dispatch
       return
     }
   } else {
-    const { accessToken } = parseCookie(document.cookie)
     if (accessToken) {
       setupApiCallerAuth({ accessToken })
       isLogin = await dispatch(fetchUserInfo())
@@ -37,10 +40,10 @@ export const initApp = ({ code }: {code: string | undefined}) => async (dispatch
   }
 
   if (!isLogin) {
-    setCookie('accessToken', '', 0)
+    deleteCookie('accessToken')
     dispatch(closeBackdrop())
     dispatch(openDialog({ type: EDialogType.LOGIN }))
-    dispatch(openToast({ type: EToastType.ERROR, title: 'Github login expire!' }))
+    if (accessToken) dispatch(openToast({ type: EToastType.ERROR, title: 'Github login expire!' }))
     return
   }
 
