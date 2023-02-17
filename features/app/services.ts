@@ -1,21 +1,53 @@
-import { closeBackdrop, initApp, openBackdrop } from '@/features/app/slice'
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { AppDispatch, RootState } from '@/features/store'
+import { EDialogType, EToastType } from '@/features/app/interface'
+import { closeBackdrop, openBackdrop, openDialog, openToast } from '@/features/app/slice'
+import { fetchUserInfo } from '@/features/user/services'
+import { initProjectsData } from '@/features/repo/slice'
+import { parseCookie, setCookie } from '@/utilis/auth'
+import apiClient, { EApiMethod, setupApiCallerAuth } from '@/apis/apiClient'
 
-export const getNumber = createAsyncThunk(
-  'app/getNumber',
-  async (input, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    dispatch(openBackdrop())
-    try {
-      const response = await fetch('https://counter-tmqvi7b1k-f312213213.vercel.app/')
+export const initApp = ({ code }: {code: string | undefined}) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch(openBackdrop())
+
+  let isLogin = false
+  // 登入
+  if (code) { // 跳轉回來的
+    const { data, success } = await apiClient({
+      endpoint: `${window.location.origin}/api/exchange`,
+      method: EApiMethod.POST,
+      data: { code },
+    })
+
+    if (success) {
+      setCookie('accessToken', data.accessToken, 0.5)
+      setupApiCallerAuth({ accessToken: data.accessToken })
+      isLogin = await dispatch(fetchUserInfo())
+    } else {
+      dispatch(openToast({ type: EToastType.ERROR, title: 'Github login error!' }))
       dispatch(closeBackdrop())
-      if (!response.ok) {
-        return rejectWithValue(response.status)
-      }
-      const number = await response.json()
-      fulfillWithValue(number)
-    } catch (err: any) {
-      rejectWithValue(err.message)
+      dispatch(openDialog({ type: EDialogType.LOGIN }))
+      return
     }
-    dispatch(initApp())
+  } else {
+    const { accessToken } = parseCookie(document.cookie)
+    if (accessToken) {
+      setupApiCallerAuth({ accessToken })
+      isLogin = await dispatch(fetchUserInfo())
+    }
   }
-)
+
+  if (!isLogin) {
+    setCookie('accessToken', '', 0)
+    dispatch(closeBackdrop())
+    dispatch(openDialog({ type: EDialogType.LOGIN }))
+    dispatch(openToast({ type: EToastType.ERROR, title: 'Github login expire!' }))
+    return
+  }
+
+  // 製作 repoData
+  const userRepoData = getState().user.userData?.repos
+  if (!userRepoData) {
+    return dispatch(openToast({ type: EToastType.ERROR, title: 'There are no repo in your account!' }))
+  }
+  dispatch(initProjectsData({ projects: userRepoData }))
+}

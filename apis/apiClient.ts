@@ -1,5 +1,4 @@
 import axios from 'axios'
-import parseCookie from '@/utilis/auth/parseCookie'
 
 export enum EApiMethod {
   GET= 'GET',
@@ -27,8 +26,6 @@ export const setupApiCallerAuth = ({ accessTokenType = 'Bearer', accessToken }: 
 }
 
 const apiClient = (() => {
-  const { accessToken } = parseCookie(typeof window === 'undefined' ? '' : document.cookie)
-  if (accessToken) setupApiCallerAuth({ accessToken })
   const _apiClient: {[key: string]: any} = {}
   const methods = [EApiMethod.GET, EApiMethod.POST, EApiMethod.PUT, EApiMethod.PATCH]
 
