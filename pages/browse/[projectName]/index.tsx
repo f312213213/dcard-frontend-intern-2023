@@ -28,15 +28,16 @@ export default BrowseProjectPage
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   const { projectName: repo } = context.query
   const rootStore = store.getState()
+  const { userData } = rootStore.user
   const isLogin = !!rootStore.user.userData
   if (!isLogin) {
     return {
       props: {},
     }
   }
-  const username = rootStore.user.userData?.username
+  const repoIndex = userData?.repos.findIndex((repo) => repo.repoName === context.query.projectName)
   const { success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${username || ''}/${repo}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${userData?.repos[repoIndex]?.repoOwner}/${repo}`,
   })
   if (!success) {
     return {

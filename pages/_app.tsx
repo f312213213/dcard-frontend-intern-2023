@@ -23,10 +23,8 @@ import parseCookie from '@/utilis/auth/parseCookie'
 import theme from '@/styles/theme'
 
 const App = ({ Component, ...rest }: AppProps) => {
-  useEffect(() => {
-    const { accessToken } = parseCookie(document.cookie)
-    if (accessToken) setupApiCallerAuth({ accessToken })
-  }, [])
+  const { accessToken } = parseCookie(typeof window === 'undefined' ? '' : document.cookie)
+  if (accessToken) setupApiCallerAuth({ accessToken })
 
   const { store, props } = wrapper.useWrappedStore(rest)
 
@@ -152,13 +150,14 @@ const getUserData = async (accessToken: string) => {
   } = jsonForUserData
 
   const { data: jsonForReposData, success: reposDataSuccess } = await apiRequest({
-    endpoint: reposUrl,
+    endpoint: '/user/repos?per_page=100',
   })
 
   if (!reposDataSuccess) throw new Error()
 
   const reposData = jsonForReposData.map((repo: any) => {
     return {
+      repoOwner: repo.owner.login,
       repoId: repo.node_id,
       repoName: repo.name,
       link: repo.html_url,

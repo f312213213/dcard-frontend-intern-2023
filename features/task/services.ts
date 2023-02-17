@@ -28,8 +28,10 @@ export const makeProjectLabels = (selectedProject: string) => async (dispatch: A
 
   if (projectHasLabelMap[selectedProject]) return
 
+  const repoIndex = userData?.repos.findIndex((repo) => repo.repoName === selectedProject)
+
   const { data, success } = await apiRequest({
-    endpoint: `/repos/${userData?.username}/${selectedProject}/labels`,
+    endpoint: `/repos/${userData?.repos[repoIndex]?.repoOwner}/${selectedProject}/labels`,
   })
   const hasStatusLabel = data.some((label: any) => {
     return (
@@ -41,7 +43,7 @@ export const makeProjectLabels = (selectedProject: string) => async (dispatch: A
   if (!hasStatusLabel) {
     forOwn(issueLabels, async (label) => {
       const { data, success } = await apiRequest({
-        endpoint: `/repos/${userData?.username}/${selectedProject}/labels`,
+        endpoint: `/repos/${userData?.repos[repoIndex]?.repoOwner}/${selectedProject}/labels`,
         method: EApiMethod.POST,
         data: label,
       })
@@ -53,16 +55,17 @@ export const makeProjectLabels = (selectedProject: string) => async (dispatch: A
 }
 
 export const getIssueData = (filter = 'all') => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const username = getState().user.userData?.username
   const { page, hasMore, selectedProject } = getState().task
-  if (!username || !selectedProject) return
+  const { userData } = getState().user
+  if (!selectedProject) return
   if (!hasMore) {
     dispatch(openToast({ type: EToastType.ERROR, title: 'There is no task anymore!' }))
     return
   }
   dispatch(openBackdrop())
+  const repoIndex = userData?.repos.findIndex((repo) => repo.repoName === selectedProject)
   const { data, success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${username}/${selectedProject}/issues?state=open&per_page=10&page=${page}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${userData?.repos[repoIndex]?.repoOwner}/${selectedProject}/issues?state=open&per_page=10&page=${page}`,
   })
   const tasks = data.map((issue: any) => {
     return {
@@ -77,7 +80,7 @@ export const getIssueData = (filter = 'all') => async (dispatch: AppDispatch, ge
   })
   if (success) {
     if (page === 1) {
-      dispatch(initTask({ tasks }))
+      dispatch(initTask({ tasks, selectedProject }))
     } else {
       dispatch(appendTask({ tasks }))
     }

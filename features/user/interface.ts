@@ -2,6 +2,7 @@ export interface IRepo {
   repoId: string
   repoName: string
   link: string
+  repoOwner: string
 }
 
 export interface IUserData {

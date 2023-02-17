@@ -33,8 +33,10 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   }
   const username = rootStore.user.userData?.username
   const { projectName: repo, issueNumber } = context.query
+
+  const repoIndex = rootStore.user.userData?.repos.findIndex((repo) => repo.repoName === context.query.projectName)
   const { data, success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${username}/${repo}/issues/${issueNumber}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${rootStore.user.userData?.repos[repoIndex]?.repoOwner}/${repo}/issues/${issueNumber}`,
   })
   if (!success) {
     return {
