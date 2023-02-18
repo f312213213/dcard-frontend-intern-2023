@@ -34,6 +34,7 @@ const exchangeCodeHandler = async (
     if (json) {
       return res.status(200).json({ accessToken: json.access_token })
     }
+    return res.status(200).json({ message: 'no code' })
   } catch (e: any) {
     return res.status(400).json(omit(JSON.parse(e.message), 'error_uri'))
   }
