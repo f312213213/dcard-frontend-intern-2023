@@ -1,6 +1,6 @@
 import { IProject } from '@/features/repo/interface'
 import { RootState } from '@/features/store'
-import forOwn from 'lodash/forown'
+import forOwn from 'lodash/forOwn'
 
 export const selectedProjectTasksByProjectNameSelector = (selectedProject: string) => {
   return (state: RootState) => state.repo.projects[selectedProject]?.tasks || []
