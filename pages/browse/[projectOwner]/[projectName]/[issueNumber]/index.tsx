@@ -22,7 +22,7 @@ const BrowseIssuePage = ({ issue }: {issue: any}) => {
       <PageContentContainer
         contentData={issue}
         pageContentType={EPageContentType.SINGLE_ISSUE}
-        displayText={issue.title}
+        displayText={issue?.title || ''}
       />
     </Layout>
   )
