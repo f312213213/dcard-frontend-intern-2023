@@ -32,7 +32,7 @@ export const initApp = ({ code }: {code: string | undefined}) => async (dispatch
 
     if (success) {
       setCookie('accessToken', data.accessToken, 0.5)
-      // window.location.reload()
+      window.location.reload()
       return
     } else {
       dispatch(openToast({ type: EToastType.ERROR, title: 'Github login error!' }))

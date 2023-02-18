@@ -12,7 +12,7 @@ const exchangeCodeHandler = async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) => {
-  const targetUrl = new URL(githubApi.accessToken)
+  const targetUrl = new URL('https://github.com/login/oauth/access_token')
   targetUrl.searchParams.set('client_id', process.env.GITHUB_CLIENT_ID ?? '')
   targetUrl.searchParams.set('client_secret', process.env.GITHUB_CLIENT_SECRET ?? '')
   targetUrl.searchParams.set('code', req.body.code)
@@ -34,7 +34,7 @@ const exchangeCodeHandler = async (
     if (json) {
       return res.status(200).json({ accessToken: json.access_token })
     }
-    return res.status(200).json({ message: 'no code' })
+    return res.status(200).json({ message: 'no access_token' })
   } catch (e: any) {
     return res.status(400).json(omit(JSON.parse(e.message), 'error_uri'))
   }
