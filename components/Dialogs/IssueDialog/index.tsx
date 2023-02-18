@@ -51,7 +51,7 @@ const IssueDialog = () => {
       updatedData: value,
     }))
     await apiRequest({
-      endpoint: `/repos/${issueData.repoName}/${repoName}/issues/${issueNumber}`,
+      endpoint: `/repos/${issueData.repoOwner}/${repoName}/issues/${issueNumber}`,
       method: EApiMethod.PATCH,
       data: {
         body: value,
