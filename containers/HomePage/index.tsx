@@ -1,4 +1,4 @@
-import { StyledBrowseProjectPageTitle, StyledBrowseProjectPageView } from '@/containers/BrowseProjectPageContainer/styles'
+import { StyledBrowseProjectPageTitle, StyledPageContentView } from '@/containers/PageContent/styles'
 import { isLoginSelector } from '@/features/user/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useEffect } from 'react'
@@ -11,7 +11,7 @@ const HomePageContainer = () => {
   const isMounted = useIsMounted()
 
   return (
-    <StyledBrowseProjectPageView>
+    <StyledPageContentView>
       <StyledBrowseProjectPageTitle>
         {isLogin && 'All Task'}
       </StyledBrowseProjectPageTitle>
@@ -20,7 +20,7 @@ const HomePageContainer = () => {
       {/*  loadMore={() => dispatch(getAllIssueData())} */}
       {/*  selectedProjectTasks={selectedProjectTasks} */}
       {/* /> */}
-    </StyledBrowseProjectPageView>
+    </StyledPageContentView>
   )
 }
 

@@ -1,15 +1,19 @@
+import { EPageContentType } from '@/constants/pageContentType'
 import { GetServerSideProps } from 'next'
+import { getRepoIssueData } from '@/features/repo/services'
 import { parseCookie } from '@/utilis/auth'
-import { selectedProjectSelector } from '@/features/repo/selector'
-import { useAppSelector } from '@/features/store'
-import BrowseProjectPageContainer from '@/containers/BrowseProjectPageContainer'
+import { selectedProjectSelector, selectedProjectTasksByProjectNameSelector } from '@/features/repo/selector'
+import { useAppDispatch, useAppSelector } from '@/features/store'
 import Layout from '@/components/Layout'
+import PageContentContainer from '@/containers/PageContent'
 import apiRequest, { setupApiCallerAuth } from '@/apis/apiClient'
 import useCleanupCode from '@/hooks/useCleanupCode'
 
 const BrowseProjectPage = () => {
   useCleanupCode()
   const selectedProject = useAppSelector(selectedProjectSelector)
+  const selectedProjectTasks = useAppSelector(selectedProjectTasksByProjectNameSelector(selectedProject))
+  const dispatch = useAppDispatch()
   const meta = {
     title: `${selectedProject || 'Login to use this app'} - Github Task Tracker`,
     description: 'Github Task Tracker - 2023 Dcard frontend intern homework.',
@@ -20,7 +24,12 @@ const BrowseProjectPage = () => {
     <Layout
       customMeta={meta}
     >
-      <BrowseProjectPageContainer />
+      <PageContentContainer
+        contentData={selectedProjectTasks}
+        displayText={selectedProject}
+        pageContentType={EPageContentType.ISSUE_TABLE}
+        tableReachEnd={() => dispatch(getRepoIssueData())}
+      />
     </Layout>
   )
 }

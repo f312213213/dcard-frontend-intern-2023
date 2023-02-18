@@ -1,6 +1,6 @@
 import { AppDispatch, RootState } from '@/features/store'
 import { EDialogType, EToastType } from '@/features/app/interface'
-import { closeBackdrop, openBackdrop, openDialog, openToast } from '@/features/app/slice'
+import { appInitiated, closeBackdrop, openBackdrop, openDialog, openToast } from '@/features/app/slice'
 import { deleteCookie, getCookie, setCookie } from '@/utilis/auth'
 import { fetchUserInfo } from '@/features/user/services'
 import { initProjectsData } from '@/features/repo/slice'
@@ -60,4 +60,6 @@ export const initApp = ({ code }: {code: string | undefined}) => async (dispatch
     return dispatch(openToast({ type: EToastType.ERROR, title: 'There are no repo in your account!' }))
   }
   dispatch(initProjectsData({ projects: userRepoData }))
+
+  dispatch(appInitiated())
 }

@@ -10,7 +10,6 @@ import { updateIssueStatus } from '@/features/repo/services'
 import { updateTaskDataByField } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
-import { usernameSelector } from '@/features/user/selector'
 import Head from 'next/head'
 import InlineEdit from '@atlaskit/inline-edit'
 import TextArea from '@atlaskit/textarea'
@@ -21,7 +20,6 @@ const IssueDialog = () => {
   const router = useRouter()
   const { projectModalId: repoName, issueModalNumber: issueNumber } = router.query
 
-  const username = useAppSelector(usernameSelector)
   const issueData = useAppSelector(issueDataByIdSelector(repoName as string, Number(issueNumber)))
   const dispatch = useAppDispatch()
 
@@ -37,7 +35,7 @@ const IssueDialog = () => {
       updatedData: value,
     }))
     await apiRequest({
-      endpoint: `/repos/${username}/${repoName}/issues/${issueNumber}`,
+      endpoint: `/repos/${issueData.repoOwner}/${repoName}/issues/${issueNumber}`,
       method: EApiMethod.PATCH,
       data: {
         title: value,
@@ -53,7 +51,7 @@ const IssueDialog = () => {
       updatedData: value,
     }))
     await apiRequest({
-      endpoint: `/repos/${username}/${repoName}/issues/${issueNumber}`,
+      endpoint: `/repos/${issueData.repoName}/${repoName}/issues/${issueNumber}`,
       method: EApiMethod.PATCH,
       data: {
         body: value,

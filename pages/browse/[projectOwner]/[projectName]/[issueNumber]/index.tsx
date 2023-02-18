@@ -1,15 +1,16 @@
+import { EPageContentType } from '@/constants/pageContentType'
 import { GetServerSideProps } from 'next'
-import { StyledBrowseProjectPageView } from '@/containers/BrowseProjectPageContainer/styles'
 import { parseCookie } from '@/utilis/auth'
 import Layout from '@/components/Layout'
+import PageContentContainer from '@/containers/PageContent'
 import apiRequest, { setupApiCallerAuth } from '@/apis/apiClient'
 import useCleanupCode from '@/hooks/useCleanupCode'
 
 const BrowseIssuePage = ({ issue }: {issue: any}) => {
   useCleanupCode()
   const meta = {
-    title: `${(issue?.issueTitle && issue?.repoName)
-      ? (issue?.issueTitle + ' - ' + issue?.repoName)
+    title: `${(issue?.issueTitle && issue?.projectName)
+      ? (issue?.issueTitle + ' - ' + issue?.projectName)
       : 'Login to use this app'} 
       - Github Task Tracker`,
     description: 'Github Task Tracker - 2023 Dcard frontend intern homework.',
@@ -18,7 +19,11 @@ const BrowseIssuePage = ({ issue }: {issue: any}) => {
   }
   return (
     <Layout customMeta={meta}>
-      <StyledBrowseProjectPageView/>
+      <PageContentContainer
+        contentData={issue}
+        pageContentType={EPageContentType.SINGLE_ISSUE}
+        displayText={issue.title}
+      />
     </Layout>
   )
 }
@@ -49,10 +54,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       issue: {
         projectOwner,
-        repoName: projectName,
+        projectName,
         issueNumber,
         issueTitle: data.title,
-        ...data,
       },
     },
   }

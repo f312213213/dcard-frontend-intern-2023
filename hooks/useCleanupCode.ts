@@ -5,6 +5,7 @@ import omit from 'lodash/omit'
 const useCleanupCode = () => {
   const router = useRouter()
   useEffect(() => {
+    if (!router?.query?.code) return
     const queryWithoutCode = omit(router.query, 'code')
     router.replace({
       pathname: router.pathname,

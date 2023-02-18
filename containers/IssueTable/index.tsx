@@ -11,9 +11,10 @@ import useIsMounted from '@/hooks/useIsMounted'
 interface IProps {
   selectedProjectTasks: ITask[]
   loadMore: any
+  tableEmptyText?: string
 }
 
-const IssueTable = ({ selectedProjectTasks, loadMore }: IProps) => {
+const IssueTable = ({ selectedProjectTasks, loadMore, tableEmptyText = '暫無資料' }: IProps) => {
   const isMounted = useIsMounted()
 
   if (!isMounted) return null
@@ -22,7 +23,7 @@ const IssueTable = ({ selectedProjectTasks, loadMore }: IProps) => {
     return (
       <StyledIssueTableContainer>
         <StyledIssueTableEmpty>
-          暫無資料
+          {tableEmptyText}
         </StyledIssueTableEmpty>
       </StyledIssueTableContainer>
     )

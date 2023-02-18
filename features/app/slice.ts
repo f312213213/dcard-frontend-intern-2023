@@ -79,7 +79,7 @@ const appSlice = createSlice({
     closeBackdrop: (state) => {
       state.backdrop = initialState.backdrop
     },
-    initApp: state => {
+    appInitiated: state => {
       state.status = EAppStatus.SUCCESS
       state.backdrop = initialState.backdrop
     },
@@ -93,7 +93,7 @@ export const {
   closeToast,
   openBackdrop,
   closeBackdrop,
-  initApp,
+  appInitiated,
 } = appSlice.actions
 
 export default appSlice
