@@ -1,9 +1,7 @@
 import { EPageContentType } from '@/constants/pageContentType'
 import { StyledBrowseProjectPageTitle, StyledPageContentView } from '@/containers/PageContent/styles'
 import { isLoginSelector } from '@/features/user/selector'
-import { selectedProjectSelector, selectedProjectTasksByProjectNameSelector } from '@/features/repo/selector'
-import { useAppDispatch, useAppSelector } from '@/features/store'
-import { useMemo } from 'react'
+import { useAppSelector } from '@/features/store'
 import IssueTable from '../IssueTable'
 import SingleIssueView from '@/containers/SingleIssueView'
 

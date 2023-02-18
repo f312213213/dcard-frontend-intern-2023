@@ -8,6 +8,7 @@ import InlineEdit from '@atlaskit/inline-edit'
 import TextArea from '@atlaskit/textarea'
 import TextField from '@atlaskit/textfield'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
+import set from 'lodash/set'
 
 interface IProps {
   contentData: any
@@ -41,6 +42,7 @@ const SingleIssueView = ({ contentData }: IProps) => {
   }, [isAppInit])
 
   const onTitleUpdate = async (value: string) => {
+    setIssueData((draft: any) => set(draft, 'title', value))
     await apiRequest({
       endpoint: `/repos/${contentData.projectOwner}/${contentData.projectName}/issues/${contentData.issueNumber}`,
       method: EApiMethod.PATCH,
@@ -51,8 +53,9 @@ const SingleIssueView = ({ contentData }: IProps) => {
   }
 
   const onBodyUpdate = async (value: string) => {
+    setIssueData((draft: any) => set(draft, 'body', value))
     await apiRequest({
-      endpoint: `/repos/${contentData.projectOwner}/${contentData.repoName}/issues/${contentData.issueNumber}`,
+      endpoint: `/repos/${contentData.projectOwner}/${contentData.projectName}/issues/${contentData.issueNumber}`,
       method: EApiMethod.PATCH,
       data: {
         body: value,
