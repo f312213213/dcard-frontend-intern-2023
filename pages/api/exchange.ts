@@ -13,7 +13,7 @@ const exchangeCodeHandler = async (
   res: NextApiResponse<Data>
 ) => {
   const targetUrl = new URL(githubApi.accessToken)
-  targetUrl.searchParams.set('client_id', process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID ?? '')
+  targetUrl.searchParams.set('client_id', process.env.GITHUB_CLIENT_ID ?? '')
   targetUrl.searchParams.set('client_secret', process.env.GITHUB_CLIENT_SECRET ?? '')
   targetUrl.searchParams.set('code', req.body.code)
   targetUrl.searchParams.set('redirect_uri', githubApi.callbackUrl)
