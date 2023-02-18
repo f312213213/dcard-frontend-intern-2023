@@ -54,7 +54,7 @@ const RepoSelect = ({ reposData }: IProps) => {
         return {
           id: repo.repoId,
           value: `${repo.repoOwner}/${repo.repoName}`,
-          text: `${repo.repoOwner}/${repo.repoName}`,
+          text: repo.repoName,
         }
       })}
       placeholder={'Select a project'}
