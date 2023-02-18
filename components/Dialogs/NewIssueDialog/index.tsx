@@ -1,6 +1,7 @@
 import { Portal, Root } from '@radix-ui/react-dialog'
 
 import { EDialogType, EToastType } from '@/features/app/interface'
+import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
 import { FormEvent, useEffect, useState } from 'react'
 import { StyledButton, StyledDialogContent, StyledDialogDescription, StyledSelect } from './styles'
 import { StyledDialogOverlay, StyledDialogTitle } from '@/components/Dialogs/LoginDialog/styles'
@@ -9,7 +10,6 @@ import { closeBackdrop, closeDialog, openBackdrop, openToast } from '@/features/
 import { insertNewProjectTaskData } from '@/features/repo/slice'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
 import { repoDataSelector } from '@/features/repo/selector'
-import { statusOptions } from '@/constants/issueLabel'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import Head from 'next/head'
 import TextArea from '@atlaskit/textarea'
@@ -129,7 +129,7 @@ const NewIssueDialog = () => {
             }}>
               <StyledIssueStatusSelect
                 value={status}
-                defaultValue={inputState.status}
+                defaultValue={inputState.status || EIssueStatus.OPEN}
                 options={statusOptions}
                 onValueChange={onStatusValueChange}
                 background={renderBackground(status)}

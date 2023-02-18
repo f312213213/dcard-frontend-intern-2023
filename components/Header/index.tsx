@@ -1,8 +1,9 @@
 import { EDialogType } from '@/features/app/interface'
-import { StyledCreatedIssueButton, StyledHeader, StyledHeaderText } from '@/components/Header/styles'
+import { StyledCreatedIssueButton, StyledHeader, StyledHeaderText, StyledMiddleSection } from '@/components/Header/styles'
 import { isLoginSelector, userDataSelector } from '@/features/user/selector'
 import { openDialog } from '@/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
+import Search from '@/components/Header/Search'
 
 const Header = () => {
   const isLogin = useAppSelector(isLoginSelector)
@@ -19,14 +20,17 @@ const Header = () => {
       {
         isLogin &&
           <>
-            <StyledCreatedIssueButton
-              onClick={() => {
-                dispatch(openDialog({ type: EDialogType.CREATE }))
-              }
-              }
-            >
-              Create
-            </StyledCreatedIssueButton>
+            <StyledMiddleSection>
+              <StyledCreatedIssueButton
+                  onClick={() => {
+                    dispatch(openDialog({ type: EDialogType.CREATE }))
+                  }
+                  }
+              >
+                Create
+              </StyledCreatedIssueButton>
+              <Search />
+            </StyledMiddleSection>
             <StyledHeaderText>
               hi {userData?.username}
             </StyledHeaderText>

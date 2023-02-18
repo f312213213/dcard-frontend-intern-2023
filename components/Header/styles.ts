@@ -34,3 +34,8 @@ export const StyledCreatedIssueButton = styled.button`
     background-color: ${props => props.theme.color.semiBlue};
   }
 `
+
+export const StyledMiddleSection = styled.div`
+  display: flex;
+  gap: 10px;
+`
