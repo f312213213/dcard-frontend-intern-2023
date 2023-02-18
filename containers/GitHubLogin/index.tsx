@@ -11,7 +11,7 @@ const GitHubLogin = () => {
   return (
     <StyledGitHubLoginLink
       onClick={() => dispatch(openBackdrop())}
-      href={`${githubApi.loginRequest}?scope=repo&client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GITHUB_CALLBACK_URL}${router.asPath}`}
+      href={`${githubApi.loginRequest}?scope=repo&client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${location.origin}${router.asPath}`}
     >
       <StyledGitHubLoginIcon />
       <span>Login with GitHub</span>
