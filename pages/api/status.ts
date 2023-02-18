@@ -20,8 +20,6 @@ const checkStatusHandler = async (
 
     const apiComponent = json.components.find((component: any) => component.name === 'API Requests')
 
-    console.log(apiComponent)
-
     if (apiComponent.status !== 'operational') {
       throw Error()
     }

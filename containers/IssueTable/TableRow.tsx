@@ -1,5 +1,5 @@
 import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
-import { ITask } from '@/features/task/interface'
+import { ITask } from '@/features/repo/interface'
 import { StyledIssueStatusSelect, StyledIssueTableRow } from './styles'
 import { memo, useState } from 'react'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
@@ -14,15 +14,13 @@ interface IProps {
 const TableRow = ({ task }: IProps) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const [taskStatus, setTaskStatus] = useState<EIssueStatus>(task.status)
   const onValueChange = async (value: EIssueStatus) => {
     dispatch(updateIssueStatus(task.repoName, task.number, value))
-    setTaskStatus(value)
   }
 
   return (
     <Link
-      as={`/browse/${task.repoName}/${task.number}`}
+      as={`/browse/${task.repoOwner}/${task.repoName}/${task.number}`}
       href={{
         pathname: router.pathname,
         query: {
@@ -53,10 +51,11 @@ const TableRow = ({ task }: IProps) => {
         <div>
           <StyledIssueStatusSelect
             defaultValue={task.status}
+            value={task.status}
             options={statusOptions}
             onValueChange={onValueChange}
-            background={renderBackground(taskStatus)}
-            color={renderColor(taskStatus)}
+            background={renderBackground(task.status)}
+            color={renderColor(task.status)}
           />
         </div>
       </td>
@@ -66,7 +65,24 @@ const TableRow = ({ task }: IProps) => {
 }
 
 export default memo(TableRow, (prevProps, nextProps) => {
-  const { id: prevId } = prevProps.task
-  const { id: nextId } = nextProps.task
-  return prevId === nextId
+  const {
+    id: prevId,
+    status: prevStatus,
+    title: prevTitle,
+    body: prevBody,
+  } = prevProps.task
+
+  const {
+    id: nextId,
+    status: nextStatus,
+    title: nextTitle,
+    body: nextBody,
+  } = nextProps.task
+
+  return (
+    prevId === nextId &&
+    prevStatus === nextStatus &&
+    prevTitle === nextTitle &&
+    prevBody === nextBody
+  )
 })

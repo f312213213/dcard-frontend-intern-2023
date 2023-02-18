@@ -1,4 +1,4 @@
-import { ITask } from '@/features/task/interface'
+import { ITask } from '@/features/repo/interface'
 import {
   StyledIssueTableContainer,
   StyledIssueTableEmpty,

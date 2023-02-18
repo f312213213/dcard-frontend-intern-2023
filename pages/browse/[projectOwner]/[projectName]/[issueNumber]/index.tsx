@@ -1,6 +1,8 @@
-import { wrapper } from '@/features/store'
+import { GetServerSideProps } from 'next'
+import { StyledBrowseProjectPageView } from '@/containers/BrowseProjectPageContainer/styles'
+import { parseCookie } from '@/utilis/auth'
 import Layout from '@/components/Layout'
-import apiRequest from '@/apis/apiClient'
+import apiRequest, { setupApiCallerAuth } from '@/apis/apiClient'
 import useCleanupCode from '@/hooks/useCleanupCode'
 
 const BrowseIssuePage = ({ issue }: {issue: any}) => {
@@ -16,27 +18,25 @@ const BrowseIssuePage = ({ issue }: {issue: any}) => {
   }
   return (
     <Layout customMeta={meta}>
-
+      <StyledBrowseProjectPageView/>
     </Layout>
   )
 }
 
 export default BrowseIssuePage
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  const rootStore = store.getState()
-  const isLogin = !!rootStore.user.userData
-  if (!isLogin) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { projectName, projectOwner, issueNumber } = context.query
+  const { accessToken } = parseCookie(context.req.headers.cookie || '')
+  if (!accessToken) {
     return {
       props: {},
     }
   }
-  const username = rootStore.user.userData?.username
-  const { projectName: repo, issueNumber } = context.query
+  setupApiCallerAuth({ accessToken })
 
-  const repoIndex = rootStore.user.userData?.repos.findIndex((repo) => repo.repoName === context.query.projectName)
   const { data, success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${rootStore.user.userData?.repos[repoIndex]?.repoOwner}/${repo}/issues/${issueNumber}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${projectOwner}/${projectName}/issues/${issueNumber}`,
   })
   if (!success) {
     return {
@@ -48,11 +48,12 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   return {
     props: {
       issue: {
-        repoName: repo,
+        projectOwner,
+        repoName: projectName,
         issueNumber,
         issueTitle: data.title,
         ...data,
       },
     },
   }
-})
+}

@@ -84,12 +84,6 @@ const appSlice = createSlice({
       state.backdrop = initialState.backdrop
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(createAction<RootState>(HYDRATE), (state, action) => ({
-      ...state,
-      ...action.payload.app,
-    }))
-  },
 })
 
 export const {

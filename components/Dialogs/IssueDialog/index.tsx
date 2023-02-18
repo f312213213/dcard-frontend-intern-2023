@@ -4,11 +4,11 @@ import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
 import { StyledDialogContent, StyledDialogDescription, StyledLink } from '@/components/Dialogs/IssueDialog/styles'
 import { StyledDialogOverlay, StyledDialogTitle } from '@/components/Dialogs/LoginDialog/styles'
 import { StyledIssueStatusSelect } from '@/containers/IssueTable/styles'
-import { closeBackdrop, openBackdrop } from '@/features/app/slice'
+import { issueDataByIdSelector } from '@/features/repo/selector'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
-import { updateIssueStatus } from '@/features/task/services'
+import { updateIssueStatus } from '@/features/repo/services'
+import { updateTaskDataByField } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { usernameSelector } from '@/features/user/selector'
 import Head from 'next/head'
@@ -16,44 +16,28 @@ import InlineEdit from '@atlaskit/inline-edit'
 import TextArea from '@atlaskit/textarea'
 import TextField from '@atlaskit/textfield'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
-import useIsMounted from '@/hooks/useIsMounted'
 
 const IssueDialog = () => {
   const router = useRouter()
-  const isMounted = useIsMounted()
+  const { projectModalId: repoName, issueModalNumber: issueNumber } = router.query
+
   const username = useAppSelector(usernameSelector)
-  const [issueData, setIssueData] = useState<any>(undefined)
-  const [taskStatus, setTaskStatus] = useState<EIssueStatus>(EIssueStatus.OPEN)
-  const [issueTitle, setIssueTitle] = useState<string>('')
-  const [issueBody, setIssueBody] = useState<string>('')
+  const issueData = useAppSelector(issueDataByIdSelector(repoName as string, Number(issueNumber)))
   const dispatch = useAppDispatch()
 
-  const { projectModalId: repo, issueModalNumber: issueNumber } = router.query
-
-  const getIssueData = async () => {
-    dispatch(openBackdrop())
-    const { data, success } = await apiRequest({
-      endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${username}/${repo}/issues/${issueNumber}`,
-    })
-    if (success) {
-      setIssueData(data)
-      setIssueTitle(data.title)
-      setIssueBody(data.body)
-      setTaskStatus(data?.labels[0]?.name || EIssueStatus.OPEN)
-    }
-    dispatch(closeBackdrop())
-  }
-
   const onValueChange = (value: EIssueStatus) => {
-    dispatch(updateIssueStatus(repo as string, issueData.number, value))
-    setTaskStatus(value)
+    dispatch(updateIssueStatus(repoName as string, issueData.number, value))
   }
 
   const onTitleUpdate = async (value: string) => {
-    setIssueTitle(value)
-    // dispatch(updateIssueStatus(repo as string, issueData.number, value))
-    const { data, success } = await apiRequest({
-      endpoint: `/repos/${username}/${repo}/issues/${issueNumber}`,
+    dispatch(updateTaskDataByField({
+      projectName: repoName,
+      issueNumber: issueData.number,
+      field: 'title',
+      updatedData: value,
+    }))
+    await apiRequest({
+      endpoint: `/repos/${username}/${repoName}/issues/${issueNumber}`,
       method: EApiMethod.PATCH,
       data: {
         title: value,
@@ -62,21 +46,20 @@ const IssueDialog = () => {
   }
 
   const onBodyUpdate = async (value: string) => {
-    setIssueBody(value)
-    // dispatch(updateIssueStatus(repo as string, issueData.number, value))
-    const { data, success } = await apiRequest({
-      endpoint: `/repos/${username}/${repo}/issues/${issueNumber}`,
+    dispatch(updateTaskDataByField({
+      projectName: repoName,
+      issueNumber: issueData.number,
+      field: 'body',
+      updatedData: value,
+    }))
+    await apiRequest({
+      endpoint: `/repos/${username}/${repoName}/issues/${issueNumber}`,
       method: EApiMethod.PATCH,
       data: {
         body: value,
       },
     })
   }
-
-  useEffect(() => {
-    if (!isMounted) return
-    getIssueData()
-  }, [isMounted])
 
   return (
     <Root open>
@@ -88,7 +71,7 @@ const IssueDialog = () => {
               <>
                 <Head>
                   <title>
-                    {`${issueTitle} - Github Task Tracker`}
+                    {`${issueData.title} - Github Task Tracker`}
                   </title>
                 </Head>
                 <StyledDialogTitle>
@@ -115,7 +98,7 @@ const IssueDialog = () => {
                               padding: '10px',
                               fontSize: '22px',
                             }}
-                          >{issueTitle}</div>
+                          >{issueData.title}</div>
                         )
                       }}
                     />
@@ -127,11 +110,12 @@ const IssueDialog = () => {
                   height: '40px',
                 }}>
                   <StyledIssueStatusSelect
-                    defaultValue={taskStatus}
+                    value={issueData.status}
+                    defaultValue={issueData.status}
                     options={statusOptions}
                     onValueChange={onValueChange}
-                    background={renderBackground(taskStatus)}
-                    color={renderColor(taskStatus)}
+                    background={renderBackground(issueData.status)}
+                    color={renderColor(issueData.status)}
                   />
                 </div>
 
@@ -153,14 +137,14 @@ const IssueDialog = () => {
                             fontSize: '16px',
                           }}
                         >
-                          {issueBody}
+                          {issueData.body}
                         </p>
                       )
                     }}
                   />
                 </StyledDialogDescription>
 
-                <StyledLink href={issueData.html_url} target={'_blank'} rel={'noreferrer'}>
+                <StyledLink href={issueData.url} target={'_blank'} rel={'noreferrer'}>
                   前往 Issue
                 </StyledLink>
               </>

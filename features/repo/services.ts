@@ -58,6 +58,12 @@ export const updateIssueStatus = (
 ) => async (dispatch: AppDispatch, getState: () => RootState) => {
   const { projects } = getState().repo
   const { repoOwner } = projects[repoName]
+  dispatch(updateTaskDataByField({
+    projectName: repoName,
+    issueNumber,
+    field: 'status',
+    updatedData: status,
+  }))
   dispatch(makeProjectLabels(repoName))
 
   await apiRequest({
@@ -65,12 +71,6 @@ export const updateIssueStatus = (
     method: EApiMethod.PUT,
     data: { labels: [status] },
   })
-  dispatch(updateTaskDataByField({
-    projectName: repoName,
-    taskId: issueNumber,
-    field: status,
-    updatedData: status,
-  }))
 }
 
 export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -95,6 +95,7 @@ export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch
       status: issue.labels[0]?.name || issueLabels[EIssueStatus.OPEN].name, // default status is "OPEN"
       repoName: selectedProject,
       url: issue.html_url,
+      repoOwner,
     }
   })
   if (success) {

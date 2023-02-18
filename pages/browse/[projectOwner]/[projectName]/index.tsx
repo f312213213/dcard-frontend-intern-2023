@@ -1,8 +1,10 @@
-import { selectedProjectSelector } from '@/features/task/selector'
-import { useAppSelector, wrapper } from '@/features/store'
+import { GetServerSideProps } from 'next'
+import { parseCookie } from '@/utilis/auth'
+import { selectedProjectSelector } from '@/features/repo/selector'
+import { useAppSelector } from '@/features/store'
 import BrowseProjectPageContainer from '@/containers/BrowseProjectPageContainer'
 import Layout from '@/components/Layout'
-import apiRequest from '@/apis/apiClient'
+import apiRequest, { setupApiCallerAuth } from '@/apis/apiClient'
 import useCleanupCode from '@/hooks/useCleanupCode'
 
 const BrowseProjectPage = () => {
@@ -25,19 +27,17 @@ const BrowseProjectPage = () => {
 
 export default BrowseProjectPage
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  const { projectName: repo } = context.query
-  const rootStore = store.getState()
-  const { userData } = rootStore.user
-  const isLogin = !!rootStore.user.userData
-  if (!isLogin) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { projectName, projectOwner } = context.query
+  const { accessToken } = parseCookie(context.req.headers.cookie || '')
+  if (!accessToken) {
     return {
       props: {},
     }
   }
-  const repoIndex = userData?.repos.findIndex((repo) => repo.repoName === context.query.projectName)
+  setupApiCallerAuth({ accessToken })
   const { success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${userData?.repos[repoIndex]?.repoOwner}/${repo}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${projectOwner}/${projectName}`,
   })
   if (!success) {
     return {
@@ -48,4 +48,4 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   return {
     props: {},
   }
-})
+}

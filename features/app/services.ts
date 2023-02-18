@@ -32,8 +32,8 @@ export const initApp = ({ code }: {code: string | undefined}) => async (dispatch
 
     if (success) {
       setCookie('accessToken', data.accessToken, 0.5)
-      setupApiCallerAuth({ accessToken: data.accessToken })
-      isLogin = await dispatch(fetchUserInfo())
+      window.location.reload()
+      return
     } else {
       dispatch(openToast({ type: EToastType.ERROR, title: 'Github login error!' }))
       dispatch(closeBackdrop())

@@ -9,6 +9,7 @@ import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {
   reposData: {
+    repoOwner: string
     repoName: string
     repoId: string
   }[]
@@ -18,7 +19,7 @@ const RepoSelect = ({ reposData }: IProps) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const isMounted = useIsMounted()
-  const defaultValue = router.pathname === '/' ? undefined : router.query.projectName as string || reposData[0].repoName
+  const defaultValue = router.pathname === '/' ? undefined : `${router.query.projectOwner}/${router.query.projectName}` || `${reposData[0].repoOwner}/${reposData[0].repoName}`
   const issueNumber = router.query.issueNumber
   const [selectedValue, setSelectedValue] = useState(defaultValue)
 
@@ -29,13 +30,12 @@ const RepoSelect = ({ reposData }: IProps) => {
 
   useEffect(() => {
     if (!isMounted || !selectedValue || !!issueNumber) return
-    dispatch(updateSelectedProject({ selectedProject: selectedValue }))
     dispatch(getRepoIssueData())
     dispatch(makeProjectLabels(selectedValue))
   }, [selectedValue, isMounted, issueNumber])
 
   useEffect(() => {
-    dispatch(updateSelectedProject({ selectedProject: defaultValue }))
+    // dispatch(updateSelectedProject({ selectedProject: router.query. }))
   }, [])
 
   useEffect(() => {
@@ -47,14 +47,14 @@ const RepoSelect = ({ reposData }: IProps) => {
 
   return (
     <StyledSelect
-      value={router.query.projectName as string}
+      value={`${router.query.projectOwner}/${router.query.projectName}`}
       defaultValue={defaultValue}
       onValueChange={onValueChange}
       options={reposData.map(repo => {
         return {
           id: repo.repoId,
-          value: repo.repoName,
-          text: repo.repoName,
+          value: `${repo.repoOwner}/${repo.repoName}`,
+          text: `${repo.repoOwner}/${repo.repoName}`,
         }
       })}
       placeholder={'Select a project'}

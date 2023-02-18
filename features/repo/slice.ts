@@ -50,22 +50,16 @@ const taskSlice = createSlice({
     updateTaskDataByField: (state, action) => {
       const {
         projectName,
-        taskId,
+        issueNumber,
         field = '',
         updatedData,
       } = action.payload
-      const taskIndex = state.projects[projectName].tasks.findIndex(task => task.id === taskId)
+      const taskIndex = state.projects[projectName].tasks.findIndex(task => task.number === issueNumber)
       state.projects[projectName].tasks[taskIndex] = {
         ...state.projects[projectName].tasks[taskIndex],
         [field]: updatedData,
       }
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(createAction<RootState>(HYDRATE), (state, action) => ({
-      ...state,
-      ...action.payload.repo,
-    }))
   },
 })
 
