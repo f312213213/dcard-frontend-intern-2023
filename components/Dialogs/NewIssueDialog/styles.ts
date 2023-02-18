@@ -2,7 +2,7 @@ import { Content, Description } from '@radix-ui/react-dialog'
 import Select from '@/components/Select'
 import styled from 'styled-components'
 
-export const StyledLink = styled.a`
+export const StyledButton = styled.button`
   padding: 10px 15px;
   background: #222222;
   border-radius: 5px;
@@ -10,7 +10,9 @@ export const StyledLink = styled.a`
   box-shadow: rgb(0 0 0 / 30%) 0px 0px 10px;
   text-align: center;
   display: block;
-
+  cursor: pointer;
+  border: none;
+  
   position: relative;
   bottom: 0;
   left: 50%;
@@ -49,7 +51,7 @@ export const StyledDialogContent = styled(Content)`
 
 
   background: ${props => props.theme.color.white};
-
+  
   @keyframes contentShow {
     from {
       opacity: 0;
@@ -60,6 +62,26 @@ export const StyledDialogContent = styled(Content)`
       transform: translate(-50%, -50%) scale(1);
     }
   }
+  
+  &:focus {
+    outline: none;
+  }
+`
+
+export const StyledSelect = styled(Select)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 30px;
+  line-height: 1;
+  height: 35px;
+  gap: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 10px;
+
+  font-size: 16px;
 
   &:focus {
     outline: none;

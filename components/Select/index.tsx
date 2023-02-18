@@ -11,7 +11,7 @@ import {
 interface IProps {
   value?: string
   defaultValue?: string
-  onValueChange: any
+  onValueChange?: any
   options: {
     id: string
     value: string
@@ -19,6 +19,7 @@ interface IProps {
   }[]
   placeholder?: string
   className?: string
+  name?: string
 }
 
 const Select = ({
@@ -28,9 +29,10 @@ const Select = ({
   options,
   placeholder,
   className,
+  name,
 }: IProps) => {
   return (
-    <Root value={value} defaultValue={defaultValue} onValueChange={onValueChange}>
+    <Root name={name} value={value} defaultValue={defaultValue} onValueChange={onValueChange}>
       <Trigger className={className} >
         <Value placeholder={placeholder} />
         <StyledSelectIcon>

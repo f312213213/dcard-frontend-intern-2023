@@ -22,6 +22,7 @@ const initialState: IState = {
     [EDialogType.INFO]: basicDialog,
     [EDialogType.INPUT]: basicDialog,
     [EDialogType.LOGIN]: basicDialog,
+    [EDialogType.CREATE]: basicDialog,
   },
   toast: {
     type: EToastType.INITIAL,
@@ -45,7 +46,6 @@ const appSlice = createSlice({
         title = '',
         content,
         type = EDialogType.INFO,
-        onDialogLoad,
         onDialogClose,
         onConfirm,
       } = action.payload
@@ -54,9 +54,6 @@ const appSlice = createSlice({
       state.dialog[type].title = title
       if (content) {
         state.dialog[type].content = content
-      }
-      if (onDialogLoad) {
-        state.dialog[type].onDialogLoad = onDialogLoad
       }
       if (onDialogClose) {
         state.dialog[type].onDialogClose = onDialogClose

@@ -19,3 +19,18 @@ export const StyledHeaderText = styled.p`
   color: ${props => props.theme.color.white};
   font-size: 20px;
 `
+
+export const StyledCreatedIssueButton = styled.button`
+  font-size: 18px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  color: ${props => props.theme.color.white};
+  background-color: ${props => props.theme.color.defaultBlue};
+
+
+  &:hover{
+    background-color: ${props => props.theme.color.semiBlue};
+  }
+`

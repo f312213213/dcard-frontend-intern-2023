@@ -1,12 +1,15 @@
-import { IUserData } from '@/features/user/interface'
-import { StyledHeader, StyledHeaderText } from '@/components/Header/styles'
+import { EDialogType } from '@/features/app/interface'
+import { StyledCreatedIssueButton, StyledHeader, StyledHeaderText } from '@/components/Header/styles'
+import { isLoginSelector, userDataSelector } from '@/features/user/selector'
+import { openDialog } from '@/features/app/slice'
+import { useAppDispatch, useAppSelector } from '@/features/store'
 
-interface IProps {
-  isLogin: boolean
-  userData: IUserData | null
-}
+const Header = () => {
+  const isLogin = useAppSelector(isLoginSelector)
+  const userData = useAppSelector(userDataSelector)
 
-const Header = ({ isLogin, userData }: IProps) => {
+  const dispatch = useAppDispatch()
+
   return (
     <StyledHeader>
       <StyledHeaderText>
@@ -15,9 +18,19 @@ const Header = ({ isLogin, userData }: IProps) => {
 
       {
         isLogin &&
-          <StyledHeaderText>
-            hi {userData?.username}
-          </StyledHeaderText>
+          <>
+            <StyledCreatedIssueButton
+              onClick={() => {
+                dispatch(openDialog({ type: EDialogType.CREATE }))
+              }
+              }
+            >
+              Create
+            </StyledCreatedIssueButton>
+            <StyledHeaderText>
+              hi {userData?.username}
+            </StyledHeaderText>
+          </>
       }
     </StyledHeader>
   )

@@ -84,7 +84,7 @@ const IssueDialog = () => {
                       onConfirm={onTitleUpdate}
                       defaultValue={issueData.title}
                       editView={({ errorMessage, ...fieldProps }) => (
-                        <TextField {...fieldProps} autoFocus style={{
+                        <TextField {...fieldProps} style={{
                           padding: '10px',
                           fontSize: '20px',
                         }} />

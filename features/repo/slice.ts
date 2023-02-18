@@ -28,6 +28,13 @@ const taskSlice = createSlice({
       const { selectedProject } = action.payload
       state.selectedProject = selectedProject
     },
+    insertNewProjectTaskData: (state, action) => {
+      const {
+        projectName,
+        issueData,
+      } = action.payload
+      state.projects[projectName].tasks = [issueData, ...state.projects[projectName].tasks]
+    },
     appendProjectTaskData: (state, action) => {
       const {
         projectName,
@@ -66,6 +73,7 @@ const taskSlice = createSlice({
 export const {
   initProjectsData,
   updateSelectedProject,
+  insertNewProjectTaskData,
   appendProjectTaskData,
   updateRepoDataByField,
   updateTaskDataByField,

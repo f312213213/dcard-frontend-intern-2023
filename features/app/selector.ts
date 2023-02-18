@@ -20,3 +20,5 @@ export const isInputDialogOpenSelector = createSelector(
 )
 
 export const isLoginDialogOpenSelector = (state: RootState) => state.app.dialog[EDialogType.LOGIN].open
+
+export const isNewLoginDialogOpenSelector = (state: RootState) => state.app.dialog[EDialogType.CREATE].open

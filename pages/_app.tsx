@@ -9,7 +9,7 @@ import { wrapper } from '@/features/store'
 import Backdrop from '@/containers/Backdrop'
 import Dialogs from '@/containers/Dialogs'
 import ErrorBoundaryToast from '@/components/Toast/ErrorBoundaryToast'
-import Header from '@/containers/Header'
+import Header from '@/components/Header'
 import Init from '@/containers/Init'
 import Sidebar from '@/containers/Sidebar'
 import Toast from '@/containers/Toast'
@@ -25,8 +25,8 @@ const App = ({ Component, ...rest }: AppProps) => {
             <Init />
             <NextNProgress options={{ showSpinner: false }} />
             <Backdrop />
-            <Dialogs />
             <Header />
+            <Dialogs />
             <Sidebar />
             <Component {...props.pageProps} />
             <Toast />
