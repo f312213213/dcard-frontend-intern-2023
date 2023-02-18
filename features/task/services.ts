@@ -6,54 +6,6 @@ import apiRequest, { EApiMethod } from '@/apis/apiClient'
 import forOwn from 'lodash/forown'
 import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
 
-export const updateIssueStatus = (repoName: string, issueNumber: number, status: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const username = getState().user.userData?.username
-
-  dispatch(openBackdrop())
-  dispatch(makeProjectLabels(repoName))
-  const { success } = await apiRequest({
-    endpoint: `/repos/${username}/${repoName}/issues/${issueNumber}/labels`,
-    method: EApiMethod.PUT,
-    data: { labels: [status] },
-  })
-  if (success) {
-    dispatch(openToast({ type: EToastType.SUCCESS, title: 'Update success!' }))
-  }
-  dispatch(closeBackdrop())
-}
-
-export const makeProjectLabels = (selectedProject: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const { userData } = getState().user
-  const { projectHasLabelMap } = getState().task
-
-  if (projectHasLabelMap[selectedProject]) return
-
-  const repoIndex = userData?.repos.findIndex((repo) => repo.repoName === selectedProject)
-
-  const { data, success } = await apiRequest({
-    endpoint: `/repos/${userData?.repos[repoIndex]?.repoOwner}/${selectedProject}/labels`,
-  })
-  const hasStatusLabel = data.some((label: any) => {
-    return (
-      label.name === issueLabels[EIssueStatus.OPEN].name ||
-      label.name === issueLabels[EIssueStatus.IN_PROGRESS].name ||
-      label.name === issueLabels[EIssueStatus.DONE].name
-    )
-  })
-  if (!hasStatusLabel) {
-    forOwn(issueLabels, async (label) => {
-      const { data, success } = await apiRequest({
-        endpoint: `/repos/${userData?.repos[repoIndex]?.repoOwner}/${selectedProject}/labels`,
-        method: EApiMethod.POST,
-        data: label,
-      })
-      if (success) dispatch(updateProjectHasLabelMap({ selectedProject, hasStatusLabel: true }))
-    })
-  } else {
-    dispatch(updateProjectHasLabelMap({ selectedProject, hasStatusLabel }))
-  }
-}
-
 export const getIssueData = (filter = 'all') => async (dispatch: AppDispatch, getState: () => RootState) => {
   const { page, hasMore, selectedProject } = getState().task
   const { userData } = getState().user

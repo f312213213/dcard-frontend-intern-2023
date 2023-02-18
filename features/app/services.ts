@@ -12,6 +12,14 @@ export const initApp = ({ code }: {code: string | undefined}) => async (dispatch
   }
   dispatch(openBackdrop())
 
+  // check GitHub status
+  const { data, success } = await apiClient({
+    endpoint: `${window.location.origin}/api/status`,
+  })
+  if (!success || data.status !== 'operating') {
+    dispatch(openToast({ type: EToastType.ERROR, title: 'There are some error on github server!' }))
+  }
+
   const accessToken = getCookie('accessToken')
   let isLogin = false
   // 登入
@@ -47,7 +55,6 @@ export const initApp = ({ code }: {code: string | undefined}) => async (dispatch
     return
   }
 
-  // 製作 repoData
   const userRepoData = getState().user.userData?.repos
   if (!userRepoData) {
     return dispatch(openToast({ type: EToastType.ERROR, title: 'There are no repo in your account!' }))

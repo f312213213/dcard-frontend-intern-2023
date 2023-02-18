@@ -17,21 +17,16 @@ const taskSlice = createSlice({
       projects.forEach((project: any) => {
         state.projects[project.repoName] = {
           ...project,
+          page: 1,
+          tasks: [],
+          hasMore: true,
+          hasLabel: false,
         } as IProject
       })
     },
     updateSelectedProject: (state, action) => {
       const { selectedProject } = action.payload
       state.selectedProject = selectedProject
-    },
-    initProjectTaskData: (state, action) => {
-      const {
-        projectName,
-        projectTaskData,
-      } = action.payload
-      state.projects[projectName] = {
-        ...projectTaskData,
-      }
     },
     appendProjectTaskData: (state, action) => {
       const {
@@ -40,6 +35,17 @@ const taskSlice = createSlice({
       } = action.payload
       state.projects[projectName].tasks = [...state.projects[projectName].tasks, ...projectTaskData]
       state.projects[projectName].page++
+    },
+    updateRepoDataByField: (state, action) => {
+      const {
+        projectName,
+        field = '',
+        updatedData,
+      } = action.payload
+      state.projects[projectName] = {
+        ...state.projects[projectName],
+        [field]: updatedData,
+      }
     },
     updateTaskDataByField: (state, action) => {
       const {
@@ -66,8 +72,8 @@ const taskSlice = createSlice({
 export const {
   initProjectsData,
   updateSelectedProject,
-  initProjectTaskData,
   appendProjectTaskData,
+  updateRepoDataByField,
   updateTaskDataByField,
 } = taskSlice.actions
 

@@ -1,7 +1,7 @@
 import { IRepo } from '@/features/user/interface'
 import { StyledSelect } from '../styles'
-import { getIssueData, makeProjectLabels } from '@/features/task/services'
-import { restoreTask, updateSelectedProject } from '@/features/task/slice'
+import { getRepoIssueData, makeProjectLabels } from '@/features/repo/services'
+import { updateSelectedProject } from '@/features/repo/slice'
 import { useAppDispatch } from '@/features/store'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -29,9 +29,8 @@ const RepoSelect = ({ reposData }: IProps) => {
 
   useEffect(() => {
     if (!isMounted || !selectedValue || !!issueNumber) return
-    dispatch(restoreTask())
     dispatch(updateSelectedProject({ selectedProject: selectedValue }))
-    dispatch(getIssueData())
+    dispatch(getRepoIssueData())
     dispatch(makeProjectLabels(selectedValue))
   }, [selectedValue, isMounted, issueNumber])
 

@@ -1,5 +1,5 @@
 import { StyledBrowseProjectPageTitle, StyledBrowseProjectPageView } from '@/containers/BrowseProjectPageContainer/styles'
-import { getIssueData } from '@/features/task/services'
+import { getRepoIssueData } from '@/features/repo/services'
 import { isLoginSelector } from '@/features/user/selector'
 import { selectedProjectSelector, selectedProjectTasksByProjectNameSelector } from '@/features/repo/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
@@ -20,7 +20,7 @@ const BrowseProjectPageContainer = () => {
       </StyledBrowseProjectPageTitle>
 
       <IssueTable
-        loadMore={() => dispatch(getIssueData())}
+        loadMore={() => dispatch(getRepoIssueData())}
         selectedProjectTasks={selectedProjectTasks}
       />
     </StyledBrowseProjectPageView>
