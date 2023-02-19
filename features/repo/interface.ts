@@ -1,3 +1,4 @@
+import { EApiStatus } from '@/features/app/interface'
 import { EIssueStatus } from '@/constants/issueLabel'
 
 export interface ITask {
@@ -21,6 +22,7 @@ export interface IProject {
   repoName: string
   repoId: string
   tasks: ITask[]
+  apiStatus: EApiStatus
 }
 
 export interface IState {
@@ -31,6 +33,7 @@ export interface IState {
     page: number
     hasMore: boolean
     total: number
+    apiStatus: EApiStatus
   }
   projects: {
     [key: string]: IProject

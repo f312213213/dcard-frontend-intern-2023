@@ -1,5 +1,5 @@
 import {
-  EAppStatus,
+  EApiStatus,
   EDialogType,
   EToastType,
   ICloseDialogAction,
@@ -16,7 +16,7 @@ const basicDialog = {
 }
 
 const initialState: IState = {
-  status: EAppStatus.INITIAL,
+  status: EApiStatus.INITIAL,
   dialog: {
     [EDialogType.ALERT]: basicDialog,
     [EDialogType.INFO]: basicDialog,
@@ -77,7 +77,7 @@ const appSlice = createSlice({
       state.backdrop = initialState.backdrop
     },
     appInitiated: state => {
-      state.status = EAppStatus.SUCCESS
+      state.status = EApiStatus.SUCCESS
       state.backdrop = initialState.backdrop
     },
   },

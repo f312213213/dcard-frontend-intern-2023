@@ -1,3 +1,4 @@
+import { EApiStatus } from '@/features/app/interface'
 import { IProject, IState } from './interface'
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -10,6 +11,7 @@ const initialState: IState = {
     page: 1,
     hasMore: true,
     total: 0,
+    apiStatus: EApiStatus.INITIAL,
   },
 
 }
@@ -26,6 +28,7 @@ const taskSlice = createSlice({
           page: 1,
           tasks: [],
           hasMore: true,
+          apiStatus: EApiStatus.INITIAL,
         } as IProject
       })
     },
@@ -88,6 +91,16 @@ const taskSlice = createSlice({
       state.search.queryText = queryText
       state.search.hasMore = !(searchResult.length < 10)
     },
+    updateSearchDataByField: (state, action) => {
+      const {
+        field = '',
+        updatedData,
+      } = action.payload
+      state.search = {
+        ...state.search,
+        [field]: updatedData,
+      }
+    },
     updateSearchTaskDataByField: (state, action) => {
       const {
         projectName,
@@ -112,6 +125,7 @@ export const {
   updateRepoDataByField,
   updateTaskDataByField,
   appendSearchResult,
+  updateSearchDataByField,
   updateSearchTaskDataByField,
 } = taskSlice.actions
 

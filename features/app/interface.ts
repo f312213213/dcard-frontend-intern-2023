@@ -1,10 +1,10 @@
 import { ReactNode } from 'react'
 
-export enum EAppStatus {
+export enum EApiStatus {
   INITIAL= 'INITIAL',
   SUCCESS= 'SUCCESS',
   FAILURE= 'FAILURE',
-  PENDING= 'PENDING',
+  LOADING= 'LOADING',
 }
 
 export interface IBasicDialog {
@@ -54,7 +54,7 @@ export interface IDialog {
 }
 
 export interface IState {
-  status: EAppStatus
+  status: EApiStatus
   dialog: IDialog
   toast: IToast
   backdrop: {

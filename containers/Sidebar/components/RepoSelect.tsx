@@ -27,8 +27,6 @@ const RepoSelect = ({ reposData }: IProps) => {
     router.push(`/browse/${value}`, undefined, { shallow: true })
   }
 
-  console.log(router)
-
   useEffect(() => {
     if (!isMounted || !selectedValue || issueNumber) return
     dispatch(getRepoIssueData())

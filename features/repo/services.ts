@@ -1,8 +1,10 @@
 import { AppDispatch, RootState } from '@/features/store'
+import { EApiStatus } from '@/features/app/interface'
 import { EPageContentType } from '@/constants/pageContentType'
 import {
   appendProjectTaskData,
-  appendSearchResult,
+  appendSearchResult, updateRepoDataByField,
+  updateSearchDataByField,
   updateSearchTaskDataByField,
   updateTaskDataByField
 } from '@/features/repo/slice'
@@ -23,7 +25,9 @@ export const updateIssueStatus = (
     const { repoOwner, tasks } = projects[repoName]
 
     // @ts-ignore
-    const labelsWithoutStatusLabel = removeStatusLabel(first(tasks, (task) => task.number === issueNumber).labels)
+    const targetTask = first(tasks, (task) => task.number === issueNumber)
+
+    const labelsWithoutStatusLabel = removeStatusLabel(targetTask?.labels || [])
 
     dispatch(updateTaskDataByField({
       projectName: repoName,
@@ -92,9 +96,11 @@ export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch
   const { selectedProject, projects } = getState().repo
   if (!selectedProject) return
 
-  const { hasMore, page, repoOwner } = projects[selectedProject]
+  const { hasMore, page, repoOwner, apiStatus } = projects[selectedProject]
 
-  if (!hasMore) return
+  if (!hasMore || apiStatus === EApiStatus.LOADING) return
+
+  dispatch(updateRepoDataByField({ projectName: selectedProject, field: 'apiStatus', updatedData: EApiStatus.LOADING }))
 
   dispatch(openBackdrop())
   const { data, success } = await apiRequest({
@@ -116,22 +122,29 @@ export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch
         labels: issueLabelsName,
       }
     })
+
+    dispatch(updateRepoDataByField({ projectName: selectedProject, field: 'apiStatus', updatedData: EApiStatus.SUCCESS }))
     dispatch(appendProjectTaskData({
       projectName: selectedProject,
       projectTaskData: tasks,
     }))
   }
+
+  dispatch(updateRepoDataByField({ projectName: selectedProject, field: 'apiStatus', updatedData: EApiStatus.FAILURE }))
   dispatch(closeBackdrop())
 }
 
 export const getSearchResult = (queryText: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
   const state = getState()
   const username = state.user.userData?.username
-  const { page, hasMore, queryText: prevQueryText } = state.repo.search
+  const { page, hasMore, queryText: prevQueryText, apiStatus } = state.repo.search
 
-  if (!hasMore && prevQueryText === queryText) return
+  if ((!hasMore && prevQueryText === queryText) || apiStatus === EApiStatus.LOADING) return
+
+  dispatch(updateSearchDataByField({ field: 'apiStatus', updatedData: EApiStatus.LOADING }))
 
   dispatch(openBackdrop())
+
   const { data, success } = await apiRequest({
     endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} type:issue&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
   })
@@ -158,7 +171,11 @@ export const getSearchResult = (queryText: string) => async (dispatch: AppDispat
         labels: issueLabelsName,
       }
     })
+
+    dispatch(updateSearchDataByField({ field: 'apiStatus', updatedData: EApiStatus.SUCCESS }))
     dispatch(appendSearchResult({ searchResult: tasks, queryText }))
   }
+
+  dispatch(updateSearchDataByField({ field: 'apiStatus', updatedData: EApiStatus.FAILURE }))
   dispatch(closeBackdrop())
 }

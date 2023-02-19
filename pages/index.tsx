@@ -32,7 +32,7 @@ const HomePage = () => {
       <PageContentContainer
         pageContentType={EPageContentType.SEARCH_RESULT}
         tableEmptyText={'暫無搜尋結果'}
-        displayText={'Search'}
+        displayText={`Search${router.query?.q && ' :' + router.query?.q}`}
         contentData={searchResult}
         tableReachEnd={loadMore}
       />

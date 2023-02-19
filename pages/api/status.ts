@@ -24,9 +24,15 @@ const checkStatusHandler = async (
       throw Error()
     }
 
-    return res.status(200).json({ status: 'operating' })
+    return res
+      .setHeader('Cache-Control', 'max-age=20, public')
+      .status(200)
+      .json({ status: 'operating' })
   } catch (e: any) {
-    return res.status(500).json({ status: 'outage' })
+    return res
+      .setHeader('Cache-Control', 'max-age=20, public')
+      .status(500)
+      .json({ status: 'outage' })
   }
 }
 export default checkStatusHandler
