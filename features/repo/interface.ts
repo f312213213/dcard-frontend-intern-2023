@@ -25,6 +25,13 @@ export interface IProject {
 
 export interface IState {
   selectedProject: string
+  search: {
+    queryText: string
+    tasks: ITask[]
+    page: number
+    hasMore: boolean
+    total: number
+  }
   projects: {
     [key: string]: IProject
   }

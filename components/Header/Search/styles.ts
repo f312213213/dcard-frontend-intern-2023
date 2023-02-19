@@ -14,10 +14,13 @@ export const StyledSearchInput = styled.input`
   border: 0.1px solid black;
   border-radius: 4px 0px 0px 4px;
   background-color: ${props => props.theme.color.mainDefault};
-  color: ${props => props.theme.color.gray};
+  color: ${props => props.theme.color.semiWhite};
 
   &:focus {
     outline: none;
+  }
+  &::placeholder {
+    color: ${props => props.theme.color.semiWhite};
   }
 `
 
@@ -40,5 +43,5 @@ export const StyledSearchButton = styled.button`
 `
 
 export const StyledSearchIcon = styled(AiOutlineSearch)`
-  color: ${props => props.theme.color.white};
+  color: ${props => props.theme.color.semiWhite};
 `

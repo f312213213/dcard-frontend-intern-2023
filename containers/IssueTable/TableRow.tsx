@@ -1,4 +1,5 @@
 import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
+import { EPageContentType } from '@/constants/pageContentType'
 import { ITask } from '@/features/repo/interface'
 import { StyledIssueStatusSelect, StyledIssueTableRow } from './styles'
 import { memo, useState } from 'react'
@@ -15,7 +16,12 @@ const TableRow = ({ task }: IProps) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const onValueChange = async (value: EIssueStatus) => {
-    dispatch(updateIssueStatus(task.repoName, task.number, value))
+    dispatch(updateIssueStatus(
+      task.repoName,
+      task.number,
+      value,
+      router.pathname === '/' ? EPageContentType.SEARCH_RESULT : EPageContentType.ISSUE_TABLE
+    ))
   }
 
   return (

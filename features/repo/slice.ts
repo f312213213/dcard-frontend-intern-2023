@@ -1,11 +1,17 @@
-import { HYDRATE } from 'next-redux-wrapper'
 import { IProject, IState } from './interface'
-import { RootState } from '@/features/store'
-import { createAction, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: IState = {
   selectedProject: '',
   projects: {},
+  search: {
+    queryText: '',
+    tasks: [],
+    page: 1,
+    hasMore: true,
+    total: 0,
+  },
+
 }
 
 const taskSlice = createSlice({
@@ -20,7 +26,6 @@ const taskSlice = createSlice({
           page: 1,
           tasks: [],
           hasMore: true,
-          hasLabel: false,
         } as IProject
       })
     },
@@ -42,6 +47,7 @@ const taskSlice = createSlice({
       } = action.payload
       state.projects[projectName].tasks = [...state.projects[projectName].tasks, ...projectTaskData]
       state.projects[projectName].page++
+      state.projects[projectName].hasMore = !(projectTaskData.length < 10)
     },
     updateRepoDataByField: (state, action) => {
       const {
@@ -67,6 +73,34 @@ const taskSlice = createSlice({
         [field]: updatedData,
       }
     },
+    appendSearchResult: (state, action) => {
+      const {
+        queryText,
+        searchResult,
+      } = action.payload
+      if (state.search.queryText === queryText) {
+        state.search.tasks = [...state.search.tasks, ...searchResult]
+        state.search.page++
+      } else {
+        state.search.tasks = searchResult
+        state.search.page = 2
+      }
+      state.search.queryText = queryText
+      state.search.hasMore = !(searchResult.length < 10)
+    },
+    updateSearchTaskDataByField: (state, action) => {
+      const {
+        projectName,
+        issueNumber,
+        field = '',
+        updatedData,
+      } = action.payload
+      const taskIndex = state.search.tasks.findIndex(task => task.number === issueNumber && task.repoName === projectName)
+      state.search.tasks[taskIndex] = {
+        ...state.search.tasks[taskIndex],
+        [field]: updatedData,
+      }
+    },
   },
 })
 
@@ -77,6 +111,8 @@ export const {
   appendProjectTaskData,
   updateRepoDataByField,
   updateTaskDataByField,
+  appendSearchResult,
+  updateSearchTaskDataByField,
 } = taskSlice.actions
 
 export default taskSlice

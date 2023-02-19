@@ -6,6 +6,16 @@ export const selectedProjectTasksByProjectNameSelector = (selectedProject: strin
   return (state: RootState) => state.repo.projects[selectedProject]?.tasks || []
 }
 
+export const searchResultSelector = (state: RootState) => state.repo.search.tasks || []
+
+export const searchedIssueDataSelector = (projectName: string, issueNumber: number) => (state: RootState) => {
+  const searchedIssues = state.repo.search.tasks
+  const issueIndex = searchedIssues.findIndex(issue => {
+    return issue.number === issueNumber && issue.repoName === projectName
+  })
+  return searchedIssues[issueIndex]
+}
+
 export const issueDataByIdSelector = (selectedProject: string, issueNumber: number) => (state: RootState) => {
   const projectIssues = state.repo.projects[selectedProject]?.tasks
   const issueIndex = projectIssues.findIndex(issue => issue.number === issueNumber)

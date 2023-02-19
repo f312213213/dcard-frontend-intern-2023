@@ -9,8 +9,8 @@ import useCleanupCode from '@/hooks/useCleanupCode'
 const BrowseIssuePage = ({ issue }: {issue: any}) => {
   useCleanupCode()
   const meta = {
-    title: `${(issue?.issueTitle && issue?.projectName)
-      ? (issue?.issueTitle + ' - ' + issue?.projectName)
+    title: `${(issue?.issueTitle && issue?.issueNumber)
+      ? (`${issue.issueTitle} - Issue #${issue.issueNumber}`)
       : 'Login to use this app'} 
       - Github Task Tracker`,
     description: 'Github Task Tracker - 2023 Dcard frontend intern homework.',

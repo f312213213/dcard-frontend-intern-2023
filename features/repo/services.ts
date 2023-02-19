@@ -1,89 +1,91 @@
 import { AppDispatch, RootState } from '@/features/store'
-import { appendProjectTaskData, updateRepoDataByField, updateTaskDataByField } from '@/features/repo/slice'
+import { EPageContentType } from '@/constants/pageContentType'
+import {
+  appendProjectTaskData,
+  appendSearchResult,
+  updateSearchTaskDataByField,
+  updateTaskDataByField
+} from '@/features/repo/slice'
 import { checkHasStatusLabel, getFirstStatusLabel, getIssueLabelNameArray, removeStatusLabel } from '@/utilis/issueStatus'
-import { closeBackdrop, openBackdrop, openToast } from '@/features/app/slice'
+import { closeBackdrop, openBackdrop } from '@/features/app/slice'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
 import first from 'lodash/first'
-import forOwn from 'lodash/forOwn'
 import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
-
-export const makeProjectLabels = (
-  selectedProject: string
-) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const repoData = getState().repo.projects
-  if (!repoData[selectedProject] || repoData[selectedProject].hasLabel) return
-
-  const { repoOwner } = repoData[selectedProject]
-
-  const { data, success } = await apiRequest({
-    endpoint: `/repos/${repoOwner}/${selectedProject}/labels`,
-  })
-  let hasStatusLabel = false
-  if (success) {
-    hasStatusLabel = checkHasStatusLabel(data)
-  }
-  if (!hasStatusLabel) {
-    forOwn(issueLabels, async (label) => {
-      const { success } = await apiRequest({
-        endpoint: `/repos/${repoOwner}/${selectedProject}/labels`,
-        method: EApiMethod.POST,
-        data: label,
-      })
-      if (success) {
-        dispatch(updateRepoDataByField({
-          projectName: selectedProject,
-          field: 'hasLabel',
-          updatedData: true,
-        }))
-      }
-    })
-  } else {
-    dispatch(updateRepoDataByField({
-      projectName: selectedProject,
-      field: 'hasLabel',
-      updatedData: true,
-    }))
-  }
-}
 
 export const updateIssueStatus = (
   repoName: string,
   issueNumber: number,
-  status: string
+  status: string,
+  type: EPageContentType
 ) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const { projects } = getState().repo
-  const { repoOwner, tasks } = projects[repoName]
+  if (type === EPageContentType.ISSUE_TABLE || type === EPageContentType.SINGLE_ISSUE) {
+    const { projects } = getState().repo
+    const { repoOwner, tasks } = projects[repoName]
 
-  // @ts-ignore
-  const labelsWithoutStatusLabel = removeStatusLabel(first(tasks, (task) => task.number === issueNumber).labels)
+    // @ts-ignore
+    const labelsWithoutStatusLabel = removeStatusLabel(first(tasks, (task) => task.number === issueNumber).labels)
 
-  dispatch(updateTaskDataByField({
-    projectName: repoName,
-    issueNumber,
-    field: 'status',
-    updatedData: status,
-  }))
-  dispatch(updateTaskDataByField({
-    projectName: repoName,
-    issueNumber,
-    field: 'labels',
-    updatedData: [
-      ...labelsWithoutStatusLabel,
-      status,
-    ],
-  }))
-  dispatch(makeProjectLabels(repoName))
-
-  await apiRequest({
-    endpoint: `/repos/${repoOwner}/${repoName}/issues/${issueNumber}/labels`,
-    method: EApiMethod.PUT,
-    data: {
-      labels: [
+    dispatch(updateTaskDataByField({
+      projectName: repoName,
+      issueNumber,
+      field: 'status',
+      updatedData: status,
+    }))
+    dispatch(updateTaskDataByField({
+      projectName: repoName,
+      issueNumber,
+      field: 'labels',
+      updatedData: [
         ...labelsWithoutStatusLabel,
         status,
       ],
-    },
-  })
+    }))
+    await apiRequest({
+      endpoint: `/repos/${repoOwner}/${repoName}/issues/${issueNumber}/labels`,
+      method: EApiMethod.PUT,
+      data: {
+        labels: [
+          ...labelsWithoutStatusLabel,
+          status,
+        ],
+      },
+    })
+  } else {
+    const { search } = getState().repo
+    const { tasks } = search
+
+    // @ts-ignore
+    const targetTask = first(tasks, (task) => task.number === issueNumber)
+
+    const labelsWithoutStatusLabel = removeStatusLabel(targetTask?.labels || [])
+
+    dispatch(updateSearchTaskDataByField({
+      projectName: repoName,
+      issueNumber,
+      field: 'status',
+      updatedData: status,
+    }))
+    dispatch(updateSearchTaskDataByField({
+      projectName: repoName,
+      issueNumber,
+      field: 'labels',
+      updatedData: [
+        ...labelsWithoutStatusLabel,
+        status,
+      ],
+    }))
+
+    await apiRequest({
+      endpoint: `/repos/${targetTask?.repoOwner}/${repoName}/issues/${issueNumber}/labels`,
+      method: EApiMethod.PUT,
+      data: {
+        labels: [
+          ...labelsWithoutStatusLabel,
+          status,
+        ],
+      },
+    })
+  }
 }
 
 export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -118,14 +120,45 @@ export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch
       projectName: selectedProject,
       projectTaskData: tasks,
     }))
+  }
+  dispatch(closeBackdrop())
+}
 
-    if (tasks.length === 0) {
-      dispatch(updateRepoDataByField({
-        projectName: selectedProject,
-        field: 'hasMore',
-        updatedData: false,
-      }))
-    }
+export const getSearchResult = (queryText: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const state = getState()
+  const username = state.user.userData?.username
+  const { page, hasMore, queryText: prevQueryText } = state.repo.search
+
+  if (!hasMore && prevQueryText === queryText) return
+
+  dispatch(openBackdrop())
+  const { data, success } = await apiRequest({
+    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} type:issue&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
+  })
+  if (success) {
+    const tasks = data.items.map((issue: any) => {
+      const issueLabelsName = getIssueLabelNameArray(issue.labels)
+      const issueHasStatusLabel = checkHasStatusLabel(issueLabelsName)
+
+      const repoFullName = issue.repository_url.split('repos')[1].substring(1)
+
+      const repoOwner = repoFullName.split('/')[0]
+
+      const repoName = repoFullName.split('/')[1]
+
+      return {
+        title: issue.title,
+        body: issue.body,
+        id: issue.node_id,
+        number: issue.number,
+        status: issueHasStatusLabel ? getFirstStatusLabel(issueLabelsName) : issueLabels[EIssueStatus.OPEN].name, // default status is "OPEN"
+        repoName,
+        url: issue.html_url,
+        repoOwner,
+        labels: issueLabelsName,
+      }
+    })
+    dispatch(appendSearchResult({ searchResult: tasks, queryText }))
   }
   dispatch(closeBackdrop())
 }

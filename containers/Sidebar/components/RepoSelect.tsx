@@ -1,5 +1,5 @@
 import { StyledSelect } from '../styles'
-import { getRepoIssueData, makeProjectLabels } from '@/features/repo/services'
+import { getRepoIssueData } from '@/features/repo/services'
 import { updateSelectedProject } from '@/features/repo/slice'
 import { useAppDispatch } from '@/features/store'
 import { useEffect, useState } from 'react'
@@ -27,10 +27,11 @@ const RepoSelect = ({ reposData }: IProps) => {
     router.push(`/browse/${value}`, undefined, { shallow: true })
   }
 
+  console.log(router)
+
   useEffect(() => {
     if (!isMounted || !selectedValue || issueNumber) return
     dispatch(getRepoIssueData())
-    dispatch(makeProjectLabels(selectedValue))
   }, [selectedValue, isMounted, issueNumber])
 
   useEffect(() => {

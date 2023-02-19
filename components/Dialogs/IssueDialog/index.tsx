@@ -1,13 +1,14 @@
 import { Portal, Root } from '@radix-ui/react-dialog'
 
 import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
+import { EPageContentType } from '@/constants/pageContentType'
 import { StyledDialogContent, StyledDialogDescription, StyledLink } from '@/components/Dialogs/IssueDialog/styles'
 import { StyledDialogOverlay, StyledDialogTitle } from '@/components/Dialogs/LoginDialog/styles'
 import { StyledIssueStatusSelect } from '@/containers/IssueTable/styles'
-import { issueDataByIdSelector } from '@/features/repo/selector'
+import { issueDataByIdSelector, searchedIssueDataSelector } from '@/features/repo/selector'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
 import { updateIssueStatus } from '@/features/repo/services'
-import { updateTaskDataByField } from '@/features/repo/slice'
+import { updateSearchTaskDataByField, updateTaskDataByField } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -20,20 +21,38 @@ const IssueDialog = () => {
   const router = useRouter()
   const { projectModalId: repoName, issueModalNumber: issueNumber } = router.query
 
-  const issueData = useAppSelector(issueDataByIdSelector(repoName as string, Number(issueNumber)))
+  let issueData = useAppSelector(issueDataByIdSelector(repoName as string, Number(issueNumber)))
+  const searchedIssueData = useAppSelector(searchedIssueDataSelector(repoName as string, Number(issueNumber)))
+
+  if (router.pathname === '/') issueData = searchedIssueData
+
   const dispatch = useAppDispatch()
 
   const onValueChange = (value: EIssueStatus) => {
-    dispatch(updateIssueStatus(repoName as string, issueData.number, value))
+    dispatch(updateIssueStatus(
+      repoName as string,
+      issueData.number,
+      value,
+      router.pathname === '/' ? EPageContentType.SEARCH_RESULT : EPageContentType.ISSUE_TABLE
+    ))
   }
 
   const onTitleUpdate = async (value: string) => {
-    dispatch(updateTaskDataByField({
-      projectName: repoName,
-      issueNumber: issueData.number,
-      field: 'title',
-      updatedData: value,
-    }))
+    if (router.pathname === '/') {
+      dispatch(updateSearchTaskDataByField({
+        projectName: repoName,
+        issueNumber: issueData.number,
+        field: 'title',
+        updatedData: value,
+      }))
+    } else {
+      dispatch(updateTaskDataByField({
+        projectName: repoName,
+        issueNumber: issueData.number,
+        field: 'title',
+        updatedData: value,
+      }))
+    }
     await apiRequest({
       endpoint: `/repos/${issueData.repoOwner}/${repoName}/issues/${issueNumber}`,
       method: EApiMethod.PATCH,
@@ -44,12 +63,21 @@ const IssueDialog = () => {
   }
 
   const onBodyUpdate = async (value: string) => {
-    dispatch(updateTaskDataByField({
-      projectName: repoName,
-      issueNumber: issueData.number,
-      field: 'body',
-      updatedData: value,
-    }))
+    if (router.pathname === '/') {
+      dispatch(updateSearchTaskDataByField({
+        projectName: repoName,
+        issueNumber: issueData.number,
+        field: 'body',
+        updatedData: value,
+      }))
+    } else {
+      dispatch(updateTaskDataByField({
+        projectName: repoName,
+        issueNumber: issueData.number,
+        field: 'body',
+        updatedData: value,
+      }))
+    }
     await apiRequest({
       endpoint: `/repos/${issueData.repoOwner}/${repoName}/issues/${issueNumber}`,
       method: EApiMethod.PATCH,
@@ -69,11 +97,11 @@ const IssueDialog = () => {
               <>
                 <Head>
                   <title>
-                    {`${issueData.title} - Github Task Tracker`}
+                    {`${issueData.title} - Issue #${issueData.number} - Github Task Tracker`}
                   </title>
                 </Head>
                 <StyledDialogTitle>
-                  #{issueData.number}
+                  #{issueData.number} - {issueData.repoName}
                   <br />
                   <div
                     style={{
@@ -96,7 +124,9 @@ const IssueDialog = () => {
                               padding: '10px',
                               fontSize: '22px',
                             }}
-                          >{issueData.title}</div>
+                          >
+                            {issueData.title}
+                          </div>
                         )
                       }}
                     />
@@ -135,7 +165,7 @@ const IssueDialog = () => {
                             fontSize: '16px',
                           }}
                         >
-                          {issueData.body}
+                          {issueData.body || "This issue doesn't have a body!"}
                         </p>
                       )
                     }}

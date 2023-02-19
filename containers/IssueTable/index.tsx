@@ -6,6 +6,7 @@ import {
 } from './styles'
 import { TableVirtuoso } from 'react-virtuoso'
 import TableRow from './TableRow'
+import debounce from 'lodash/debounce'
 import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {
@@ -29,11 +30,13 @@ const IssueTable = ({ selectedProjectTasks, loadMore, tableEmptyText = '暫無�
     )
   }
 
+  const debouncedLoadMore = debounce(loadMore, 100)
+
   return (
     <StyledIssueTableContainer>
       <TableVirtuoso
         data={selectedProjectTasks}
-        endReached={loadMore}
+        endReached={debouncedLoadMore}
         fixedHeaderContent={() => (
           <StyledIssueTableHeader>
             <th className={'number'}>ID</th>
