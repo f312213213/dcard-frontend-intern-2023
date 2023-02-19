@@ -52,6 +52,18 @@ const taskSlice = createSlice({
       state.projects[projectName].page++
       state.projects[projectName].hasMore = !(projectTaskData.length < 10)
     },
+    restoreRepoData: (state, action) => {
+      const {
+        projectName,
+      } = action.payload
+      state.projects[projectName] = {
+        ...state.projects[projectName],
+        page: 1,
+        tasks: [],
+        hasMore: true,
+        apiStatus: EApiStatus.INITIAL,
+      }
+    },
     updateRepoDataByField: (state, action) => {
       const {
         projectName,
@@ -91,6 +103,15 @@ const taskSlice = createSlice({
       state.search.queryText = queryText
       state.search.hasMore = !(searchResult.length < 10)
     },
+    restoreSearchData: (state) => {
+      state.search = {
+        ...state.search,
+        page: 1,
+        tasks: [],
+        hasMore: true,
+        apiStatus: EApiStatus.INITIAL,
+      }
+    },
     updateSearchDataByField: (state, action) => {
       const {
         field = '',
@@ -123,8 +144,10 @@ export const {
   insertNewProjectTaskData,
   appendProjectTaskData,
   updateRepoDataByField,
+  restoreRepoData,
   updateTaskDataByField,
   appendSearchResult,
+  restoreSearchData,
   updateSearchDataByField,
   updateSearchTaskDataByField,
 } = taskSlice.actions

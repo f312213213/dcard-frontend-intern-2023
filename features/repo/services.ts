@@ -104,7 +104,7 @@ export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch
 
   dispatch(openBackdrop())
   const { data, success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${repoOwner}/${selectedProject}/issues?state=open&per_page=10&page=${page}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${repoOwner}/${selectedProject}/issues?state=open&per_page=10&page=${page}&labels=${filter !== 'all' ? filter : ''}`,
   })
   if (success) {
     const tasks = data.map((issue: any) => {
@@ -130,11 +130,10 @@ export const getRepoIssueData = (filter = 'all') => async (dispatch: AppDispatch
     }))
   }
 
-  dispatch(updateRepoDataByField({ projectName: selectedProject, field: 'apiStatus', updatedData: EApiStatus.FAILURE }))
   dispatch(closeBackdrop())
 }
 
-export const getSearchResult = (queryText: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+export const getSearchResult = (queryText: string, filter = 'all') => async (dispatch: AppDispatch, getState: () => RootState) => {
   const state = getState()
   const username = state.user.userData?.username
   const { page, hasMore, queryText: prevQueryText, apiStatus } = state.repo.search
@@ -146,7 +145,7 @@ export const getSearchResult = (queryText: string) => async (dispatch: AppDispat
   dispatch(openBackdrop())
 
   const { data, success } = await apiRequest({
-    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} type:issue&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
+    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} type:issue ${filter !== 'all' ? `label:"${filter}"` : ''}&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
   })
   if (success) {
     const tasks = data.items.map((issue: any) => {

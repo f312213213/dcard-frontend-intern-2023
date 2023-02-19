@@ -1,6 +1,6 @@
 import { StyledSelect } from '../styles'
 import { getRepoIssueData } from '@/features/repo/services'
-import { updateSelectedProject } from '@/features/repo/slice'
+import { restoreRepoData, updateSelectedProject } from '@/features/repo/slice'
 import { useAppDispatch } from '@/features/store'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -19,7 +19,7 @@ const RepoSelect = ({ reposData }: IProps) => {
   const router = useRouter()
   const isMounted = useIsMounted()
   const defaultValue = router.pathname !== '/browse/[projectOwner]/[projectName]' ? undefined : `${router.query.projectOwner}/${router.query.projectName}` || `${reposData[0].repoOwner}/${reposData[0].repoName}`
-  const issueNumber = router.query.issueNumber
+  const { filter = '', issueNumber } = router.query
   const [selectedValue, setSelectedValue] = useState(defaultValue)
 
   const onValueChange = (value: string) => {
@@ -29,8 +29,8 @@ const RepoSelect = ({ reposData }: IProps) => {
 
   useEffect(() => {
     if (!isMounted || !selectedValue || issueNumber) return
-    dispatch(getRepoIssueData())
-  }, [selectedValue, isMounted, issueNumber])
+    dispatch(getRepoIssueData(filter as string))
+  }, [selectedValue, isMounted, issueNumber, filter])
 
   useEffect(() => {
     if (router.query?.projectName && router.pathname !== '/') {

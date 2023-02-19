@@ -1,7 +1,9 @@
+import { EIssueStatus } from '@/constants/issueLabel'
 import { StyledSidebarFilterLink, StyledSidebarLoader, StyledSidebarWrapper } from './styles'
 import { isLoginSelector } from '@/features/user/selector'
-import { repoDataSelector } from '@/features/repo/selector'
-import { useAppSelector } from '@/features/store'
+import { repoDataSelector, selectedProjectSelector } from '@/features/repo/selector'
+import { restoreRepoData, restoreSearchData } from '@/features/repo/slice'
+import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
 import RepoSelect from './components/RepoSelect'
 
@@ -11,11 +13,15 @@ const issueFilters = [
     text: 'All issues',
   },
   {
-    type: 'open',
-    text: 'My open issues',
+    type: EIssueStatus.OPEN,
+    text: 'Open issues',
   },
   {
-    type: 'closed',
+    type: EIssueStatus.IN_PROGRESS,
+    text: 'In progress issues',
+  },
+  {
+    type: EIssueStatus.DONE,
     text: 'Done issues',
   },
 ]
@@ -23,8 +29,9 @@ const issueFilters = [
 const SidebarContainer = () => {
   const reposData = useAppSelector(repoDataSelector)
   const isLogin = useAppSelector(isLoginSelector)
+  const projectName = useAppSelector(selectedProjectSelector)
+  const dispatch = useAppDispatch()
   const router = useRouter()
-  const { filter } = router.query
   if (!isLogin) {
     return (
       <StyledSidebarWrapper style={{
@@ -45,6 +52,13 @@ const SidebarContainer = () => {
           return (
             <StyledSidebarFilterLink
               key={filter.type}
+              onClick={() => {
+                if (router.pathname === '/') {
+                  dispatch(restoreSearchData())
+                } else {
+                  dispatch(restoreRepoData({ projectName }))
+                }
+              }}
               href={{
                 pathname: router.pathname,
                 query: {

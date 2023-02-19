@@ -17,6 +17,8 @@ const Search = () => {
   const dispatch = useAppDispatch()
   const isMounted = useIsMounted()
 
+  const { q, filter } = router.query
+
   const searchHandlerHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!queryText) return
@@ -25,8 +27,8 @@ const Search = () => {
   }
 
   useEffect(() => {
-    if (router.query?.q && isMounted) {
-      dispatch(getSearchResult(router.query?.q as string))
+    if (q && isMounted) {
+      dispatch(getSearchResult(q as string, filter as string))
     }
   }, [isMounted])
 
