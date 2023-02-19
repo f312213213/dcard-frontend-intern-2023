@@ -1,3 +1,4 @@
+import { Root } from '@radix-ui/react-separator'
 import Link from 'next/link'
 import Select from '@/components/Select'
 import styled from 'styled-components'
@@ -34,11 +35,9 @@ export const StyledSelect = styled(Select)`
   transition: 0.3s;
   cursor: pointer;
   border: none;
-  margin-bottom: 10px;
 
   font-size: 16px;
   color: ${props => props.theme.color.semiWhite};
-  border-bottom: ${props => props.theme.color.white} 1px solid;
 
   &:focus {
     outline: none;
@@ -55,4 +54,10 @@ export const StyledSidebarFilterLink = styled(Link)`
   &:hover {
     background:${props => props.theme.color.semiDark};
   }
+`
+
+export const StyledSeparator = styled(Root)`
+  height: 1px;
+  background: ${props => props.theme.color.semiWhite};
+  margin: 10px;
 `

@@ -1,5 +1,5 @@
 import { EIssueStatus } from '@/constants/issueLabel'
-import { StyledSidebarFilterLink, StyledSidebarLoader, StyledSidebarWrapper } from './styles'
+import { StyledSeparator, StyledSidebarFilterLink, StyledSidebarLoader, StyledSidebarWrapper } from './styles'
 import { isLoginSelector } from '@/features/user/selector'
 import { repoDataSelector, selectedProjectSelector } from '@/features/repo/selector'
 import { restoreRepoData, restoreSearchData } from '@/features/repo/slice'
@@ -29,11 +29,11 @@ const issueFilters = [
 const issueOrder = [
   {
     type: 'desc',
-    text: 'desc',
+    text: 'Descending',
   },
   {
     type: 'asc',
-    text: 'asc',
+    text: 'Ascending',
   },
 ]
 
@@ -61,6 +61,7 @@ const SidebarContainer = () => {
   return (
     <StyledSidebarWrapper>
       <RepoSelect reposData={reposData} />
+      <StyledSeparator />
       {
         issueFilters.map(filter => {
           return (
@@ -88,7 +89,7 @@ const SidebarContainer = () => {
           )
         })
       }
-
+      <StyledSeparator />
       {
         issueOrder.map(order => {
           return (
