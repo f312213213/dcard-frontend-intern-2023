@@ -7,12 +7,12 @@ import type { AppProps } from 'next/app'
 
 import { wrapper } from '@/features/store'
 import ErrorBoundaryToast from '@/components/Toast/ErrorBoundaryToast'
+import Init from '@/containers/Init'
 import dynamic from 'next/dynamic'
 import theme from '@/styles/theme'
 
 const Toast = dynamic(() => import('@/containers/Toast'), { ssr: false })
 const Sidebar = dynamic(() => import('@/containers/Sidebar'), { ssr: false })
-const Init = dynamic(() => import('@/containers/Init'), { ssr: false })
 const Header = dynamic(() => import('@/components/Header'), { ssr: false })
 const Dialogs = dynamic(() => import('@/containers/Dialogs'), { ssr: false })
 const Backdrop = dynamic(() => import('@/containers/Backdrop'), { ssr: false })
