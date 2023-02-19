@@ -18,8 +18,10 @@ const RepoSelect = ({ reposData }: IProps) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const isMounted = useIsMounted()
-  const defaultValue = router.pathname !== '/browse/[projectOwner]/[projectName]' ? undefined : `${router.query.projectOwner}/${router.query.projectName}` || `${reposData[0].repoOwner}/${reposData[0].repoName}`
-  const { filter = '', order = '', issueNumber } = router.query
+  const { filter = '', order = '', issueNumber, projectName, projectOwner } = router.query
+
+  const defaultValue = router.pathname !== '/browse/[projectOwner]/[projectName]' ? undefined : `${projectOwner}/${projectName}` || `${reposData[0].repoOwner}/${reposData[0].repoName}`
+
   const [selectedValue, setSelectedValue] = useState(defaultValue)
 
   const onValueChange = (value: string) => {
