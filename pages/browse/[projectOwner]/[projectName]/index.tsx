@@ -5,9 +5,11 @@ import { parseCookie } from '@/utilis/auth'
 import { selectedProjectSelector, selectedProjectTasksByProjectNameSelector } from '@/features/repo/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import Layout from '@/components/Layout'
-import PageContentContainer from '@/containers/PageContent'
 import apiRequest, { setupApiCallerAuth } from '@/apis/apiClient'
+import dynamic from 'next/dynamic'
 import useCleanupCode from '@/hooks/useCleanupCode'
+
+const PageContentContainer = dynamic(() => import('@/containers/PageContent'), { ssr: false })
 
 const BrowseProjectPage = () => {
   useCleanupCode()

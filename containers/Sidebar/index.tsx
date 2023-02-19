@@ -1,11 +1,12 @@
-import { EIssueStatus } from '@/constants/issueLabel'
 import { StyledSeparator, StyledSidebarFilterLink, StyledSidebarLoader, StyledSidebarWrapper } from './styles'
 import { isLoginSelector } from '@/features/user/selector'
 import { repoDataSelector, selectedProjectSelector } from '@/features/repo/selector'
 import { restoreRepoData, restoreSearchData } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
-import RepoSelect from './components/RepoSelect'
+import dynamic from 'next/dynamic'
+
+const RepoSelect = dynamic(() => import('./components/RepoSelect'), { ssr: false })
 
 const issueFilters = [
   {

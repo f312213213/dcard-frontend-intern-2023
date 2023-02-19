@@ -1,7 +1,6 @@
 import { StyledSingleIssueViewWrapper } from '@/containers/SingleIssueView/styles'
 import { closeBackdrop, openBackdrop } from '@/features/app/slice'
 import { isAppInitiatedSelector } from '@/features/app/selector'
-import { updateTaskDataByField } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useEffect, useState } from 'react'
 import InlineEdit from '@atlaskit/inline-edit'

@@ -5,9 +5,11 @@ import {
   StyledIssueTableHeader
 } from './styles'
 import { TableVirtuoso } from 'react-virtuoso'
-import TableRow from './TableRow'
 import debounce from 'lodash/debounce'
+import dynamic from 'next/dynamic'
 import useIsMounted from '@/hooks/useIsMounted'
+
+const TableRow = dynamic(() => import('./TableRow'), { ssr: false })
 
 interface IProps {
   selectedProjectTasks: ITask[]

@@ -6,7 +6,9 @@ import {
   StyledDialogOverlay,
   StyledDialogTitle
 } from '@/components/Dialogs/LoginDialog/styles'
-import GitHubLogin from '@/containers/GitHubLogin'
+import dynamic from 'next/dynamic'
+
+const GitHubLogin = dynamic(() => import('@/containers/GitHubLogin'), { ssr: false })
 
 const LoginDialog = () => {
   return (

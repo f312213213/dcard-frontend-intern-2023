@@ -6,14 +6,16 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 
 import { wrapper } from '@/features/store'
-import Backdrop from '@/containers/Backdrop'
-import Dialogs from '@/containers/Dialogs'
 import ErrorBoundaryToast from '@/components/Toast/ErrorBoundaryToast'
-import Header from '@/components/Header'
-import Init from '@/containers/Init'
-import Sidebar from '@/containers/Sidebar'
-import Toast from '@/containers/Toast'
+import dynamic from 'next/dynamic'
 import theme from '@/styles/theme'
+
+const Toast = dynamic(() => import('@/containers/Toast'), { ssr: false })
+const Sidebar = dynamic(() => import('@/containers/Sidebar'), { ssr: false })
+const Init = dynamic(() => import('@/containers/Init'), { ssr: false })
+const Header = dynamic(() => import('@/components/Header'), { ssr: false })
+const Dialogs = dynamic(() => import('@/containers/Dialogs'), { ssr: false })
+const Backdrop = dynamic(() => import('@/containers/Backdrop'), { ssr: false })
 
 const App = ({ Component, ...rest }: AppProps) => {
   const { store, props } = wrapper.useWrappedStore(rest)

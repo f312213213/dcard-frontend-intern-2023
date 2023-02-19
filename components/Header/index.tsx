@@ -3,7 +3,9 @@ import { StyledCreatedIssueButton, StyledHeader, StyledHeaderText, StyledMiddleS
 import { isLoginSelector, userDataSelector } from '@/features/user/selector'
 import { openDialog } from '@/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
-import Search from '@/components/Header/Search'
+import dynamic from 'next/dynamic'
+
+const Search = dynamic(() => import('@/components/Header/Search'), { ssr: false })
 
 const Header = () => {
   const isLogin = useAppSelector(isLoginSelector)

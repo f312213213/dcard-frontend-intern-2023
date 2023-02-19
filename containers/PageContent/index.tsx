@@ -2,8 +2,10 @@ import { EPageContentType } from '@/constants/pageContentType'
 import { StyledBrowseProjectPageTitle, StyledPageContentView } from '@/containers/PageContent/styles'
 import { isLoginSelector } from '@/features/user/selector'
 import { useAppSelector } from '@/features/store'
-import IssueTable from '../IssueTable'
-import SingleIssueView from '@/containers/SingleIssueView'
+import dynamic from 'next/dynamic'
+
+const IssueTable = dynamic(() => import('../IssueTable'), { ssr: false })
+const SingleIssueView = dynamic(() => import('@/containers/SingleIssueView'), { ssr: false })
 
 interface IPageContentProps {
   displayText: string
