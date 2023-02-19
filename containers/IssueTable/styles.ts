@@ -57,7 +57,7 @@ export const StyledIssueTableHeader = styled.tr`
   }
 `
 
-export const StyledIssueTableRow = styled.div`
+export const StyledIssueTableRow = styled.tr`
   min-height: 60px;
   background: white;
   display: flex;

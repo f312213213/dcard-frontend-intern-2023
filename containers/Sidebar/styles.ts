@@ -1,3 +1,4 @@
+import { BackgroundProps, background } from 'styled-system'
 import { Root } from '@radix-ui/react-separator'
 import Link from 'next/link'
 import Select from '@/components/Select'
@@ -56,8 +57,10 @@ export const StyledSidebarFilterLink = styled(Link)`
   }
 `
 
-export const StyledSeparator = styled(Root)`
+export const StyledSeparator = styled(Root)<BackgroundProps>`
   height: 1px;
   background: ${props => props.theme.color.semiWhite};
   margin: 10px;
+  
+  ${background}
 `

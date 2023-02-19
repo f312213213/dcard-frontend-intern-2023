@@ -1,4 +1,5 @@
 import { Content, Description } from '@radix-ui/react-dialog'
+import InLineEdit from '@/components/InLineEdit'
 import Select from '@/components/Select'
 import styled from 'styled-components'
 
@@ -64,4 +65,15 @@ export const StyledDialogContent = styled(Content)`
   &:focus {
     outline: none;
   }
+`
+
+export const StyledTitleInLineEdit = styled(InLineEdit)`
+  padding: 10px;
+  font-size: 20px;
+`
+
+export const StyledBodyInLineEdit = styled(InLineEdit)`
+  white-space: break-spaces;
+  padding: 10px;
+  font-size: 18px;
 `

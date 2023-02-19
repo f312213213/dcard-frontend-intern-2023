@@ -18,7 +18,7 @@ export const StyledToastContainer = styled.div<BackgroundProps>`
   align-items: center;
   height: 60px;
   border-radius: 10px;
-  width: 300px;
+  width: 400px;
 
   ${background}
 `

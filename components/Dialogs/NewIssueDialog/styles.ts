@@ -82,6 +82,7 @@ export const StyledSelect = styled(Select)`
   margin-bottom: 10px;
 
   font-size: 16px;
+  border-radius: 4px;
 
   &:focus {
     outline: none;

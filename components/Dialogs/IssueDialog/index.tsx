@@ -1,11 +1,21 @@
 import { Portal, Root } from '@radix-ui/react-dialog'
 
+import { EInputType } from '@/components/InLineEdit'
 import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
 import { EPageContentType } from '@/constants/pageContentType'
-import { StyledDialogContent, StyledDialogDescription, StyledLink } from '@/components/Dialogs/IssueDialog/styles'
+import { EToastType } from '@/features/app/interface'
+import {
+  StyledBodyInLineEdit,
+  StyledDialogContent,
+  StyledDialogDescription,
+  StyledLink,
+  StyledTitleInLineEdit
+} from '@/components/Dialogs/IssueDialog/styles'
 import { StyledDialogOverlay, StyledDialogTitle } from '@/components/Dialogs/LoginDialog/styles'
 import { StyledIssueStatusSelect } from '@/containers/IssueTable/styles'
+import { StyledSeparator } from '@/containers/Sidebar/styles'
 import { issueDataByIdSelector, searchedIssueDataSelector } from '@/features/repo/selector'
+import { openToast } from '@/features/app/slice'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
 import { updateIssueStatus } from '@/features/repo/services'
 import { updateSearchTaskDataByField, updateTaskDataByField } from '@/features/repo/slice'
@@ -14,7 +24,6 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import InlineEdit from '@atlaskit/inline-edit'
 import TextArea from '@atlaskit/textarea'
-import TextField from '@atlaskit/textfield'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
 
 const IssueDialog = () => {
@@ -87,6 +96,13 @@ const IssueDialog = () => {
     })
   }
 
+  const onError = (errorMessage: string) => {
+    dispatch(openToast({
+      type: EToastType.ERROR,
+      title: errorMessage,
+    }))
+  }
+
   return (
     <Root open>
       <Portal>
@@ -108,30 +124,20 @@ const IssueDialog = () => {
                       transform: 'translateY(20px)',
                     }}
                   >
-                    <InlineEdit
+                    <StyledTitleInLineEdit
+                      name={'title'}
+                      type={EInputType.TEXT}
                       onConfirm={onTitleUpdate}
                       defaultValue={issueData.title}
-                      editView={({ errorMessage, ...fieldProps }) => (
-                        <TextField {...fieldProps} style={{
-                          padding: '10px',
-                          fontSize: '20px',
-                        }} />
-                      )}
-                      readView={() => {
-                        return (
-                          <div
-                            style={{
-                              padding: '10px',
-                              fontSize: '22px',
-                            }}
-                          >
-                            {issueData.title}
-                          </div>
-                        )
-                      }}
+                      value={issueData.title}
+                      required
+                      onError={onError}
+                      readViewFitContainerWidth
                     />
                   </div>
                 </StyledDialogTitle>
+
+                <StyledSeparator />
 
                 <div style={{
                   marginTop: '15px',
@@ -148,27 +154,16 @@ const IssueDialog = () => {
                 </div>
 
                 <StyledDialogDescription>
-                  <InlineEdit
+                  <StyledBodyInLineEdit
+                    name={'body'}
+                    type={EInputType.TEXTAREA}
                     onConfirm={onBodyUpdate}
                     defaultValue={issueData.body}
+                    value={issueData.body || "This issue doesn't have a body."}
+                    minLength={30}
+                    onError={onError}
                     keepEditViewOpenOnBlur
                     readViewFitContainerWidth
-                    editView={({ errorMessage, ...fieldProps }, ref) => (
-                      // @ts-ignore - textarea does not pass through ref as a prop
-                      <TextArea {...fieldProps} ref={ref} />
-                    )}
-                    readView={() => {
-                      return (
-                        <p
-                          style={{
-                            whiteSpace: 'break-spaces',
-                            fontSize: '16px',
-                          }}
-                        >
-                          {issueData.body || "This issue doesn't have a body!"}
-                        </p>
-                      )
-                    }}
                   />
                 </StyledDialogDescription>
 
