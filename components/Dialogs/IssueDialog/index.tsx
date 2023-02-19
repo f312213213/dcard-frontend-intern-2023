@@ -5,7 +5,9 @@ import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
 import { EPageContentType } from '@/constants/pageContentType'
 import { EToastType } from '@/features/app/interface'
 import {
+  StyledActionArea,
   StyledBodyInLineEdit,
+  StyledDeleteButton,
   StyledDialogContent,
   StyledDialogDescription,
   StyledLink,
@@ -14,16 +16,14 @@ import {
 import { StyledDialogOverlay, StyledDialogTitle } from '@/components/Dialogs/LoginDialog/styles'
 import { StyledIssueStatusSelect } from '@/containers/IssueTable/styles'
 import { StyledSeparator } from '@/containers/Sidebar/styles'
+import { deleteIssue, updateIssueStatus } from '@/features/repo/services'
 import { issueDataByIdSelector, searchedIssueDataSelector } from '@/features/repo/selector'
 import { openToast } from '@/features/app/slice'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
-import { updateIssueStatus } from '@/features/repo/services'
 import { updateSearchTaskDataByField, updateTaskDataByField } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import InlineEdit from '@atlaskit/inline-edit'
-import TextArea from '@atlaskit/textarea'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
 
 const IssueDialog = () => {
@@ -103,6 +103,15 @@ const IssueDialog = () => {
     }))
   }
 
+  const clickHandler = async () => {
+    await dispatch(deleteIssue(
+      issueData.repoOwner,
+      repoName as string,
+      Number(issueNumber as string)
+    ))
+    router.back()
+  }
+
   return (
     <Root open>
       <Portal>
@@ -167,9 +176,14 @@ const IssueDialog = () => {
                   />
                 </StyledDialogDescription>
 
-                <StyledLink href={issueData.url} target={'_blank'} rel={'noreferrer'}>
-                  前往 Issue
-                </StyledLink>
+                <StyledActionArea>
+                  <StyledDeleteButton onClick={clickHandler}>
+                    刪除此 issue
+                  </StyledDeleteButton>
+                  <StyledLink href={issueData.url} target={'_blank'} rel={'noreferrer'}>
+                    前往 Issue
+                  </StyledLink>
+                </StyledActionArea>
               </>
             )
           }

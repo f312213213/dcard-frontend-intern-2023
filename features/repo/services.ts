@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from '@/features/store'
-import { EApiStatus } from '@/features/app/interface'
+import { EApiStatus, EToastType } from '@/features/app/interface'
 import { EPageContentType } from '@/constants/pageContentType'
 import {
   appendProjectTaskData,
@@ -15,8 +15,9 @@ import {
   getStatusFilterText,
   removeStatusLabel
 } from '@/utilis/issueStatus'
-import { closeBackdrop, openBackdrop } from '@/features/app/slice'
+import { closeBackdrop, openBackdrop, openToast } from '@/features/app/slice'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
+import filter from 'lodash/filter'
 import first from 'lodash/first'
 import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
 
@@ -151,7 +152,7 @@ export const getSearchResult = (queryText: string, filter = 'all', order = 'desc
   dispatch(openBackdrop())
 
   const { data, success } = await apiRequest({
-    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} type:issue ${filter !== 'all' ? `label:"${getStatusFilterText(filter)}"` : ''}&sort=created&order=${order}&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
+    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} is:open type:issue ${filter !== 'all' ? `label:"${getStatusFilterText(filter)}"` : ''}&sort=created&order=${order}&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
   })
   if (success) {
     const tasks = data.items.map((issue: any) => {
@@ -182,5 +183,37 @@ export const getSearchResult = (queryText: string, filter = 'all', order = 'desc
   }
 
   dispatch(updateSearchDataByField({ field: 'apiStatus', updatedData: EApiStatus.FAILURE }))
+  dispatch(closeBackdrop())
+}
+
+export const deleteIssue = (
+  repoOwner: string,
+  repoName: string,
+  issueNumber: number
+) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch(openBackdrop())
+  const rootState = getState()
+
+  const tasks = rootState.repo.projects[repoName].tasks
+  dispatch(updateRepoDataByField({
+    projectName: repoName,
+    field: 'tasks',
+    updatedData: filter(tasks, (task) => task.number !== issueNumber),
+  }))
+
+  const searchTasks = rootState.repo.search.tasks
+  dispatch(updateSearchDataByField({
+    field: 'tasks',
+    updatedData: filter(searchTasks, (task) => task.number !== issueNumber),
+  }))
+
+  const { success } = await apiRequest({
+    endpoint: `/repos/${repoOwner}/${repoName}/issues/${issueNumber}`,
+    method: EApiMethod.PATCH,
+    data: {
+      state: 'closed',
+    },
+  })
+  if (success) dispatch(openToast({ type: EToastType.SUCCESS, title: 'Remove successfully!' }))
   dispatch(closeBackdrop())
 }

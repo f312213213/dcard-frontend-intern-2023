@@ -1,6 +1,5 @@
 import { Content, Description } from '@radix-ui/react-dialog'
 import InLineEdit from '@/components/InLineEdit'
-import Select from '@/components/Select'
 import styled from 'styled-components'
 
 export const StyledLink = styled.a`
@@ -12,12 +11,28 @@ export const StyledLink = styled.a`
   text-align: center;
   display: block;
 
-  position: relative;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  color: ${props => props.theme.color.white};
+`
+
+export const StyledDeleteButton = styled.button`
+  padding: 10px 15px;
+  background: red;
+  border-radius: 5px;
+  width: 200px;
+  border: none;
+  box-shadow: rgb(0 0 0 / 30%) 0px 0px 10px;
+  text-align: center;
+  display: block;
+  cursor: pointer;
+
 
   color: ${props => props.theme.color.white};
+`
+
+export const StyledActionArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 70px;
 `
 
 export const StyledDialogDescription = styled(Description)`

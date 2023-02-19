@@ -35,7 +35,6 @@ const Select = ({
     <Root name={name} value={value} defaultValue={defaultValue} onValueChange={onValueChange}>
       <Trigger style={{ touchAction: 'none' }} className={className} onPointerDown={e => {
         e.stopPropagation()
-        console.log(e)
       }
       } >
         <Value placeholder={placeholder} />

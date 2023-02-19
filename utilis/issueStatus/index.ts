@@ -30,7 +30,11 @@ export const checkHasStatusLabel = (labels: any[]) => {
 }
 
 export const getIssueLabelNameArray = (labels: any[]) => {
-  return labels.map((label:any) => label.name)
+  if (!labels) return []
+  return labels.map((label:any) => {
+    if (typeof label === 'string') return label
+    return label.name
+  })
 }
 
 export const getFirstStatusLabel = (labels: string[]) => {
