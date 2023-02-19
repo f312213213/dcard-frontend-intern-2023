@@ -9,6 +9,7 @@ export interface ITask {
   repoName: string
   repoOwner: string
   url: string
+  labels: string[]
 }
 
 export interface IProject {
