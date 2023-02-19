@@ -1,34 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Dcard 2023 Frontend Intern Homework
+This project is used to apply dcard 2023 web frontend Intern position.
 
-## Getting Started
+[Requirement](https://drive.google.com/file/d/1ZlwuUafAQUKBEA_ZK6ShM5F4xLTkV_4X/view)
 
-First, run the development server:
+It works like a simplified Jira, and looks like Dcard.
 
-```bash
-npm run dev
-# or
-yarn dev
+In this web app, you can:
+1. Manage task with three status: open, in progress, done.
+2. Searching tasks based on their status.
+3. Update or create tasks.
+
+All above can be done in separate project (like jira).
+## How to run this project
+### Local
+1. Clone the project from GitHub
+2. Install the dependencies via `yarn`
+3. Register an OAuth app on GitHub, and paste your client id , client secret in .env file.
+4. Run in dev mode by entering `yarn dev`, or run in production mode by entering 
+```
+yarn build
+yarn start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Online
+Just go to this [link](https://dcard-frontend-intern-2023.chiendavid.com/) and login with your GitHub account.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Project Architecture
+### Package
+There are three main package used in this project
+- **Next**.js: for building react app
+- **Redux**: for managing data and state
+- **Styled Component**: for styling the website
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/login-callback.ts`.
+### Global Components
+#### Sidebar
+Sidebar will display in every page.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+It can be used to selecting which project you are looking for, 
+and choosing the filter or the order your tasks display in.
 
-## Learn More
+#### Header
+Header will also display in every page.
 
-To learn more about Next.js, take a look at the following resources:
+A form in dialog will show up after clicking the create button in the middle. 
+You can select which project you want to add the task to, also it's title, body and initial status.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The search section can be used to pass in the keyword you want to search for the task.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### Page
+#### / - Home page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+At this page, you can see the result of searching issue by passing keyword on the navbar.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### /browse/[ProjectOwner]/[projectName]
+
+You will be navigated to this page after using the select component in the sidebar.
+
+At this page, you can see the tasks belong to this project in a table.
+
+Each row in this table represent a link, which will lead you to a "single task page"(actually, it is a dialog).
+
+#### /browse/[ProjectOwner]/[projectName]/[issueNumber]
+
+If you go in this page by clicking the link mentioned above, you will see the task detail in a dialog.
+
+If you go in this page directly(like typing in address bar), you will see a full page of the issue.
+
+Both of them can edit the task by click the text of title and body, or choosing the updated status by using the select component.
+
+You can delete the task by clicking the red button, and go to the issue page on GitHub by clicking the black button.
+

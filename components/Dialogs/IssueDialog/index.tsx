@@ -109,7 +109,7 @@ const IssueDialog = () => {
       repoName as string,
       Number(issueNumber as string)
     ))
-    router.back()
+    router.replace(`/browse/${issueData.repoOwner}/${repoName}`)
   }
 
   return (
