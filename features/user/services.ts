@@ -9,15 +9,14 @@ export const fetchUserInfo = () => async (dispatch: AppDispatch, getState: () =>
   try {
     dispatch(openBackdrop())
     const { data: jsonForUserData, success: userInfoSuccess } = await apiRequest({
-      endpoint: `${githubApi.baseUrl}/user`,
+      endpoint: `${window.location.origin}/api/user`,
     })
     if (!userInfoSuccess) throw Error()
 
     const {
-      repos_url: reposUrl,
-      login: username,
-      avatar_url: avatarUrl,
-      node_id: userId,
+      username,
+      avatarUrl,
+      userId,
     } = jsonForUserData
 
     const { data: jsonForReposData, success: reposDataSuccess } = await apiRequest({
