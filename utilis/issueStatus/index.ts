@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep'
-import first from 'lodash/first'
+import findIndex from 'lodash/findIndex'
 import issueLabels, { EIssueStatus } from '@/constants/issueLabel'
 import remove from 'lodash/remove'
 
@@ -34,8 +34,7 @@ export const getIssueLabelNameArray = (labels: any[]) => {
 }
 
 export const getFirstStatusLabel = (labels: string[]) => {
-  // @ts-ignore
-  return first(labels, (label: string) => labelIsStatusLabel(label))
+  return labels[findIndex(labels, (label: string) => labelIsStatusLabel(label))]
 }
 
 export const removeStatusLabel = (labels: string[]) => {
