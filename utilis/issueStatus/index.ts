@@ -42,3 +42,12 @@ export const removeStatusLabel = (labels: string[]) => {
   remove(copied, (label: string) => labelIsStatusLabel(label))
   return copied
 }
+
+export const getStatusFilterText = (filterText: string) => {
+  switch (filterText) {
+    case 'in-progress': return EIssueStatus.IN_PROGRESS
+    case 'done': return EIssueStatus.DONE
+    case 'open': return EIssueStatus.OPEN
+    default: return ''
+  }
+}

@@ -13,15 +13,15 @@ const issueFilters = [
     text: 'All issues',
   },
   {
-    type: EIssueStatus.OPEN,
+    type: 'open',
     text: 'Open issues',
   },
   {
-    type: EIssueStatus.IN_PROGRESS,
+    type: 'in-progress',
     text: 'In progress issues',
   },
   {
-    type: EIssueStatus.DONE,
+    type: 'done',
     text: 'Done issues',
   },
 ]

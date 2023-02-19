@@ -8,7 +8,13 @@ import {
   updateSearchTaskDataByField,
   updateTaskDataByField
 } from '@/features/repo/slice'
-import { checkHasStatusLabel, getFirstStatusLabel, getIssueLabelNameArray, removeStatusLabel } from '@/utilis/issueStatus'
+import {
+  checkHasStatusLabel,
+  getFirstStatusLabel,
+  getIssueLabelNameArray,
+  getStatusFilterText,
+  removeStatusLabel
+} from '@/utilis/issueStatus'
 import { closeBackdrop, openBackdrop } from '@/features/app/slice'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
 import first from 'lodash/first'
@@ -104,7 +110,7 @@ export const getRepoIssueData = (filter = 'all', order = 'desc') => async (dispa
 
   dispatch(openBackdrop())
   const { data, success } = await apiRequest({
-    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${repoOwner}/${selectedProject}/issues?state=open&sort=created&direction=${order}&per_page=10&page=${page}&labels=${filter !== 'all' ? filter : ''}`,
+    endpoint: `${process.env.NEXT_PUBLIC_GITHUB_API_BASE}/repos/${repoOwner}/${selectedProject}/issues?state=open&sort=created&direction=${order}&per_page=10&page=${page}&labels=${getStatusFilterText(filter)}`,
   })
   if (success) {
     const tasks = data.map((issue: any) => {
@@ -145,7 +151,7 @@ export const getSearchResult = (queryText: string, filter = 'all', order = 'desc
   dispatch(openBackdrop())
 
   const { data, success } = await apiRequest({
-    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} type:issue ${filter !== 'all' ? `label:"${filter}"` : ''}&sort=created&order=${order}&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
+    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} type:issue ${filter !== 'all' ? `label:"${getStatusFilterText(filter)}"` : ''}&sort=created&order=${order}&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
   })
   if (success) {
     const tasks = data.items.map((issue: any) => {
