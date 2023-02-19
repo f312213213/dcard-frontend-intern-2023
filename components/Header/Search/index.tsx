@@ -23,9 +23,9 @@ const Search = () => {
   const searchHandlerHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!queryText) return
-    dispatch(restoreSearchData())
     router.push(`/?q=${queryText}`, undefined, { shallow: true })
-    dispatch(getSearchResult(q as string, filter as string, order as string))
+    dispatch(restoreSearchData())
+    dispatch(getSearchResult(queryText, filter as string, order as string))
   }
 
   useEffect(() => {
