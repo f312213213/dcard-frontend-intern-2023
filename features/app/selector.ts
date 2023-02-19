@@ -1,8 +1,8 @@
-import { EAppStatus, EDialogType } from '@/features/app/interface'
+import { EApiStatus, EDialogType } from '@/features/app/interface'
 import { RootState } from '@/features/store'
 import { createSelector } from '@reduxjs/toolkit'
 
-export const isAppInitiatedSelector = (state: RootState) => state.app.status === EAppStatus.SUCCESS
+export const isAppInitiatedSelector = (state: RootState) => state.app.status === EApiStatus.SUCCESS
 
 export const isAlertDialogOpenSelector = createSelector(
   (state: RootState) => state.app.dialog[EDialogType.ALERT].open,
