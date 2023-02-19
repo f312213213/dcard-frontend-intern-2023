@@ -21,11 +21,13 @@ import useIsMounted from '@/hooks/useIsMounted'
 
 const NewIssueDialog = () => {
   const isMounted = useIsMounted()
-  const [inputState, setInputState] = useState<any>({})
+  const [inputState, setInputState] = useState<any>({
+    status: EIssueStatus.OPEN,
+  })
   const dispatch = useAppDispatch()
   const reposData = useAppSelector(repoDataSelector)
 
-  const [status, setStatus] = useState<any>('')
+  const [status, setStatus] = useState<any>(EIssueStatus.OPEN)
 
   const onFormChangeHandler = (event: FormEvent<HTMLFormElement>) => {
     const { name, value } = event.target as HTMLInputElement
@@ -81,7 +83,7 @@ const NewIssueDialog = () => {
       data: {
         title: inputState.title,
         body: inputState.body,
-        labels: [inputState.status],
+        labels: [(inputState.status || EIssueStatus.OPEN)],
       },
     })
     if (success) {
@@ -183,7 +185,7 @@ const NewIssueDialog = () => {
             }}>
               <StyledIssueStatusSelect
                 value={status}
-                defaultValue={inputState.status || EIssueStatus.OPEN}
+                defaultValue={status || EIssueStatus.OPEN}
                 options={statusOptions}
                 onValueChange={onStatusValueChange}
                 background={renderBackground(status)}
