@@ -23,17 +23,17 @@ const HomePage = () => {
   const dispatch = useAppDispatch()
   const router = useRouter()
 
-  const { q, filter } = router.query
+  const { q, filter, order } = router.query
 
   const loadMore = () => {
-    dispatch(getSearchResult(q as string, filter as string))
+    dispatch(getSearchResult(q as string, filter as string, order as string))
   }
 
   useEffect(() => {
     if (!appIsInit) return
     console.log(filter)
-    dispatch(getSearchResult(q as string, filter as string))
-  }, [filter, appIsInit])
+    dispatch(getSearchResult(q as string, filter as string, order as string))
+  }, [filter, appIsInit, order])
 
   return (
     <Layout

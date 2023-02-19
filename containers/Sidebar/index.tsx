@@ -26,12 +26,26 @@ const issueFilters = [
   },
 ]
 
+const issueOrder = [
+  {
+    type: 'desc',
+    text: 'desc',
+  },
+  {
+    type: 'asc',
+    text: 'asc',
+  },
+]
+
 const SidebarContainer = () => {
   const reposData = useAppSelector(repoDataSelector)
   const isLogin = useAppSelector(isLoginSelector)
   const projectName = useAppSelector(selectedProjectSelector)
   const dispatch = useAppDispatch()
   const router = useRouter()
+
+  const { filter: filterInLink, order: orderInLink } = router.query
+
   if (!isLogin) {
     return (
       <StyledSidebarWrapper style={{
@@ -53,6 +67,7 @@ const SidebarContainer = () => {
             <StyledSidebarFilterLink
               key={filter.type}
               onClick={() => {
+                if (filterInLink === filter.type) return
                 if (router.pathname === '/') {
                   dispatch(restoreSearchData())
                 } else {
@@ -69,6 +84,34 @@ const SidebarContainer = () => {
               shallow
             >
               {filter.text}
+            </StyledSidebarFilterLink>
+          )
+        })
+      }
+
+      {
+        issueOrder.map(order => {
+          return (
+            <StyledSidebarFilterLink
+              key={order.type}
+              onClick={() => {
+                if (orderInLink === order.type) return
+                if (router.pathname === '/') {
+                  dispatch(restoreSearchData())
+                } else {
+                  dispatch(restoreRepoData({ projectName }))
+                }
+              }}
+              href={{
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  order: order.type,
+                },
+              }}
+              shallow
+            >
+              {order.text}
             </StyledSidebarFilterLink>
           )
         })
