@@ -16,7 +16,7 @@ const Search = () => {
 
   const searchHandlerHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!queryText || q === queryText) return
+    if (!queryText) return
     router.push(`/?q=${queryText}`, undefined, { shallow: true })
   }
 

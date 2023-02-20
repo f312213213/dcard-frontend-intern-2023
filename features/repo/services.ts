@@ -152,7 +152,7 @@ export const getSearchResult = (queryText: string, filter = 'all', order = 'desc
   dispatch(openBackdrop())
 
   const { data, success } = await apiRequest({
-    endpoint: `/search/issues?q=${queryText} in:title in:body user:${username} is:open type:issue ${filter !== 'all' ? `label:"${getStatusFilterText(filter)}"` : ''}&sort=created&order=${order}&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
+    endpoint: `/search/issues?q=${queryText} in:title  in:body user:${username} is:open type:issue ${filter !== 'all' ? `label:"${getStatusFilterText(filter)}"` : ''}&sort=created&order=${order}&per_page=10&page=${prevQueryText === queryText ? page : 1}&state=open`,
   })
   if (success) {
     const tasks = data.items.map((issue: any) => {

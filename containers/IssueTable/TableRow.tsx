@@ -2,7 +2,7 @@ import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
 import { EPageContentType } from '@/constants/pageContentType'
 import { ITask } from '@/features/repo/interface'
 import { StyledIssueStatusSelect, StyledIssueTableRow } from './styles'
-import { memo, useState } from 'react'
+import { memo } from 'react'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
 import { updateIssueStatus } from '@/features/repo/services'
 import { useAppDispatch } from '@/features/store'
@@ -11,8 +11,9 @@ import Link from 'next/link'
 
 interface IProps {
   task: ITask
+  pageContentType?: EPageContentType
 }
-const TableRow = ({ task }: IProps) => {
+const TableRow = ({ task, pageContentType }: IProps) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const onValueChange = async (value: EIssueStatus) => {
@@ -43,6 +44,15 @@ const TableRow = ({ task }: IProps) => {
           {task.number}
         </p>
       </td>
+      {
+        pageContentType === EPageContentType.SEARCH_RESULT && (
+          <td className={'repo'}>
+            <p>
+              {task.repoName}
+            </p>
+          </td>
+        )
+      }
       <td className={'title'}>
           <p>
             {task.title}

@@ -93,7 +93,7 @@ const InLineEdit = ({
                 />
                 )
               : (
-                <TextField {...fieldProps} name={name} autoFocus={false} isRequired className={className} style={{ fontSize: '18px' }} />
+                <TextField {...fieldProps} name={name} autoFocus={false} isRequired className={className}/>
                 )
           )
         }

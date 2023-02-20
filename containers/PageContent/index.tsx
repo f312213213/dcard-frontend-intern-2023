@@ -41,6 +41,7 @@ const PageContentContainer = ({
               tableEmptyText={tableEmptyText}
               loadMore={tableReachEnd}
               selectedProjectTasks={contentData}
+              pageContentType={EPageContentType.SEARCH_RESULT}
             />
           </>
         )

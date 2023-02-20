@@ -42,6 +42,11 @@ export const StyledIssueTableHeader = styled.tr`
     flex-grow: 0.3;
   }
 
+  & > .repo {
+    flex-grow: 1;
+    width: 0;
+  }
+
   & > .status {
     width: 135px;
     text-align: right;
@@ -73,6 +78,16 @@ export const StyledIssueTableRow = styled.tr`
   
   & > .number {
     flex-grow: 0.3;
+  }
+
+  & > .repo {
+    flex-grow: 1;
+    width: 0;
+    & > p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   & > .status > div {

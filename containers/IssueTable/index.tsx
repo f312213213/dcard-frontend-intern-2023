@@ -1,22 +1,19 @@
+import { EPageContentType } from '@/constants/pageContentType'
 import { ITask } from '@/features/repo/interface'
-import {
-  StyledIssueTableContainer,
-  StyledIssueTableEmpty,
-  StyledIssueTableHeader
-} from './styles'
+import { StyledIssueTableContainer, StyledIssueTableEmpty, StyledIssueTableHeader } from './styles'
 import { TableVirtuoso } from 'react-virtuoso'
 import TableRow from '@/containers/IssueTable/TableRow'
 import debounce from 'lodash/debounce'
-import dynamic from 'next/dynamic'
 import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {
   selectedProjectTasks: ITask[]
   loadMore: any
   tableEmptyText?: string
+  pageContentType?: EPageContentType
 }
 
-const IssueTable = ({ selectedProjectTasks, loadMore, tableEmptyText = '暫無資料' }: IProps) => {
+const IssueTable = ({ selectedProjectTasks, loadMore, pageContentType, tableEmptyText = '暫無資料' }: IProps) => {
   const isMounted = useIsMounted()
 
   if (!isMounted) return null
@@ -41,6 +38,9 @@ const IssueTable = ({ selectedProjectTasks, loadMore, tableEmptyText = '暫無�
         fixedHeaderContent={() => (
           <StyledIssueTableHeader>
             <th className={'number'}>ID</th>
+            {
+              pageContentType === EPageContentType.SEARCH_RESULT && <th className={'repo'}>Repo</th>
+            }
             <th className={'title'}>Title</th>
             <th className={'row-body'}>Description</th>
             <th className={'status'}>
@@ -50,7 +50,7 @@ const IssueTable = ({ selectedProjectTasks, loadMore, tableEmptyText = '暫無�
         )}
         itemContent={(index, task) => {
           return (
-            <TableRow task={task}/>
+            <TableRow task={task} pageContentType={pageContentType} />
           )
         }}
       />
