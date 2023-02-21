@@ -36,38 +36,53 @@ There are three main package used in this project
 #### Sidebar
 Sidebar will display in every page.
 
+![sidebar.png](doc/images/sidebar.png)
+
 It can be used to selecting which project you are looking for, 
 and choosing the filter or the order your tasks display in.
 
 #### Header
 Header will also display in every page.
 
+![header.png](doc/images/header.png)
+
 A form in dialog will show up after clicking the create button in the middle. 
 You can select which project you want to add the task to, also it's title, body and initial status.
+
+![newIssueForm.png](doc/images/newIssueForm.png)
 
 The search section can be used to pass in the keyword you want to search for the task.
 
 
 ### Page
-#### / - Home page
+#### / - Display search result
 
 At this page, you can see the result of searching issue by passing keyword on the navbar.
 
-#### /browse/[ProjectOwner]/[projectName]
+![search.png](doc/images/search.png)
+
+#### /browse/[ProjectOwner]/[projectName] - Display project issues
 
 You will be navigated to this page after using the select component in the sidebar.
+
+![selectProject.gif](doc/images/selectProject.gif)
 
 At this page, you can see the tasks belong to this project in a table.
 
 Each row in this table represent a link, which will lead you to a "single task page"(actually, it is a dialog).
 
-#### /browse/[ProjectOwner]/[projectName]/[issueNumber]
+#### /browse/[ProjectOwner]/[projectName]/[issueNumber] - Display single issue
 
 If you go in this page by clicking the link mentioned above, you will see the task detail in a dialog.
+
+![issueLinkRow.gif](doc/images/issueLinkRow.gif)
 
 If you go in this page directly(like typing in address bar), you will see a full page of the issue.
 
 Both of them can edit the task by click the text of title and body, or choosing the updated status by using the select component.
 
+![editIssue.gif](doc/images/editIssue.gif)
+
 You can delete the task by clicking the red button, and go to the issue page on GitHub by clicking the black button.
+
 

@@ -13,6 +13,7 @@ interface IProps {
   onConfirm: any
   type: EInputType
   name: string
+  rows?: number
   value?: string
   className?: string
   required?: boolean
@@ -30,6 +31,7 @@ const InLineEdit = ({
   name,
   className,
   onError,
+  rows = 30,
   minLength = 0,
   readViewFitContainerWidth = false,
   keepEditViewOpenOnBlur = false,
@@ -84,7 +86,7 @@ const InLineEdit = ({
                 <TextArea
                   {...fieldProps}
                   className={className}
-                  rows={20}
+                  rows={rows}
                   ref={ref}
                   name={name}
                   onBlur={() => {

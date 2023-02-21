@@ -25,8 +25,8 @@ const RepoSelect = ({ reposData }: IProps) => {
   const [selectedValue, setSelectedValue] = useState(defaultValue)
 
   const onValueChange = (value: string) => {
-    setSelectedValue(value)
     router.push(`/browse/${value}`, undefined, { shallow: true })
+    setSelectedValue(value)
   }
 
   useEffect(() => {

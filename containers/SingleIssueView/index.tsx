@@ -22,6 +22,7 @@ import {
   renderColor
 } from '@/utilis/issueStatus'
 import { isAppInitiatedSelector } from '@/features/app/selector'
+import { updateSelectedProject } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -123,6 +124,7 @@ const SingleIssueView = ({ contentData }: IProps) => {
     })
     if (success) {
       dispatch(openToast({ type: EToastType.SUCCESS, title: 'Remove successfully!' }))
+      dispatch(updateSelectedProject({ selectedProject: contentData.projectName }))
       router.replace(`/browse/${contentData.projectOwner}/${contentData.projectName}`)
     }
     dispatch(closeBackdrop())
@@ -176,6 +178,7 @@ const SingleIssueView = ({ contentData }: IProps) => {
         defaultValue={body || ''}
         value={body || "This issue doesn't have a body."}
         minLength={30}
+        rows={20}
         onError={onError}
         keepEditViewOpenOnBlur
         readViewFitContainerWidth
@@ -184,7 +187,7 @@ const SingleIssueView = ({ contentData }: IProps) => {
         <StyledDeleteButton onClick={clickHandler}>
           刪除此 issue
         </StyledDeleteButton>
-        <StyledLink href={issueData.url} target={'_blank'} rel={'noreferrer'}>
+        <StyledLink href={issueData.html_url} target={'_blank'} rel={'noreferrer'}>
           前往 Issue
         </StyledLink>
       </StyledActionArea>

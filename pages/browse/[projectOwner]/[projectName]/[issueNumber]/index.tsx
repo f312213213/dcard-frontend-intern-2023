@@ -10,10 +10,14 @@ const PageContentContainer = dynamic(() => import('@/containers/PageContent'), {
 
 const BrowseIssuePage = ({ issue }: {issue: any}) => {
   useCleanupCode()
+
+  const getPageTitlePrefix = () => {
+    if (issue?.issueTitle && issue?.issueNumber) return `${issue.issueTitle} - Issue #${issue.issueNumber}`
+    return 'Login to use this app'
+  }
+
   const meta = {
-    title: `${(issue?.issueTitle && issue?.issueNumber)
-      ? (`${issue.issueTitle} - Issue #${issue.issueNumber}`)
-      : 'Login to use this app'} 
+    title: `${getPageTitlePrefix()} 
       - Github Task Tracker`,
     description: 'Github Task Tracker - 2023 Dcard frontend intern homework.',
     image: '',

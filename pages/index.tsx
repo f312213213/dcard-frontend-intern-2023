@@ -38,10 +38,16 @@ const HomePage = () => {
     dispatch(getSearchResult(q as string, filter as string, order as string))
   }, [filter, appIsInit, order, q, isMounted])
 
+  const getPageTitlePrefix = () => {
+    if (!isLogin) return 'Login to use this app'
+    if (q) return `Searching issues for ${q}`
+    return 'Homepage'
+  }
+
   return (
     <Layout
       customMeta={{
-        title: `${isLogin ? 'Homepage' : 'Login to use this app'} - Github Task Tracker`,
+        title: `${getPageTitlePrefix()} - Github Task Tracker`,
       }}
     >
       <PageContentContainer
