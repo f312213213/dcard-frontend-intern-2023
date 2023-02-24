@@ -1,6 +1,7 @@
 import { StyledMain } from '@/components/Layout/styles'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import useIsMobile from '@/hooks/useIsMobile'
 
 interface ICustomMeta {
   title?: string
@@ -19,6 +20,7 @@ interface IPageProps {
 
 const Layout = ({ children, customMeta }: IPageProps) => {
   const router = useRouter()
+  const isMobile = useIsMobile()
 
   const meta = {
     title: 'Homepage - Github Task Tracker',
@@ -63,7 +65,7 @@ const Layout = ({ children, customMeta }: IPageProps) => {
           meta.keyword && <meta name={'keywords'} content={meta.keyword} />
         }
       </Head>
-      <StyledMain>
+      <StyledMain isMobile={isMobile}>
         {children}
       </StyledMain>
     </>

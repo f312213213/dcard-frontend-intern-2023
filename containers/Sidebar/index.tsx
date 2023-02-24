@@ -5,8 +5,10 @@ import { restoreRepoData, restoreSearchData } from '@/features/repo/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
+import useIsMobile from '@/hooks/useIsMobile'
 
 const RepoSelect = dynamic(() => import('./components/RepoSelect'), { ssr: false })
+const MobileSidebar = dynamic(() => import('./mobile'), { ssr: false })
 
 const issueFilters = [
   {
@@ -44,8 +46,15 @@ const SidebarContainer = () => {
   const projectName = useAppSelector(selectedProjectSelector)
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const isMobile = useIsMobile()
 
   const { filter: filterInLink, order: orderInLink } = router.query
+
+  if (isMobile) {
+    return (
+      <MobileSidebar />
+    )
+  }
 
   if (!isLogin) {
     return (

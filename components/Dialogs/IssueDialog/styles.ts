@@ -1,4 +1,5 @@
 import { Content, Description } from '@radix-ui/react-dialog'
+import { IISMobile } from '@/interfaces/global'
 import InLineEdit from '@/components/InLineEdit'
 import styled from 'styled-components'
 
@@ -45,11 +46,11 @@ export const StyledDialogDescription = styled(Description)`
   text-align: left;
   flex-direction: column;
   justify-content: space-between;
-  height: 67.5vh;
+  height: 50vh;
   overflow-y: auto;
 `
 
-export const StyledDialogContent = styled(Content)`
+export const StyledDialogContent = styled(Content)<IISMobile>`
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   position: fixed;
   top: 50%;
@@ -62,6 +63,14 @@ export const StyledDialogContent = styled(Content)`
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 2;
+
+  ${({ isMobile }) => isMobile && {
+    width: '100%',
+    maxWidth: '100%',
+    minWidth: '100%',
+
+    height: '80%',
+  }}
 
 
   background: ${props => props.theme.color.white};

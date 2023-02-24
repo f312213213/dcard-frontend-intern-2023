@@ -8,6 +8,7 @@ import { updateIssueStatus } from '@/features/repo/services'
 import { useAppDispatch } from '@/features/store'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import useIsMobile from '@/hooks/useIsMobile'
 
 interface IProps {
   task: ITask
@@ -15,6 +16,7 @@ interface IProps {
 }
 const TableRow = ({ task, pageContentType }: IProps) => {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const dispatch = useAppDispatch()
   const onValueChange = async (value: EIssueStatus) => {
     dispatch(updateIssueStatus(
@@ -63,18 +65,22 @@ const TableRow = ({ task, pageContentType }: IProps) => {
           {task.body}
         </p>
       </td>
-      <td className={'status'}>
-        <div>
-          <StyledIssueStatusSelect
-            defaultValue={task.status}
-            value={task.status}
-            options={statusOptions}
-            onValueChange={onValueChange}
-            background={renderBackground(task.status)}
-            color={renderColor(task.status)}
-          />
-        </div>
-      </td>
+      {
+        !isMobile && (
+          <td className={'status'}>
+            <div>
+              <StyledIssueStatusSelect
+                defaultValue={task.status}
+                value={task.status}
+                options={statusOptions}
+                onValueChange={onValueChange}
+                background={renderBackground(task.status)}
+                color={renderColor(task.status)}
+              />
+            </div>
+          </td>
+        )
+      }
     </StyledIssueTableRow>
     </Link>
   )

@@ -4,25 +4,30 @@ import { isLoginSelector, userDataSelector } from '@/features/user/selector'
 import { openDialog } from '@/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/features/store'
 import dynamic from 'next/dynamic'
+import useIsMobile from '@/hooks/useIsMobile'
 
 const Search = dynamic(() => import('@/components/Header/Search'), { ssr: false })
 
 const Header = () => {
   const isLogin = useAppSelector(isLoginSelector)
   const userData = useAppSelector(userDataSelector)
-
+  const isMobile = useIsMobile()
   const dispatch = useAppDispatch()
 
   return (
     <StyledHeader>
-      <StyledHeaderText>
-        GITHUB
-      </StyledHeaderText>
+      {
+        !isMobile && (
+          <StyledHeaderText>
+            GITHUB
+          </StyledHeaderText>
+        )
+      }
 
       {
         isLogin &&
           <>
-            <StyledMiddleSection>
+            <StyledMiddleSection isMobile={isMobile}>
               <StyledCreatedIssueButton
                   onClick={() => {
                     dispatch(openDialog({ type: EDialogType.CREATE }))
@@ -33,9 +38,13 @@ const Header = () => {
               </StyledCreatedIssueButton>
               <Search />
             </StyledMiddleSection>
-            <StyledHeaderText>
-              hi {userData?.username}
-            </StyledHeaderText>
+            {
+              !isMobile && (
+                <StyledHeaderText>
+                  hi {userData?.username}
+                </StyledHeaderText>
+              )
+            }
           </>
       }
     </StyledHeader>
