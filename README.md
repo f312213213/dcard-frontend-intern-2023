@@ -1,16 +1,12 @@
 # Dcard 2023 Frontend Intern Homework
-This project is used to apply dcard 2023 web frontend Intern position.
+This project is a simplified Jira-style web app designed to apply for Dcard's 2023 web frontend intern position. 
+The app mimics Dcard's design and allows users to manage tasks with three statuses: open, in progress, and done. 
+Users can search tasks based on their status and update or create tasks.
 
-[Requirement](https://drive.google.com/file/d/1ZlwuUafAQUKBEA_ZK6ShM5F4xLTkV_4X/view)
+## Requirement
 
-It works like a simplified Jira, and looks like Dcard.
+View the project [requirement](https://drive.google.com/file/d/1ZlwuUafAQUKBEA_ZK6ShM5F4xLTkV_4X/view) here.
 
-In this web app, you can:
-1. Manage task with three status: open, in progress, done.
-2. Searching tasks based on their status.
-3. Update or create tasks.
-
-All above can be done in separate project (like jira).
 ## How to run this project
 ### Local
 1. Clone the project from GitHub
@@ -23,66 +19,61 @@ yarn start
 ```
 
 ### Online
-Just go to this [link](https://dcard-frontend-intern-2023.chiendavid.com/) and login with your GitHub account.
+Visit the [website](https://dcard-frontend-intern-2023.chiendavid.com/) and log inwith your GitHub account.
 
 ## Project Architecture
-### Package
-There are three main package used in this project
+### Packages
+This project uses three main packages:
 - **Next**.js: for building react app
 - **Redux**: for managing data and state
 - **Styled Component**: for styling the website
 
 ### Global Components
 #### Sidebar
-Sidebar will display in every page.
+The sidebar appears on every page.
 
 ![sidebar.png](doc/images/sidebar.png)
 
-It can be used to selecting which project you are looking for, 
-and choosing the filter or the order your tasks display in.
+It is used to select the project you are looking for and choose the filter or the order in which your tasks display.
 
 #### Header
-Header will also display in every page.
+The header also appears on every page.
 
 ![header.png](doc/images/header.png)
 
-A form in dialog will show up after clicking the create button in the middle. 
-You can select which project you want to add the task to, also it's title, body and initial status.
+Clicking the create button in the middle opens a form dialog where you can select the project you want to add the task to and its title, body, and initial status.
 
 ![newIssueForm.png](doc/images/newIssueForm.png)
 
-The search section can be used to pass in the keyword you want to search for the task.
+The search section can be used to enter a keyword to search for a specific task.
 
 
 ### Page
 #### / - Display search result
 
-At this page, you can see the result of searching issue by passing keyword on the navbar.
+On this page, you can see the result of searching for a task by passing a keyword in the navbar.
 
 ![search.png](doc/images/search.png)
 
 #### /browse/[ProjectOwner]/[projectName] - Display project issues
 
-You will be navigated to this page after using the select component in the sidebar.
+After using the select component in the sidebar, you will be navigated to this page.
 
 ![selectProject.gif](doc/images/selectProject.gif)
 
-At this page, you can see the tasks belong to this project in a table.
-
-Each row in this table represent a link, which will lead you to a "single task page"(actually, it is a dialog).
+Here, you can see the tasks belonging to the selected project in a table. 
+Each row in this table represents a link that leads you to a "single task page" (which is actually a dialog).
 
 #### /browse/[ProjectOwner]/[projectName]/[issueNumber] - Display single issue
 
-If you go in this page by clicking the link mentioned above, you will see the task detail in a dialog.
+If you click the link mentioned above, you will see the task details in a dialog.
 
 ![issueLinkRow.gif](doc/images/issueLinkRow.gif)
 
-If you go in this page directly(like typing in address bar), you will see a full page of the issue.
+If you navigate to this page directly (like by typing the address in the address bar), you will see the task details in a full page view.
 
-Both of them can edit the task by click the text of title and body, or choosing the updated status by using the select component.
+Both views allow you to edit the task by clicking on the text of the title and body or selecting an updated status using the select component.
 
 ![editIssue.gif](doc/images/editIssue.gif)
 
-You can delete the task by clicking the red button, and go to the issue page on GitHub by clicking the black button.
-
-
+You can delete the task by clicking the red button, and you can go to the task page on GitHub by clicking the black button
