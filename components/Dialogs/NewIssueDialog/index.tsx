@@ -17,10 +17,12 @@ import TextArea from '@atlaskit/textarea'
 import TextField from '@atlaskit/textfield'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
 import set from 'lodash/set'
+import useIsMobile from '@/hooks/useIsMobile'
 import useIsMounted from '@/hooks/useIsMounted'
 
 const NewIssueDialog = () => {
   const isMounted = useIsMounted()
+  const isMobile = useIsMobile()
   const [inputState, setInputState] = useState<any>({
     status: EIssueStatus.OPEN,
   })
@@ -130,7 +132,7 @@ const NewIssueDialog = () => {
       </Head>
       <Portal>
         <StyledDialogOverlay onClick={closeCreatDialog} />
-        <StyledDialogContent>
+        <StyledDialogContent isMobile={isMobile}>
 
           <StyledDialogTitle>
             Create New Issue

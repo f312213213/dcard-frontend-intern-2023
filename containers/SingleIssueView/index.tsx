@@ -28,6 +28,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
 import set from 'lodash/set'
+import useIsMobile from '@/hooks/useIsMobile'
 import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {
@@ -40,6 +41,7 @@ const SingleIssueView = ({ contentData }: IProps) => {
     projectName,
     issueNumber,
   } = contentData
+  const isMobile = useIsMobile()
   const [issueData, setIssueData] = useState<any>(undefined)
   const [valueStatus, setValueStatus] = useState<any>(undefined)
   const [title, setTitle] = useState<string>('')
@@ -139,7 +141,7 @@ const SingleIssueView = ({ contentData }: IProps) => {
   return (
     <StyledSingleIssueViewWrapper>
       <p>
-        #{issueNumber}
+        #{issueNumber} {isMobile && `- ${projectName}`}
       </p>
 
       <StyledSeparator />

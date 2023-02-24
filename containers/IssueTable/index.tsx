@@ -4,6 +4,7 @@ import { StyledIssueTableContainer, StyledIssueTableEmpty, StyledIssueTableHeade
 import { TableVirtuoso } from 'react-virtuoso'
 import TableRow from '@/containers/IssueTable/TableRow'
 import debounce from 'lodash/debounce'
+import useIsMobile from '@/hooks/useIsMobile'
 import useIsMounted from '@/hooks/useIsMounted'
 
 interface IProps {
@@ -15,6 +16,7 @@ interface IProps {
 
 const IssueTable = ({ selectedProjectTasks, loadMore, pageContentType, tableEmptyText = '暫無資料' }: IProps) => {
   const isMounted = useIsMounted()
+  const isMobile = useIsMobile()
 
   if (!isMounted) return null
 
@@ -43,9 +45,13 @@ const IssueTable = ({ selectedProjectTasks, loadMore, pageContentType, tableEmpt
             }
             <th className={'title'}>Title</th>
             <th className={'row-body'}>Description</th>
-            <th className={'status'}>
-              Status
-            </th>
+            {
+              !isMobile && (
+                <th className={'status'}>
+                  Status
+                </th>
+              )
+            }
           </StyledIssueTableHeader>
         )}
         itemContent={(index, task) => {

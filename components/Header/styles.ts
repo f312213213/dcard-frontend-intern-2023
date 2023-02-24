@@ -1,3 +1,4 @@
+import { IISMobile } from '@/interfaces/global'
 import styled from 'styled-components'
 
 export const StyledHeader = styled.header`
@@ -35,7 +36,11 @@ export const StyledCreatedIssueButton = styled.button`
   }
 `
 
-export const StyledMiddleSection = styled.div`
+export const StyledMiddleSection = styled.div<IISMobile>`
   display: flex;
   gap: 10px;
+  
+  ${({ isMobile }) => isMobile && {
+    width: '100%',
+  }}
 `

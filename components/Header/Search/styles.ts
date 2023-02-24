@@ -1,13 +1,15 @@
 import { AiOutlineSearch } from 'react-icons/ai'
+import { IISMobile } from '@/interfaces/global'
 import styled from 'styled-components'
 
 export const StyledSearchBar = styled.form`
   padding: 4px 0;
   display: flex;
   align-items: center;
+  width: 100%;
 `
 
-export const StyledSearchInput = styled.input`
+export const StyledSearchInput = styled.input<IISMobile>`
   width: 300px;
   height: 100%;
   padding: 0 5px;
@@ -15,6 +17,10 @@ export const StyledSearchInput = styled.input`
   border-radius: 4px 0px 0px 4px;
   background-color: ${props => props.theme.color.mainDefault};
   color: ${props => props.theme.color.semiWhite};
+
+  ${({ isMobile }) => isMobile && {
+    width: '100%',
+  }}
 
   &:focus {
     outline: none;

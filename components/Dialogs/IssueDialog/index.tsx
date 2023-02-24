@@ -25,9 +25,11 @@ import { useAppDispatch, useAppSelector } from '@/features/store'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import apiRequest, { EApiMethod } from '@/apis/apiClient'
+import useIsMobile from '@/hooks/useIsMobile'
 
 const IssueDialog = () => {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const { projectModalId: repoName, issueModalNumber: issueNumber } = router.query
 
   let issueData = useAppSelector(issueDataByIdSelector(repoName as string, Number(issueNumber)))
@@ -116,7 +118,7 @@ const IssueDialog = () => {
     <Root open>
       <Portal>
         <StyledDialogOverlay onClick={() => router.back()} />
-        <StyledDialogContent>
+        <StyledDialogContent isMobile={isMobile}>
           {
             issueData && (
               <>

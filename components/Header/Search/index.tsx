@@ -6,11 +6,13 @@ import {
   StyledSearchInput
 } from '@/components/Header/Search/styles'
 import { useRouter } from 'next/router'
+import useIsMobile from '@/hooks/useIsMobile'
 
 const Search = () => {
   const [queryText, setQueryText] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const isMobile = useIsMobile()
 
   const { q } = router.query
 
@@ -23,6 +25,7 @@ const Search = () => {
   return (
     <StyledSearchBar onSubmit={searchHandlerHandler}>
       <StyledSearchInput
+        isMobile={isMobile}
         defaultValue={router.query?.q}
         type={'text'}
         placeholder={'Search for issue!'}
