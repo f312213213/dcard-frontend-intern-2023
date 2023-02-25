@@ -11,7 +11,15 @@ View the project [requirement](https://drive.google.com/file/d/1ZlwuUafAQUKBEA_Z
 ### Local
 1. Clone the project from GitHub
 2. Install the dependencies via `yarn`
-3. Register an OAuth app on GitHub, and paste your client id , client secret in .env file.
+3. Register an OAuth app on GitHub, and paste your client id , client secret in and call back URL .env file.
+```
+NEXT_PUBLIC_GITHUB_CLIENT_ID=
+NEXT_PUBLIC_GITHUB_CALLBACK_URL=
+NEXT_PUBLIC_GITHUB_API_BASE=
+GITHUB_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_API_BASE=
+```
 4. Run in dev mode by entering `yarn dev`, or run in production mode by entering 
 ```
 yarn build
@@ -81,4 +89,5 @@ You can delete the task by clicking the red button, and you can go to the task p
 ## Lighthouse
 
 ![lighthouse.png](doc/images/lighthouse.png)
+
 This web app has been tested using Lighthouse, and it has received a score of 100/100.
