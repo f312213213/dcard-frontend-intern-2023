@@ -1,4 +1,4 @@
-import { Content, Description } from '@radix-ui/react-dialog'
+import { Content, Description, Title } from '@radix-ui/react-dialog'
 import { IISMobile } from '@/interfaces/global'
 import InLineEdit from '@/components/InLineEdit'
 import styled from 'styled-components'
@@ -30,6 +30,14 @@ export const StyledDeleteButton = styled.button`
   color: ${props => props.theme.color.white};
 `
 
+export const StyledDialogTitle = styled(Title)`
+  margin: 0;
+  font-weight: 500;
+  color: #111111;
+  font-size: 17px;
+  height: 90px;
+`
+
 export const StyledActionArea = styled.div`
   display: flex;
   justify-content: space-between;
@@ -47,7 +55,7 @@ export const StyledDialogDescription = styled(Description)`
   text-align: left;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 30vh;
+  height: 500px;
   overflow-y: auto;
 `
 
@@ -95,10 +103,14 @@ export const StyledDialogContent = styled(Content)<IISMobile>`
 export const StyledTitleInLineEdit = styled(InLineEdit)`
   padding: 10px;
   font-size: 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
 `
 
 export const StyledBodyInLineEdit = styled(InLineEdit)`
   white-space: break-spaces;
   padding: 10px;
   font-size: 18px;
+  height: 300px;
 `

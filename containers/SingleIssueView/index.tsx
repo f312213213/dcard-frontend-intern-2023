@@ -173,18 +173,25 @@ const SingleIssueView = ({ contentData }: IProps) => {
 
       <StyledSeparator />
 
-      <StyledBodyInLineEdit
-        name={'body'}
-        type={EInputType.TEXTAREA}
-        onConfirm={onBodyUpdate}
-        defaultValue={body || ''}
-        value={body || "This issue doesn't have a body."}
-        minLength={30}
-        rows={20}
-        onError={onError}
-        keepEditViewOpenOnBlur
-        readViewFitContainerWidth
-      />
+      <div
+        style={{
+          height: '300px',
+          position: 'relative',
+        }}
+      >
+        <StyledBodyInLineEdit
+          name={'body'}
+          type={EInputType.TEXTAREA}
+          onConfirm={onBodyUpdate}
+          defaultValue={body || ''}
+          value={body || "This issue doesn't have a body."}
+          minLength={30}
+          rows={20}
+          onError={onError}
+          keepEditViewOpenOnBlur
+          readViewFitContainerWidth
+        />
+      </div>
       <StyledActionArea>
         <StyledDeleteButton onClick={clickHandler}>
           刪除此 issue

@@ -9,11 +9,11 @@ import {
   StyledBodyInLineEdit,
   StyledDeleteButton,
   StyledDialogContent,
-  StyledDialogDescription,
+  StyledDialogDescription, StyledDialogTitle,
   StyledLink,
   StyledTitleInLineEdit
 } from '@/components/Dialogs/IssueDialog/styles'
-import { StyledDialogOverlay, StyledDialogTitle } from '@/components/Dialogs/LoginDialog/styles'
+import { StyledDialogOverlay } from '@/components/Dialogs/LoginDialog/styles'
 import { StyledIssueStatusSelect } from '@/containers/IssueTable/styles'
 import { StyledSeparator } from '@/containers/Sidebar/styles'
 import { deleteIssue, updateIssueStatus } from '@/features/repo/services'
