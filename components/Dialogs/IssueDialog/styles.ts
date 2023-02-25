@@ -33,7 +33,8 @@ export const StyledDeleteButton = styled.button`
 export const StyledActionArea = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 70px;
+  padding: 0 50px;
+  gap: 10px;
 `
 
 export const StyledDialogDescription = styled(Description)`
@@ -46,7 +47,7 @@ export const StyledDialogDescription = styled(Description)`
   text-align: left;
   flex-direction: column;
   justify-content: space-between;
-  height: 50vh;
+  min-height: 30vh;
   overflow-y: auto;
 `
 

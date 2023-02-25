@@ -85,6 +85,9 @@ const InLineEdit = ({
                 // @ts-ignore - textarea does not pass through ref as a prop
                 <TextArea
                   {...fieldProps}
+                  style={{
+                    height: '250px',
+                  }}
                   className={className}
                   rows={rows}
                   ref={ref}

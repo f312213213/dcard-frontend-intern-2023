@@ -77,3 +77,8 @@ Both views allow you to edit the task by clicking on the text of the title and b
 ![editIssue.gif](doc/images/editIssue.gif)
 
 You can delete the task by clicking the red button, and you can go to the task page on GitHub by clicking the black button
+
+## Lighthouse
+
+![lighthouse.png](doc/images/lighthouse.png)
+This web app has been tested using Lighthouse, and it has received a score of 100/100.

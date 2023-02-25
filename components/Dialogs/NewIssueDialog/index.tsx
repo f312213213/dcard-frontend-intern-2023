@@ -174,6 +174,9 @@ const NewIssueDialog = () => {
                   }))
                 }
               }}
+              style={{
+                height: '250px',
+              }}
               name={'body'}
               rows={20}
               minLength={30}
