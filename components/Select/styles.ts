@@ -30,6 +30,7 @@ export const StyledSelectItem = styled(Item)`
   padding: 0 35px 0 25px;
   position: relative;
   user-select: none;
+  transition: 200ms;
   
   &[data-disabled] {
     pointer-events: none;
@@ -40,7 +41,7 @@ export const StyledSelectItem = styled(Item)`
     color: #111111;
 
 
-    background:${props => props.theme.color.semiDark};
+    background:${props => props.theme.color.hoverDark};
   }
 `
 

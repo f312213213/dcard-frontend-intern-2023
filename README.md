@@ -1,6 +1,7 @@
 # Dcard 2023 Frontend Intern Homework
 This project is a simplified Jira-style web app designed to apply for Dcard's 2023 web frontend intern position. 
-The app mimics Dcard's design and allows users to manage tasks with three statuses: open, in progress, and done. 
+
+The app mimics Dcard's design and allows users to manage their project tasks with three statuses: open, in progress, and done. 
 Users can search tasks based on their status and update or create tasks.
 
 ## Requirement
@@ -55,7 +56,6 @@ Clicking the create button in the middle opens a form dialog where you can selec
 
 The search section can be used to enter a keyword to search for a specific task.
 
-
 ### Page
 #### / - Display search result
 
@@ -85,6 +85,26 @@ Both views allow you to edit the task by clicking on the text of the title and b
 ![editIssue.gif](doc/images/editIssue.gif)
 
 You can delete the task by clicking the red button, and you can go to the task page on GitHub by clicking the black button
+
+### Issues
+#### Recognize issue's status
+To recognize what status each issue is, this app use GitHub labels to implement.
+
+So there will be three scenarios and my solutions for them:
+
+1. Suppose there's an issue with no custom "status label". 
+    In this case, the issue's default status in the app will be "open". 
+    If a user updates the status, the app will add the status label to the issue using the GitHub API.
+
+
+2. Now suppose there's an issue with more than one custom "status label". 
+   In this case, the app will take the first status label it finds using the findIndex function from the Lodash library. 
+   If a user updates the status, the app will only keep the updated status label and delete the others.
+
+
+3. Finally, let's say there's an issue with a custom status label and other labels. 
+   In this case, the app will keep the other labels while performing the logic with the status label. 
+   For example, if the user updates the status, the app will add the new status label to the issue while keeping the other labels intact.
 
 ## Lighthouse
 
