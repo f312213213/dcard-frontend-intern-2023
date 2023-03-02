@@ -4,6 +4,7 @@ import { getRepoIssueData } from '@/features/repo/services'
 import { parseCookie } from '@/utilis/auth'
 import { selectedProjectSelector, selectedProjectTasksByProjectNameSelector } from '@/features/repo/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
+import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
 import apiRequest, { setupApiCallerAuth } from '@/apis/apiClient'
 import dynamic from 'next/dynamic'
@@ -13,6 +14,7 @@ const PageContentContainer = dynamic(() => import('@/containers/PageContent'), {
 
 const BrowseProjectPage = () => {
   useCleanupCode()
+  const router = useRouter()
   const selectedProject = useAppSelector(selectedProjectSelector)
   const selectedProjectTasks = useAppSelector(selectedProjectTasksByProjectNameSelector(selectedProject))
   const dispatch = useAppDispatch()
@@ -22,6 +24,9 @@ const BrowseProjectPage = () => {
     image: '',
     type: 'website',
   }
+
+  const { filter = '', order = '' } = router.query
+
   return (
     <Layout
       customMeta={meta}
@@ -30,7 +35,7 @@ const BrowseProjectPage = () => {
         contentData={selectedProjectTasks}
         displayText={selectedProject}
         pageContentType={EPageContentType.ISSUE_TABLE}
-        tableReachEnd={() => dispatch(getRepoIssueData())}
+        tableReachEnd={() => dispatch(getRepoIssueData(filter as string, order as string))}
       />
     </Layout>
   )
