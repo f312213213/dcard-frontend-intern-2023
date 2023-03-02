@@ -72,7 +72,10 @@ const InLineEdit = ({
 
   return (
     <Edit
-      onConfirm={onConfirm}
+      onConfirm={(value, analyticsEvent) => {
+        if (validateValue) return onError(validateValue)
+        onConfirm(value, analyticsEvent)
+      }}
       defaultValue={defaultValue}
       validate={validate}
       readViewFitContainerWidth={readViewFitContainerWidth}
@@ -85,10 +88,10 @@ const InLineEdit = ({
                 // @ts-ignore - textarea does not pass through ref as a prop
                 <TextArea
                   {...fieldProps}
-                  resize={'none'}
                   className={className}
                   rows={rows}
                   ref={ref}
+                  maxHeight={'40vh'}
                   name={name}
                   onBlur={() => {
                     if (errorMessage) onError(errorMessage)

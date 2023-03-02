@@ -3,12 +3,11 @@ import { Portal, Root } from '@radix-ui/react-dialog'
 import { EDialogType, EToastType } from '@/features/app/interface'
 import { EIssueStatus, statusOptions } from '@/constants/issueLabel'
 import { FormEvent, useEffect, useState } from 'react'
-import { StyledButton, StyledDialogContent, StyledDialogDescription, StyledSelect } from './styles'
+import { StyledButton, StyledDialogContent, StyledSelect } from './styles'
 import { StyledDialogOverlay, StyledDialogTitle } from '@/components/Dialogs/LoginDialog/styles'
 import { StyledIssueStatusSelect } from '@/containers/IssueTable/styles'
 import { StyledSeparator } from '@/containers/Sidebar/styles'
 import { closeBackdrop, closeDialog, closeToast, openBackdrop, openToast } from '@/features/app/slice'
-import { insertNewProjectTaskData } from '@/features/repo/slice'
 import { renderBackground, renderColor } from '@/utilis/issueStatus'
 import { repoDataSelector } from '@/features/repo/selector'
 import { useAppDispatch, useAppSelector } from '@/features/store'
@@ -174,9 +173,7 @@ const NewIssueDialog = () => {
                   }))
                 }
               }}
-              style={{
-                height: '250px',
-              }}
+              maxHeight={'40vh'}
               name={'body'}
               rows={20}
               minLength={30}
@@ -185,7 +182,7 @@ const NewIssueDialog = () => {
             />
 
             <div style={{
-              marginTop: '15px',
+              margin: '15px 0',
               height: '40px',
             }}>
               <StyledIssueStatusSelect
@@ -201,10 +198,6 @@ const NewIssueDialog = () => {
               送出
             </StyledButton>
           </form>
-
-          <StyledDialogDescription>
-
-          </StyledDialogDescription>
 
         </StyledDialogContent>
       </Portal>

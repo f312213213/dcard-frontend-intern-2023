@@ -55,7 +55,7 @@ export const StyledDialogDescription = styled(Description)`
   text-align: left;
   flex-direction: column;
   justify-content: space-between;
-  height: 500px;
+  height: 400px;
   overflow-y: auto;
 `
 
@@ -112,5 +112,5 @@ export const StyledBodyInLineEdit = styled(InLineEdit)`
   white-space: break-spaces;
   padding: 10px;
   font-size: 18px;
-  height: 300px;
+  overflow-x: auto;
 `
