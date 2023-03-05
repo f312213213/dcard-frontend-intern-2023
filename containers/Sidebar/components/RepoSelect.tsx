@@ -30,6 +30,10 @@ const RepoSelect = ({ reposData }: IProps) => {
   }
 
   useEffect(() => {
+    dispatch(restoreRepoData({ projectName }))
+  }, [filter, order])
+
+  useEffect(() => {
     if (!isMounted || !selectedValue || issueNumber) return
     dispatch(getRepoIssueData(filter as string, order as string))
   }, [selectedValue, isMounted, issueNumber, filter, order])

@@ -180,6 +180,8 @@ export const getSearchResult = (queryText: string, filter = 'all', order = 'desc
 
     dispatch(updateSearchDataByField({ field: 'apiStatus', updatedData: EApiStatus.SUCCESS }))
     dispatch(appendSearchResult({ searchResult: tasks, queryText }))
+    dispatch(closeBackdrop())
+    return
   }
 
   dispatch(updateSearchDataByField({ field: 'apiStatus', updatedData: EApiStatus.FAILURE }))
