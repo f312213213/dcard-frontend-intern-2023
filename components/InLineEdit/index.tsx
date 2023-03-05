@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { is } from '@babel/types'
+import { useEffect, useState } from 'react'
 import Edit from '@atlaskit/inline-edit'
 import TextArea from '@atlaskit/textarea'
 import TextField from '@atlaskit/textfield'
@@ -38,6 +39,7 @@ const InLineEdit = ({
 }: IProps) => {
   let validateValue = ''
   let validateTimeoutId: number | undefined
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     return () => {
@@ -53,12 +55,14 @@ const InLineEdit = ({
       (resolve) => {
         validateTimeoutId = window.setTimeout(() => {
           if ((value?.length || 0) <= minLength) {
+            setIsError(true)
             const errorMessage = `Must longer than ${minLength} characters.`
             resolve({
               value,
               error: errorMessage,
             })
           }
+          setIsError(false)
           resolve(undefined)
         }, 100)
       }
@@ -73,7 +77,7 @@ const InLineEdit = ({
   return (
     <Edit
       onConfirm={(value, analyticsEvent) => {
-        if (validateValue) return onError(validateValue)
+        if (isError) return onError(validateValue)
         onConfirm(value, analyticsEvent)
       }}
       defaultValue={defaultValue}
