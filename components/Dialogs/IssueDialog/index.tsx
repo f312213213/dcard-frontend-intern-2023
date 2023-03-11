@@ -124,7 +124,7 @@ const IssueDialog = () => {
               <>
                 <Head>
                   <title>
-                    {`${issueData.title} - Issue #${issueData.number} - Github Task Tracker`}
+                    {`${issueData.title} - Issue #${issueData.number} - ${issueData.repoName} - Github Task Tracker`}
                   </title>
                 </Head>
                 <StyledDialogTitle>

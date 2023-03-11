@@ -141,7 +141,7 @@ const SingleIssueView = ({ contentData }: IProps) => {
   return (
     <StyledSingleIssueViewWrapper>
       <p>
-        #{issueNumber} {isMobile && `- ${projectName}`}
+        #{issueNumber} - {projectName}
       </p>
 
       <StyledSeparator />
